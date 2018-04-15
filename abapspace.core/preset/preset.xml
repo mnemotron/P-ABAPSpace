@@ -2,15 +2,15 @@
 <preset>
 	<refactorRootDir>test/</refactorRootDir>
 	<objectClass>
-		<identifier>ZCL</identifier>
+		<regex>ZCL\w*</regex>
 		<namespaceOld>Z</namespaceOld>
 		<namespaceNew>/XXX/</namespaceNew>
-		<classNameMaxLength>30</classNameMaxLength>
+		<nameMaxLength>30</nameMaxLength>
 	</objectClass>
 	<objectInterface>
-		<identifier>ZIF</identifier>
+		<regex>ZIF\w*</regex>
 		<namespaceOld>Z</namespaceOld>
 		<namespaceNew>/XXX/</namespaceNew>
-		<classNameMaxLength>30</classNameMaxLength>
+		<nameMaxLength>30</nameMaxLength>
 	</objectInterface>
 </preset>

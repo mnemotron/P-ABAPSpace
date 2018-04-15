@@ -4,22 +4,21 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class ObjectGen {
 
-	private String identifier;
+	private String regex;
 	private String namespaceOld;
 	private String namespaceNew;
-	private Integer classNameMaxLength;
+	private Integer nameMaxLength;
 
 	public ObjectGen() {
 
 	}
 
-	public String getIdentifier() {
-		return identifier;
+	public String getRegex() {
+		return regex;
 	}
 
-	@XmlElement
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
+	public void setRegex(String regex) {
+		this.regex = regex;
 	}
 
 	public String getNamespaceOld() {
@@ -40,13 +39,13 @@ public class ObjectGen {
 		this.namespaceNew = namespaceNew;
 	}
 
-	public Integer getClassNameMaxLength() {
-		return classNameMaxLength;
+	public Integer getNameMaxLength() {
+		return nameMaxLength;
 	}
 
 	@XmlElement
-	public void setClassNameMaxLength(Integer classNameMaxLength) {
-		this.classNameMaxLength = classNameMaxLength;
+	public void setNameMaxLength(Integer nameMaxLength) {
+		this.nameMaxLength = nameMaxLength;
 	}
 
 }

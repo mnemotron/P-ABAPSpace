@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.xml.bind.JAXBException;
 import abapspace.core.preset.ImportXMLToPreset;
 import abapspace.core.preset.entity.Preset;
@@ -55,11 +58,17 @@ public class Refector {
 	public void refactor() {
 		File locRootDir = new File(this.preset.getRefactorRootDir());
 
-		File[] locFiles = locRootDir.listFiles();
+		File[] locFileList = locRootDir.listFiles();
 
-		for (File file : locFiles) {
+		processFiles(locFileList);
+	}
+
+	private void processFiles(File[] fileList) {
+
+		for (File file : fileList) {
 
 			if (file.isDirectory()) {
+				processFiles(file.listFiles());
 				continue;
 			}
 
@@ -97,9 +106,16 @@ public class Refector {
 				}
 			}
 
-			System.out.println(file.getAbsolutePath());
-			System.out.println(locSB.toString());
+			  for ( Matcher m = Pattern.compile(this.preset.getObjectClass().getRegex().toLowerCase()).matcher(locSB.toString().toLowerCase()); m.find(); )
+			  {
+			    System.out.println(m.toMatchResult().toString());
+			  }
+
+
+//			System.out.println(file.getAbsolutePath());
+//			System.out.println(locSB.toString());
 		}
+
 	}
 
 }
