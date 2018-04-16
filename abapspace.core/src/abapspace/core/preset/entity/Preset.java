@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Preset {
 
 	private String refactorRootDir;
+	private String namespaceOld;
+	private String namespaceNew;
 
 	private ObjectClass objectClass;
 	private ObjectInterface objectInterface;
@@ -40,6 +42,24 @@ public class Preset {
 	@XmlElement
 	public void setObjectInterface(ObjectInterface objectInterface) {
 		this.objectInterface = objectInterface;
+	}
+
+	public String getNamespaceOld() {
+		return namespaceOld;
+	}
+
+	@XmlElement
+	public void setNamespaceOld(String namespaceOld) {
+		this.namespaceOld = namespaceOld;
+	}
+
+	public String getNamespaceNew() {
+		return namespaceNew;
+	}
+
+	@XmlElement
+	public void setNamespaceNew(String namespaceNew) {
+		this.namespaceNew = namespaceNew;
 	}
 
 }

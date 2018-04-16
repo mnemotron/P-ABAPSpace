@@ -4,39 +4,20 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class ObjectGen {
 
-	private String regex;
-	private String namespaceOld;
-	private String namespaceNew;
+	private String identRegex;
 	private Integer nameMaxLength;
 
 	public ObjectGen() {
 
 	}
 
-	public String getRegex() {
-		return regex;
-	}
-
-	public void setRegex(String regex) {
-		this.regex = regex;
-	}
-
-	public String getNamespaceOld() {
-		return namespaceOld;
+	public String getIdentRegex() {
+		return identRegex;
 	}
 
 	@XmlElement
-	public void setNamespaceOld(String namespaceOld) {
-		this.namespaceOld = namespaceOld;
-	}
-
-	public String getNamespaceNew() {
-		return namespaceNew;
-	}
-
-	@XmlElement
-	public void setNamespaceNew(String namespaceNew) {
-		this.namespaceNew = namespaceNew;
+	public void setIdentRegex(String identRegex) {
+		this.identRegex = identRegex;
 	}
 
 	public Integer getNameMaxLength() {

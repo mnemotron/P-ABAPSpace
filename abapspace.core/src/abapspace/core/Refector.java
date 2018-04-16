@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBException;
+
 import abapspace.core.preset.ImportXMLToPreset;
 import abapspace.core.preset.entity.Preset;
 
@@ -106,16 +107,41 @@ public class Refector {
 				}
 			}
 
-			  for ( Matcher m = Pattern.compile(this.preset.getObjectClass().getRegex().toLowerCase()).matcher(locSB.toString().toLowerCase()); m.find(); )
-			  {
-			    System.out.println(m.toMatchResult().toString());
-			  }
-
-
-//			System.out.println(file.getAbsolutePath());
-//			System.out.println(locSB.toString());
+			processFile(file, locSB);
 		}
 
+	}
+
+	private void processFile(File file, StringBuffer fileContextSB) {
+
+		String regex = new String();
+		String locNamespaceOld = this.preset.getNamespaceOld().toLowerCase();
+		
+		System.out.println(file.getAbsolutePath().toString());
+
+		// object class
+		if (this.preset.getObjectClass() != null) {
+		regex = locNamespaceOld + this.preset.getObjectClass().getIdentRegex().toLowerCase();
+		processFileReplace(fileContextSB.toString().toLowerCase(), regex);
+		}
+
+		// object interface
+		if (this.preset.getObjectInterface() != null) {
+			regex = locNamespaceOld + this.preset.getObjectInterface().getIdentRegex().toLowerCase();
+			processFileReplace(fileContextSB.toString().toLowerCase(), regex);
+		}
+		
+		System.out.println();
+
+	}
+
+	private void processFileReplace(String fileContextString, String regex) {
+		for (Matcher m = Pattern.compile(regex).matcher(fileContextString); m.find();) {
+		
+			System.out.println(m.group(1) + "[Start:"+m.start()+" End:"+m.end()+"]");
+			
+			fileContextString.replace(target, replacement)
+		}
 	}
 
 }
