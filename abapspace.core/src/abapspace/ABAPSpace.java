@@ -13,6 +13,8 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import abapspace.core.Refector;
 
@@ -23,6 +25,7 @@ public class ABAPSpace {
     private static final String OPTION_HELP = "h";
     private static final String OPTION_HELP_USAGE = "ABAPSpace";
 
+    private Logger log;
     private ResourceBundle messages;
     private Locale locale;
     private CommandLine cmd;
@@ -44,10 +47,11 @@ public class ABAPSpace {
 	} catch (JAXBException e) {
 	    e.printStackTrace();
 	}
-
+	
     }
 
     public ABAPSpace(String[] args) throws MissingResourceException, ParseException {
+	this.log = LoggerFactory.getLogger(ABAPSpace.class);
 	this.locale = Locale.getDefault();
 	this.messages = getMessages(this.locale);
 	this.options = getOptions();
@@ -76,7 +80,7 @@ public class ABAPSpace {
 	    return;
 	}
 
-	Refector locRefector = Refector.FactoryGetInstance(this.locale, this.messages, locXMLPresetPath);
+	Refector locRefector = Refector.FactoryGetInstance(this.log, this.locale, this.messages, locXMLPresetPath);
 
 	locRefector.refactor();
     }

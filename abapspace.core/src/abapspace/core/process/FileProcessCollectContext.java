@@ -6,16 +6,20 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+
 import abapspace.core.context.InterfaceContext;
 import abapspace.core.context.entity.Context;
 import abapspace.core.preset.entity.Preset;
 
 public class FileProcessCollectContext implements InterfaceFileProcess {
 
+    	private Logger log;
 	private Map<String, Map<String, InterfaceContext>> contextMap;
 	private Preset preset;
 
-	public FileProcessCollectContext(Preset preset, Map<String, Map<String, InterfaceContext>> contextMap) {
+	public FileProcessCollectContext(Logger log, Preset preset, Map<String, Map<String, InterfaceContext>> contextMap) {
+	    	this.log = log;
 		this.preset = preset;
 		this.contextMap = contextMap;
 	}
@@ -23,6 +27,8 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 	@Override
 	public void processFile(File sourceFile, StringBuffer contextBuffer) throws Exception {
 
+		this.log.info(sourceFile.getAbsolutePath());
+	    
 		Map<String, InterfaceContext> locIContextMap = new HashMap<String, InterfaceContext>();
 
 		// object class
@@ -58,6 +64,8 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 			String locGroup1 = m.group(1);
 			
 			InterfaceContext locIContext = iContext.clone();
+			
+			this.log.info(locGroup1);
 
 			if (iContextMap.containsKey(locGroup1)) {
 				continue;
