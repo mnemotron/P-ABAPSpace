@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <preset>
-	<refactorRootDir>test/</refactorRootDir>
-	<namespaceNew>/XXX/</namespaceNew>
-	<namespaceOld>Z</namespaceOld>
+	<refactorSourceDir>source/</refactorSourceDir>
+	<refactorTargetDir>target/</refactorTargetDir>
+	<checkNameMaxLength>true</checkNameMaxLength>
+	<namespaceNew>/xxx/</namespaceNew>
+	<namespaceOld>z</namespaceOld>
 	<objectClass>
-		<identRegex>(CL\w*)</identRegex>
+		<identRegex>cl\w*</identRegex>
 		<nameMaxLength>30</nameMaxLength>
 	</objectClass>
 	<objectInterface>
-		<identRegex>(IF\w*)</identRegex>
+		<identRegex>if\w*</identRegex>
 		<nameMaxLength>30</nameMaxLength>
 	</objectInterface>
 </preset>

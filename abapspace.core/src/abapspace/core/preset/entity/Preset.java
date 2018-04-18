@@ -6,7 +6,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Preset {
 
-	private String refactorRootDir;
+	private String refactorSourceDir;
+	private String refactorTargetDir;
+	private boolean checkNameMaxLength;
 	private String namespaceOld;
 	private String namespaceNew;
 
@@ -17,13 +19,31 @@ public class Preset {
 
 	}
 
-	public String getRefactorRootDir() {
-		return refactorRootDir;
+	public String getRefactorSourceDir() {
+		return refactorSourceDir;
 	}
 
 	@XmlElement
-	public void setRefactorRootDir(String refactorRootDir) {
-		this.refactorRootDir = refactorRootDir;
+	public void setRefactorSourceDir(String refactorSourceDir) {
+		this.refactorSourceDir = refactorSourceDir;
+	}
+
+	public String getRefactorTargetDir() {
+		return refactorTargetDir;
+	}
+
+	@XmlElement
+	public void setRefactorTargetDir(String refactorTargetDir) {
+		this.refactorTargetDir = refactorTargetDir;
+	}
+
+	public boolean isCheckNameMaxLength() {
+		return checkNameMaxLength;
+	}
+
+	@XmlElement
+	public void setCheckNameMaxLength(boolean checkNameMaxLength) {
+		this.checkNameMaxLength = checkNameMaxLength;
 	}
 
 	public ObjectClass getObjectClass() {

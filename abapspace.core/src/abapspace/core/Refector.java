@@ -5,21 +5,28 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBException;
 
+import abapspace.core.context.InterfaceContext;
 import abapspace.core.preset.ImportXMLToPreset;
 import abapspace.core.preset.entity.Preset;
+import abapspace.core.process.FileProcessCollectContext;
+import abapspace.core.process.FileProcessRefactorContext;
+import abapspace.core.process.InterfaceFileProcess;
 
 public class Refector {
 
 	private static ResourceBundle messages;
 	private Preset preset;
+	private Map<String, Map<String, InterfaceContext>> contextMap;
+	private File sourceDir;
+	private File targetDir;
 
 	public static Refector FactoryGetInstance(Locale locale, ResourceBundle messages, String xmlPresetPath)
 			throws MissingResourceException, FileNotFoundException, JAXBException {
@@ -52,24 +59,55 @@ public class Refector {
 	}
 
 	private Refector(Preset preset) {
-
 		this.preset = preset;
+		this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
 	}
 
 	public void refactor() {
-		File locRootDir = new File(this.preset.getRefactorRootDir());
 
-		File[] locFileList = locRootDir.listFiles();
+		this.sourceDir = new File(this.preset.getRefactorSourceDir());
+		this.targetDir = new File(this.preset.getRefactorTargetDir());
 
-		processFiles(locFileList);
+		// collect context
+		try {
+			collectContext();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// check max name length
+
+		// refactor context
+		try {
+			refactorContext();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void processFiles(File[] fileList) {
+	private void refactorContext() throws Exception {
+		File[] locFileList = this.sourceDir.listFiles();
+
+		FileProcessRefactorContext locFPRContext = new FileProcessRefactorContext(this.preset, this.sourceDir,
+				this.targetDir, this.contextMap);
+
+		processFiles(locFileList, locFPRContext);
+	}
+
+	private void collectContext() throws Exception {
+		File[] locFileList = this.sourceDir.listFiles();
+
+		FileProcessCollectContext locFPCContext = new FileProcessCollectContext(this.preset, this.contextMap);
+
+		processFiles(locFileList, locFPCContext);
+	}
+
+	private void processFiles(File[] fileList, InterfaceFileProcess iFileProcess) throws Exception {
 
 		for (File file : fileList) {
 
 			if (file.isDirectory()) {
-				processFiles(file.listFiles());
+				processFiles(file.listFiles(), iFileProcess);
 				continue;
 			}
 
@@ -107,41 +145,8 @@ public class Refector {
 				}
 			}
 
-			processFile(file, locSB);
+			iFileProcess.processFile(file, locSB);
 		}
 
 	}
-
-	private void processFile(File file, StringBuffer fileContextSB) {
-
-		String regex = new String();
-		String locNamespaceOld = this.preset.getNamespaceOld().toLowerCase();
-		
-		System.out.println(file.getAbsolutePath().toString());
-
-		// object class
-		if (this.preset.getObjectClass() != null) {
-		regex = locNamespaceOld + this.preset.getObjectClass().getIdentRegex().toLowerCase();
-		processFileReplace(fileContextSB.toString().toLowerCase(), regex);
-		}
-
-		// object interface
-		if (this.preset.getObjectInterface() != null) {
-			regex = locNamespaceOld + this.preset.getObjectInterface().getIdentRegex().toLowerCase();
-			processFileReplace(fileContextSB.toString().toLowerCase(), regex);
-		}
-		
-		System.out.println();
-
-	}
-
-	private void processFileReplace(String fileContextString, String regex) {
-		for (Matcher m = Pattern.compile(regex).matcher(fileContextString); m.find();) {
-		
-			System.out.println(m.group(1) + "[Start:"+m.start()+" End:"+m.end()+"]");
-			
-			fileContextString.replace(target, replacement)
-		}
-	}
-
 }
