@@ -3,6 +3,7 @@ package abapspace;
 import java.io.FileNotFoundException;
 import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.xml.bind.JAXBException;
@@ -13,8 +14,8 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import abapspace.core.Refector;
 
@@ -24,6 +25,9 @@ public class ABAPSpace {
     private static final String OPTION_XML_PRESET_FILE = "p";
     private static final String OPTION_HELP = "h";
     private static final String OPTION_HELP_USAGE = "ABAPSpace";
+
+    private static final String SYSTEM_PROPERTY_KEY_LOG4J2_CONFIG_FILE = "log4j2.configurationFile";
+    private static final String SYSTEM_PROPERTY_VALUE_LOG4J2_CONFIG_FILE = "abapspace/core/log/log4j2.xml";
 
     private Logger log;
     private ResourceBundle messages;
@@ -47,11 +51,13 @@ public class ABAPSpace {
 	} catch (JAXBException e) {
 	    e.printStackTrace();
 	}
-	
+
     }
 
     public ABAPSpace(String[] args) throws MissingResourceException, ParseException {
-	this.log = LoggerFactory.getLogger(ABAPSpace.class);
+	this.setSystemProperties();
+
+	this.log = LogManager.getLogger();
 	this.locale = Locale.getDefault();
 	this.messages = getMessages(this.locale);
 	this.options = getOptions();
@@ -101,6 +107,12 @@ public class ABAPSpace {
 	CommandLineParser locCmdLineParser = new DefaultParser();
 
 	return locCmdLineParser.parse(options, args);
+    }
+
+    private void setSystemProperties() {
+	Properties locSystemProperties = System.getProperties();
+	locSystemProperties.setProperty(SYSTEM_PROPERTY_KEY_LOG4J2_CONFIG_FILE,
+		SYSTEM_PROPERTY_VALUE_LOG4J2_CONFIG_FILE);
     }
 
 }

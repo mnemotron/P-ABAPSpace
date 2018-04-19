@@ -13,9 +13,11 @@ import java.util.ResourceBundle;
 
 import javax.xml.bind.JAXBException;
 
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import abapspace.core.context.InterfaceContext;
+import abapspace.core.context.entity.ContextCheckMaxNameLength;
+import abapspace.core.exception.MaxNameLengthException;
 import abapspace.core.preset.ImportXMLToPreset;
 import abapspace.core.preset.entity.Preset;
 import abapspace.core.process.FileProcessCollectContext;
@@ -25,7 +27,8 @@ import abapspace.core.process.InterfaceFileProcess;
 public class Refector {
 
     private static ResourceBundle messages;
-    private Logger log;
+    private static Logger log;
+
     private Preset preset;
     private Map<String, Map<String, InterfaceContext>> contextMap;
     private File sourceDir;
@@ -35,12 +38,13 @@ public class Refector {
 	    throws MissingResourceException, FileNotFoundException, JAXBException {
 
 	Refector.messages = messages;
+	Refector.log = log;
 
 	File locXMLFile = Refector.getInstanceXMLFile(xmlPresetPath);
 
 	Preset locPreset = Refector.getInstancePreset(locXMLFile);
 
-	return new Refector(log, locPreset);
+	return new Refector(locPreset);
     }
 
     private static File getInstanceXMLFile(String xmlPresetPath) throws FileNotFoundException {
@@ -61,8 +65,7 @@ public class Refector {
 	return locPreset;
     }
 
-    private Refector(Logger log, Preset preset) {
-	this.log = log;
+    private Refector(Preset preset) {
 	this.preset = preset;
 	this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
     }
@@ -76,26 +79,46 @@ public class Refector {
 	try {
 	    collectContext();
 	} catch (Exception e) {
-	    this.log.error(e.getMessage(), e);
+	    Refector.log.error(e.getMessage(), e);
 	    return;
 	}
 
 	// check max name length
 	if (this.preset.isCheckNameMaxLength()) {
-	    checkMaxNameLength();
+	    try {
+		if (!checkMaxNameLength()) {
+		    throw new MaxNameLengthException("Check max name length not valid.");
+		}
+	    } catch (MaxNameLengthException e) {
+		Refector.log.error(e.getMessage(), e);
+		return;
+	    }
 	}
 
 	// refactor context
 	try {
 	    refactorContext();
 	} catch (Exception e) {
-	    this.log.error(e.getMessage(), e);
+	    Refector.log.error(e.getMessage(), e);
 	    return;
 	}
     }
 
-    private void checkMaxNameLength() {
+    private boolean checkMaxNameLength() {
+	final boolean[] locValid = new boolean[] { true };
 
+	this.contextMap.forEach((fileIdent, contextMap) -> {
+	    contextMap.forEach((objectIdent, iContext) -> {
+		ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
+
+		if (!locCheck.isValid()) {
+		    Refector.log.error(iContext.getIdentObject() + ": Not valid.");
+		    locValid[0] = false;
+		}
+	    });
+	});
+
+	return locValid[0];
     }
 
     private void refactorContext() throws Exception {
@@ -110,7 +133,7 @@ public class Refector {
     private void collectContext() throws Exception {
 	File[] locFileList = this.sourceDir.listFiles();
 
-	FileProcessCollectContext locFPCContext = new FileProcessCollectContext(this.log, this.preset, this.contextMap);
+	FileProcessCollectContext locFPCContext = new FileProcessCollectContext(Refector.log, this.preset, this.contextMap);
 
 	processFiles(locFileList, locFPCContext);
     }
