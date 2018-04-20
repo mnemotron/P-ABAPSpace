@@ -7,7 +7,7 @@
 	<namespaceOld>z</namespaceOld>
 	<objectClass>
 		<identRegex>cl\w*</identRegex>
-		<nameMaxLength>10</nameMaxLength>
+		<nameMaxLength>30</nameMaxLength>
 	</objectClass>
 	<objectInterface>
 		<identRegex>if\w*</identRegex>
