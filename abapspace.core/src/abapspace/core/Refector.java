@@ -5,10 +5,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.xml.bind.JAXBException;
@@ -17,7 +17,10 @@ import org.apache.logging.log4j.Logger;
 
 import abapspace.core.context.InterfaceContext;
 import abapspace.core.context.entity.ContextCheckMaxNameLength;
+import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.MaxNameLengthException;
+import abapspace.core.exception.PresetFileImportException;
+import abapspace.core.exception.PresetFileNotFoundException;
 import abapspace.core.preset.ImportXMLToPreset;
 import abapspace.core.preset.entity.Preset;
 import abapspace.core.process.FileProcessCollectContext;
@@ -26,163 +29,162 @@ import abapspace.core.process.InterfaceFileProcess;
 
 public class Refector {
 
-    private static ResourceBundle messages;
-    private static Logger log;
+	private static ResourceBundle messages;
+	private Logger log;
+	private Preset preset;
+	private Map<String, Map<String, InterfaceContext>> contextMap;
+	private File sourceDir;
+	private File targetDir;
 
-    private Preset preset;
-    private Map<String, Map<String, InterfaceContext>> contextMap;
-    private File sourceDir;
-    private File targetDir;
+	public static Refector FactoryGetInstance(Logger log, Locale locale, ResourceBundle messages, String xmlPresetPath)
+			throws PresetFileNotFoundException, PresetFileImportException {
 
-    public static Refector FactoryGetInstance(Logger log, Locale locale, ResourceBundle messages, String xmlPresetPath)
-	    throws MissingResourceException, FileNotFoundException, JAXBException {
+		Refector.messages = messages;
 
-	Refector.messages = messages;
-	Refector.log = log;
+		File locXMLFile = Refector.getInstanceXMLFile(xmlPresetPath);
 
-	File locXMLFile = Refector.getInstanceXMLFile(xmlPresetPath);
+		Preset locPreset = Refector.getInstancePreset(locXMLFile);
 
-	Preset locPreset = Refector.getInstancePreset(locXMLFile);
-
-	return new Refector(locPreset);
-    }
-
-    private static File getInstanceXMLFile(String xmlPresetPath) throws FileNotFoundException {
-	File locXMLFile = new File(xmlPresetPath);
-
-	if (!locXMLFile.exists() && !locXMLFile.isFile()) {
-	    throw new FileNotFoundException(Refector.messages.getString("refector_xmlFileNotFound") + xmlPresetPath);
+		return new Refector(log, locPreset);
 	}
 
-	return locXMLFile;
-    }
+	private static File getInstanceXMLFile(String xmlPresetPath) throws PresetFileNotFoundException {
+		File locXMLFile = new File(xmlPresetPath);
 
-    private static Preset getInstancePreset(File xmlFile) throws JAXBException {
-	ImportXMLToPreset locImport = new ImportXMLToPreset(xmlFile);
-
-	Preset locPreset = locImport.importing();
-
-	return locPreset;
-    }
-
-    private Refector(Preset preset) {
-	this.preset = preset;
-	this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
-    }
-
-    public void refactor() {
-
-	this.sourceDir = new File(this.preset.getRefactorSourceDir());
-	this.targetDir = new File(this.preset.getRefactorTargetDir());
-
-	// collect context
-	try {
-	    collectContext();
-	} catch (Exception e) {
-	    Refector.log.error(e.getMessage(), e);
-	    return;
-	}
-
-	// check max name length
-	if (this.preset.isCheckNameMaxLength()) {
-	    try {
-		if (!checkMaxNameLength()) {
-		    throw new MaxNameLengthException("Check max name length not valid.");
-		}
-	    } catch (MaxNameLengthException e) {
-		Refector.log.error(e.getMessage(), e);
-		return;
-	    }
-	}
-
-	// refactor context
-	try {
-	    refactorContext();
-	} catch (Exception e) {
-	    Refector.log.error(e.getMessage(), e);
-	    return;
-	}
-    }
-
-    private boolean checkMaxNameLength() {
-	final boolean[] locValid = new boolean[] { true };
-
-	this.contextMap.forEach((fileIdent, contextMap) -> {
-	    contextMap.forEach((objectIdent, iContext) -> {
-		ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
-
-		if (!locCheck.isValid()) {
-		    Refector.log.error(iContext.getIdentObject() + ": Not valid.");
-		    locValid[0] = false;
-		}
-	    });
-	});
-
-	return locValid[0];
-    }
-
-    private void refactorContext() throws Exception {
-	File[] locFileList = this.sourceDir.listFiles();
-
-	FileProcessRefactorContext locFPRContext = new FileProcessRefactorContext(this.preset, this.sourceDir,
-		this.targetDir, this.contextMap);
-
-	processFiles(locFileList, locFPRContext);
-    }
-
-    private void collectContext() throws Exception {
-	File[] locFileList = this.sourceDir.listFiles();
-
-	FileProcessCollectContext locFPCContext = new FileProcessCollectContext(Refector.log, this.preset, this.contextMap);
-
-	processFiles(locFileList, locFPCContext);
-    }
-
-    private void processFiles(File[] fileList, InterfaceFileProcess iFileProcess) throws Exception {
-
-	for (File file : fileList) {
-
-	    if (file.isDirectory()) {
-		processFiles(file.listFiles(), iFileProcess);
-		continue;
-	    }
-
-	    FileReader locFR = null;
-	    BufferedReader locBR = null;
-	    StringBuffer locSB = new StringBuffer();
-	    int locInt;
-
-	    try {
-		locFR = new FileReader(file);
-		locBR = new BufferedReader(locFR);
-
-		while ((locInt = locBR.read()) != -1) {
-		    locSB.append((char) locInt);
+		if (!locXMLFile.exists() && !locXMLFile.isFile()) {
+			throw new PresetFileNotFoundException(
+					Refector.messages.getString("PresetFileNotFoundException") + xmlPresetPath);
 		}
 
-	    } catch (FileNotFoundException e) {
-		e.printStackTrace();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    } finally {
+		return locXMLFile;
+	}
+
+	private static Preset getInstancePreset(File xmlFile) throws PresetFileImportException {
+
+		Preset locPreset = new Preset();
+		ImportXMLToPreset locImport = new ImportXMLToPreset(xmlFile);
 
 		try {
-
-		    if (locBR != null) {
-			locBR.close();
-		    }
-
-		    if (locFR != null) {
-			locFR.close();
-		    }
-
-		} catch (IOException ex) {
-		    ex.printStackTrace();
+			locPreset = locImport.importing();
+		} catch (JAXBException e) {
+			throw new PresetFileImportException(Refector.messages.getString("PresetFileImportException"), e);
 		}
-	    }
 
-	    iFileProcess.processFile(file, locSB);
+		return locPreset;
 	}
 
-    }
+	private Refector(Logger log, Preset preset) {
+		this.log = log;
+		this.preset = preset;
+		this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
+	}
+
+	public void refactor() throws MaxNameLengthException, FileProcessException {
+
+		this.sourceDir = new File(this.preset.getRefactorSourceDir());
+		this.targetDir = new File(this.preset.getRefactorTargetDir());
+
+		// collect context
+		try {
+			collectContext();
+		} catch (Exception e) {
+			this.log.error(e.getMessage(), e);
+			return;
+		}
+
+		// check max name length
+		if (this.preset.isCheckNameMaxLength()) {
+			if (!checkMaxNameLength()) {
+				throw new MaxNameLengthException(Refector.messages.getString("MaxNameLengthException"));
+			}
+		}
+
+		// refactor context
+		refactorContext();
+	}
+
+	private boolean checkMaxNameLength() {
+		final boolean[] locValid = new boolean[] { true };
+
+		this.contextMap.forEach((fileIdent, contextMap) -> {
+			contextMap.forEach((objectIdent, iContext) -> {
+				ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
+
+				if (!locCheck.isValid()) {
+					this.log.error(MessageFormat.format(Refector.messages.getString("MaxNameLengthCheckFailed"), iContext.getIdentObject(), locCheck.getMaxNameLength(), locCheck.getActualNameLength()));
+					locValid[0] = false;
+				}
+			});
+		});
+
+		return locValid[0];
+	}
+
+	private void refactorContext() throws FileProcessException {
+
+		File[] locFileList = this.sourceDir.listFiles();
+
+		FileProcessRefactorContext locFPRContext = new FileProcessRefactorContext(this.log, Refector.messages,
+				this.sourceDir, this.targetDir, this.contextMap);
+
+		processFiles(locFileList, locFPRContext);
+	}
+
+	private void collectContext() throws FileProcessException {
+
+		File[] locFileList = this.sourceDir.listFiles();
+
+		FileProcessCollectContext locFPCContext = new FileProcessCollectContext(this.log, Refector.messages, this.preset,
+				this.contextMap);
+
+		processFiles(locFileList, locFPCContext);
+	}
+
+	private void processFiles(File[] fileList, InterfaceFileProcess iFileProcess) throws FileProcessException {
+
+		for (File file : fileList) {
+
+			if (file.isDirectory()) {
+				processFiles(file.listFiles(), iFileProcess);
+				continue;
+			}
+
+			FileReader locFR = null;
+			BufferedReader locBR = null;
+			StringBuffer locSB = new StringBuffer();
+			int locInt;
+
+			try {
+				locFR = new FileReader(file);
+				locBR = new BufferedReader(locFR);
+
+				while ((locInt = locBR.read()) != -1) {
+					locSB.append((char) locInt);
+				}
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+
+				try {
+
+					if (locBR != null) {
+						locBR.close();
+					}
+
+					if (locFR != null) {
+						locFR.close();
+					}
+
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+
+			iFileProcess.processFile(file, locSB);
+		}
+
+	}
 }

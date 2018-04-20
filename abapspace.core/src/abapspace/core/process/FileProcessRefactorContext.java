@@ -7,27 +7,34 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.ResourceBundle;
+
+import org.apache.logging.log4j.Logger;
 
 import abapspace.core.context.InterfaceContext;
-import abapspace.core.preset.entity.Preset;
+import abapspace.core.exception.FileProcessException;
+import abapspace.core.exception.TargetDirectoryNotCreatedException;
+import abapspace.core.exception.TargetFileContentNotWrittenException;
 
 public class FileProcessRefactorContext implements InterfaceFileProcess {
 
 	private Map<String, Map<String, InterfaceContext>> contextMap;
-	private Preset preset;
+	private Logger log;
+	private ResourceBundle messages;
 	private File targetDir;
 	private File sourceDir;
 
-	public FileProcessRefactorContext(Preset preset, File sourceDir, File targetDir,
+	public FileProcessRefactorContext(Logger log, ResourceBundle messages, File sourceDir, File targetDir,
 			Map<String, Map<String, InterfaceContext>> contextMap) {
-		this.preset = preset;
+		this.log = log;
+		this.messages = messages;
 		this.contextMap = contextMap;
 		this.targetDir = targetDir;
 		this.sourceDir = sourceDir;
 	}
 
 	@Override
-	public void processFile(File sourceFile, StringBuffer contextBuffer) throws Exception {
+	public void processFile(File sourceFile, StringBuffer contextBuffer) throws FileProcessException {
 
 		String locContext = contextBuffer.toString();
 
@@ -41,26 +48,48 @@ public class FileProcessRefactorContext implements InterfaceFileProcess {
 			locContext = locContext.replaceAll(locV.getValue().getIdentObject(), locV.getValue().getReplacement());
 		}
 
-		// locIContextMap.forEach((objectIdent, iContext) ->
-		// {
-		// locContext = locContext.replaceAll(iContext.getIdentObject(),
-		// iContext.getReplacement());
-		// });
-
-		saveTargetFile(this.sourceDir, sourceFile, this.targetDir, locContext);
+		try {
+			this.saveTargetFile(this.sourceDir, sourceFile, this.targetDir, locContext);
+		} catch (TargetDirectoryNotCreatedException | TargetFileContentNotWrittenException e) {
+			throw new FileProcessException(e.getMessage(), e);
+		}
 	}
 
-	private void saveTargetFile(File sourceDir, File sourceFile, File targetDir, String context) throws IOException {
+	private void saveTargetFile(File sourceDir, File sourceFile, File targetDir, String context)
+			throws TargetDirectoryNotCreatedException, TargetFileContentNotWrittenException {
+
+		BufferedWriter locBW = null;
+		File locTargetFile = null;
 		String locTargetPath = sourceFile.getAbsolutePath();
 
 		locTargetPath = locTargetPath.replaceAll(sourceDir.getAbsolutePath(), targetDir.getAbsolutePath());
 
-		File locTargetFile = new File(locTargetPath);
-	
-		Files.createDirectories(locTargetFile.toPath().getParent());
+		locTargetFile = new File(locTargetPath);
 
-		BufferedWriter locBW = new BufferedWriter(new FileWriter(locTargetFile));
-		locBW.write(context);
-		locBW.close();
+		try {
+			Files.createDirectories(locTargetFile.toPath().getParent());
+		} catch (IOException e) {
+			throw new TargetDirectoryNotCreatedException(
+					this.messages.getString("TargetDirectoryNotCreatedException") + locTargetFile.toPath().getParent(),
+					e);
+		}
+
+		try {
+			locBW = new BufferedWriter(new FileWriter(locTargetFile));
+			locBW.write(context);
+		} catch (IOException e) {
+			throw new TargetFileContentNotWrittenException(
+					this.messages.getString("TargetFileContentNotWrittenException") + locTargetFile.getAbsolutePath(),
+					e);
+		} finally {
+			if (locBW != null) {
+				try {
+					locBW.close();
+				} catch (IOException e) {
+					this.log.error(this.messages.getString("FileProcessRefactorContext_BW_NotClosed"), e);
+				}
+			}
+		}
+
 	}
 }
