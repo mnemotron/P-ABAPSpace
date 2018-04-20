@@ -1,0 +1,13 @@
+ABAPSpace - Change Log
+
++ Added
+! Changed
+# Deprecated
+- Removed
+* Fixed
+
+[1.0.0] | 2018-01-05
++ ABAPSpace command line tool
++ support XML configuration file (preset)
++ message logging with file appenders
++ refactor namespace for classes, interfaces
