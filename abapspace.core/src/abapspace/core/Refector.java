@@ -49,6 +49,7 @@ public class Refector {
 	}
 
 	private static File getInstanceXMLFile(String xmlPresetPath) throws PresetFileNotFoundException {
+		
 		File locXMLFile = new File(xmlPresetPath);
 
 		if (!locXMLFile.exists() && !locXMLFile.isFile()) {
