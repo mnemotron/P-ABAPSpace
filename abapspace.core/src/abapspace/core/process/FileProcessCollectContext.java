@@ -63,7 +63,7 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 	// object class
 	if (this.preset.getObjectClass() != null) {
 	    Context locContext = new Context();
-	    locContext.setIdentRegex(this.preset.getObjectClass().getIdentRegex());
+	    locContext.setIdentRegex(this.preset.getObjectClass().getRegexIdent());
 	    locContext.setNameMaxLength(this.preset.getObjectClass().getNameMaxLength());
 	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
 	    locContext.setNamespaceOld(this.preset.getNamespaceOld());
@@ -79,7 +79,7 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 	// object interface
 	if (this.preset.getObjectInterface() != null) {
 	    Context locContext = new Context();
-	    locContext.setIdentRegex(this.preset.getObjectInterface().getIdentRegex());
+	    locContext.setIdentRegex(this.preset.getObjectInterface().getRegexIdent());
 	    locContext.setNameMaxLength(this.preset.getObjectInterface().getNameMaxLength());
 	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
 	    locContext.setNamespaceOld(this.preset.getNamespaceOld());

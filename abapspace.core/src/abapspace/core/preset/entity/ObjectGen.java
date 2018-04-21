@@ -27,20 +27,20 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class ObjectGen {
 
-	private String identRegex;
+	private String regexIdent;
 	private Integer nameMaxLength;
 
 	public ObjectGen() {
 
 	}
 
-	public String getIdentRegex() {
-		return identRegex;
+	public String getRegexIdent() {
+	    return regexIdent;
 	}
 
 	@XmlElement
-	public void setIdentRegex(String identRegex) {
-		this.identRegex = identRegex;
+	public void setRegexIdent(String regexIdent) {
+	    this.regexIdent = regexIdent;
 	}
 
 	public Integer getNameMaxLength() {

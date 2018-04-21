@@ -34,12 +34,32 @@ public class Preset {
 	private boolean checkNameMaxLength;
 	private String namespaceOld;
 	private String namespaceNew;
+	private String projectID;
+	private String packageID;
 
 	private ObjectClass objectClass;
 	private ObjectInterface objectInterface;
 
 	public Preset() {
 
+	}
+
+	public String getProjectID() {
+	    return projectID;
+	}
+
+	@XmlElement
+	public void setProjectID(String projectID) {
+	    this.projectID = projectID;
+	}
+
+	public String getPackageID() {
+	    return packageID;
+	}
+
+	@XmlElement
+	public void setPackageID(String packageID) {
+	    this.packageID = packageID;
 	}
 
 	public String getRefactorSourceDir() {

@@ -4,13 +4,19 @@
 	<refactorTargetDir>target/</refactorTargetDir>
 	<checkNameMaxLength>true</checkNameMaxLength>
 	<namespaceNew>/xxx/</namespaceNew>
-	<namespaceOld>z</namespaceOld>
+	<namespaceOld>zzzzz</namespaceOld>
+	<projectID>pck</projectID>
+	<packageID>a0001</packageID>
+	<objectPackage>
+		<regexIdent>pa\w*</regexIdent>
+		<nameMaxLength>30</nameMaxLength>
+	</objectPackage>
 	<objectClass>
-		<identRegex>cl\w*</identRegex>
+		<regexIdent>cl\w*</regexIdent>
 		<nameMaxLength>30</nameMaxLength>
 	</objectClass>
 	<objectInterface>
-		<identRegex>if\w*</identRegex>
+		<regexIdent>if\w*</regexIdent>
 		<nameMaxLength>30</nameMaxLength>
 	</objectInterface>
 </preset>
