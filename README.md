@@ -14,3 +14,11 @@ ABAP Namespace Refactoring
   
 + <b>OBJECTS</b><br>
   + classes, interfaces
+  
+## Get Started
+### Prerequisites
+  
+## Basis for Refactoring
+Use the abapGit client and its created object files as basis for the refactoring.
+
+URL: [abapGit](https://github.com/larshp/abapGit)
