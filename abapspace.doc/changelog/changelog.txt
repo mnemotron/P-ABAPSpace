@@ -7,7 +7,9 @@ ABAPSpace - Change Log
 * Fixed
 
 [1.0.0] | 2018-01-05
-+ ABAPSpace command line tool
-+ support XML configuration file (preset)
++ ABAPSpace refactoring tool
++ support XML configuration file as refactor preset
++ check maximum object name length
 + message logging with file appenders
 + refactor namespace for classes, interfaces
++ add specific supplement to the object name
