@@ -27,11 +27,21 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class ObjectGen {
 
+    	private String objectIdent;
 	private String regexIdent;
 	private Integer nameMaxLength;
 
 	public ObjectGen() {
 
+	}
+
+	public String getObjectIdent() {
+	    return objectIdent;
+	}
+
+	@XmlElement
+	public void setObjectIdent(String objectIdent) {
+	    this.objectIdent = objectIdent;
 	}
 
 	public String getRegexIdent() {

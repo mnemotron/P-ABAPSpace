@@ -73,9 +73,9 @@ public class FileProcessRefactorContext implements InterfaceFileProcess {
 	    Map.Entry<String, InterfaceContext> locV = locICMIterator.next();
 
 	    this.log.info(MessageFormat.format(this.messages.getString("refactor.object"),
-		    locV.getValue().getIdentObject(), locV.getValue().getReplacement()));
+		    locV.getValue().getObject(), locV.getValue().getReplacement()));
 
-	    locContext = locContext.replaceAll(locV.getValue().getIdentObject(), locV.getValue().getReplacement());
+	    locContext = locContext.replaceAll(locV.getValue().getObject(), locV.getValue().getReplacement());
 	}
 
 	try {

@@ -34,8 +34,7 @@ public class Preset {
 	private boolean checkNameMaxLength;
 	private String namespaceOld;
 	private String namespaceNew;
-	private String projectID;
-	private String packageID;
+	private String supplement;
 
 	private ObjectClass objectClass;
 	private ObjectInterface objectInterface;
@@ -44,22 +43,13 @@ public class Preset {
 
 	}
 
-	public String getProjectID() {
-	    return projectID;
+	public String getSupplement() {
+	    return supplement;
 	}
 
 	@XmlElement
-	public void setProjectID(String projectID) {
-	    this.projectID = projectID;
-	}
-
-	public String getPackageID() {
-	    return packageID;
-	}
-
-	@XmlElement
-	public void setPackageID(String packageID) {
-	    this.packageID = packageID;
+	public void setSupplement(String supplement) {
+	    this.supplement = supplement;
 	}
 
 	public String getRefactorSourceDir() {

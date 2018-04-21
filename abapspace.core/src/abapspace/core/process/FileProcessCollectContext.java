@@ -63,7 +63,9 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 	// object class
 	if (this.preset.getObjectClass() != null) {
 	    Context locContext = new Context();
+	    locContext.setObjectID(this.preset.getObjectClass().getObjectIdent());
 	    locContext.setIdentRegex(this.preset.getObjectClass().getRegexIdent());
+	    locContext.setSupplement(this.preset.getSupplement());
 	    locContext.setNameMaxLength(this.preset.getObjectClass().getNameMaxLength());
 	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
 	    locContext.setNamespaceOld(this.preset.getNamespaceOld());
@@ -79,7 +81,9 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 	// object interface
 	if (this.preset.getObjectInterface() != null) {
 	    Context locContext = new Context();
+	    locContext.setObjectID(this.preset.getObjectInterface().getObjectIdent());
 	    locContext.setIdentRegex(this.preset.getObjectInterface().getRegexIdent());
+	    locContext.setSupplement(this.preset.getSupplement());
 	    locContext.setNameMaxLength(this.preset.getObjectInterface().getNameMaxLength());
 	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
 	    locContext.setNamespaceOld(this.preset.getNamespaceOld());
@@ -98,23 +102,25 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
     private Map<String, InterfaceContext> processFileSearch(String fileContextString,
 	    Map<String, InterfaceContext> iContextMap, InterfaceContext iContext) throws CloneNotSupportedException {
 
-	for (Matcher m = Pattern.compile(iContext.getRegex(true), Pattern.CASE_INSENSITIVE)
+	for (Matcher m = Pattern.compile(iContext.getRegex(), Pattern.CASE_INSENSITIVE)
 		.matcher(fileContextString); m.find();) {
 
-	    String locGroup1 = m.group(1);
+	    String locGroup1 = m.group(1); //group 1: namespace + object ID
+	    String locGroup2 = m.group(2); //group 2: object name
+	    String locObject = locGroup1 + locGroup2;
 
 	    InterfaceContext locIContext = iContext.clone();
 
-	    this.log.info(MessageFormat.format(this.messages.getString("collect.context.object"), locGroup1,
+	    this.log.info(MessageFormat.format(this.messages.getString("collect.context.object"), locObject,
 		    m.start(), m.end()));
 
-	    if (iContextMap.containsKey(locGroup1)) {
+	    if (iContextMap.containsKey(locObject)) {
 		continue;
 	    }
 
-	    locIContext.setIdentObject(locGroup1);
+	    locIContext.setObject(new String[]{locGroup1, locGroup2});
 
-	    iContextMap.put(locGroup1, locIContext);
+	    iContextMap.put(locObject, locIContext);
 	}
 
 	return iContextMap;

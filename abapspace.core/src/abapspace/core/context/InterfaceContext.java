@@ -27,11 +27,11 @@ import abapspace.core.context.entity.ContextCheckMaxNameLength;
 
 public interface InterfaceContext {
 	
-	public String getRegex(boolean asGroup);
+	public String getRegex();
 	
-	public void setIdentObject(String identObject);
+	public void setObject(String[] object);
 	
-	public String getIdentObject();
+	public String getObject();
 	
 	public String getReplacement();
 	

@@ -135,7 +135,7 @@ public class Refector {
 				ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
 
 				if (!locCheck.isValid()) {
-					this.log.error(MessageFormat.format(Refector.messages.getString("MaxNameLengthCheckFailed"), iContext.getIdentObject(), locCheck.getMaxNameLength(), locCheck.getActualNameLength()));
+					this.log.error(MessageFormat.format(Refector.messages.getString("MaxNameLengthCheckFailed"), iContext.getObject(), locCheck.getMaxNameLength(), locCheck.getActualNameLength()));
 					locValid[0] = false;
 				}
 			});
