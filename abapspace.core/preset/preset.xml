@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <preset>
+	<description>Test</description>
 	<refactorSourceDir>source/</refactorSourceDir>
 	<refactorTargetDir>target/</refactorTargetDir>
 	<checkNameMaxLength>true</checkNameMaxLength>
@@ -21,4 +22,10 @@
 		<regexIdent>\w*</regexIdent>
 		<nameMaxLength>30</nameMaxLength>
 	</objectInterface>
+
+	<!-- <specificRules></specificRules> -->
+	<!-- <namespaceList> -->
+	<!-- <namespace>z</namespace> -->
+	<!-- <namespace specificRule=true>zzzzz</namespace> -->
+	<!-- </namespaceList> -->
 </preset>

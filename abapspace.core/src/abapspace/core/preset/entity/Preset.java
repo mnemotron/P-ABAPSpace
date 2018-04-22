@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Preset {
 
+	private String description;
 	private String refactorSourceDir;
 	private String refactorTargetDir;
 	private boolean checkNameMaxLength;
@@ -43,13 +44,22 @@ public class Preset {
 
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	@XmlElement
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public String getSupplement() {
-	    return supplement;
+		return supplement;
 	}
 
 	@XmlElement
 	public void setSupplement(String supplement) {
-	    this.supplement = supplement;
+		this.supplement = supplement;
 	}
 
 	public String getRefactorSourceDir() {

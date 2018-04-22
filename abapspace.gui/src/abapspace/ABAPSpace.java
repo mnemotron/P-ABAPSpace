@@ -2,42 +2,21 @@ package abapspace;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
+import abapspace.gui.GUICMain;
 
 public class ABAPSpace {
 
-    private JFrame frame;
+	public static void main(String[] args) {
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-	EventQueue.invokeLater(new Runnable() {
-	    public void run() {
-		try {
-		    ABAPSpace window = new ABAPSpace();
-		    window.frame.setVisible(true);
-		} catch (Exception e) {
-		    e.printStackTrace();
-		}
-	    }
-	});
-    }
+		EventQueue.invokeLater(new Runnable() {
 
-    /**
-     * Create the application.
-     */
-    public ABAPSpace() {
-	initialize();
-    }
+			public void run() {
+				GUICMain locGUICMain = null;
 
-    /**
-     * Initialize the contents of the frame.
-     */
-    private void initialize() {
-	frame = new JFrame();
-	frame.setBounds(100, 100, 450, 300);
-	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+				locGUICMain = new GUICMain();
 
+				locGUICMain.startGUI();
+			}
+		});
+	}
 }

@@ -23,11 +23,11 @@
  */
 package abapspace.core.exception;
 
-public class PresetFileNotFoundException extends Exception {
+public class PresetDirNotFoundException extends Exception {
 
-	private static final long serialVersionUID = -4106932299917336581L;
+	private static final long serialVersionUID = 4104597462498949788L;
 
-	public PresetFileNotFoundException(String message) {
+	public PresetDirNotFoundException(String message) {
 		super(message);
 	}
 

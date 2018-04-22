@@ -24,22 +24,63 @@
 package abapspace.core.preset;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.logging.log4j.Logger;
+
+import abapspace.core.exception.PresetDirNotFoundException;
 import abapspace.core.preset.entity.Preset;
 
 public class ImportXMLToPreset {
 
-	private File xmlFile;
+	private ResourceBundle messages;
+	private Logger log;
+	private File xmlPresetDir;
 
-	public ImportXMLToPreset(File xmlFile) {
-		this.xmlFile = xmlFile;
+	public ImportXMLToPreset(ResourceBundle messages, Logger log, String xmlPresetDir)
+			throws PresetDirNotFoundException {
+
+		this.messages = messages;
+		this.log = log;
+		this.xmlPresetDir = getInstanceXMLFile(xmlPresetDir);
+
 	}
 
-	public Preset importing() throws JAXBException {
+	private File getInstanceXMLFile(String xmlPresetDir) throws PresetDirNotFoundException {
+
+		File locXMLFile = new File(xmlPresetDir);
+
+		if (!locXMLFile.exists() && !locXMLFile.isDirectory()) {
+			throw new PresetDirNotFoundException(this.messages.getString("exception.presetDirNotFound") + xmlPresetDir);
+		}
+
+		return locXMLFile;
+	}
+
+	public List<Preset> importPresetList() {
+
+		List<Preset> locPresetList = new ArrayList<Preset>();
+		File[] locFiles = xmlPresetDir.listFiles();
+
+		for (File file : locFiles) {
+			try {
+				Preset locPreset = this.importPreset(file);
+				locPresetList.add(locPreset);
+			} catch (JAXBException e) {
+				this.log.error(this.messages.getString("exception.presetFileNotFound") + file.getAbsolutePath());
+			}
+		}
+
+		return locPresetList;
+	}
+
+	private Preset importPreset(File xmlPresetFile) throws JAXBException {
 
 		Preset locPreset = new Preset();
 
@@ -47,7 +88,7 @@ public class ImportXMLToPreset {
 
 		Unmarshaller locJAXBUnmarshaller = locJAXBContext.createUnmarshaller();
 
-		locPreset = (Preset) locJAXBUnmarshaller.unmarshal(this.xmlFile);
+		locPreset = (Preset) locJAXBUnmarshaller.unmarshal(xmlPresetFile);
 
 		return locPreset;
 	}
