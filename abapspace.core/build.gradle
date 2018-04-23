@@ -1,11 +1,8 @@
 // PLUGINS
 apply plugin: 'java'
-apply plugin: 'application'
 
 // PARAMETER
 version = '1.0.0'
-
-mainClassName = 'abapspace.ABAPSpace'
 
 // MANIFEST
 jar {
@@ -25,7 +22,6 @@ jar {
 
 // DEPENDENCIES
 dependencies {
-	compile fileTree(dir: 'lib/commons-cli-1.4', include: ['*.jar'])
 	compile fileTree(dir: 'lib/log4j-2.11', include: ['*.jar'])
 }
 

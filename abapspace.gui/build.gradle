@@ -25,7 +25,9 @@ jar {
 
 // DEPENDENCIES
 dependencies {
-	compile fileTree(dir: 'lib/commons-cli-1.4', include: ['*.jar'])
+    compile "abapspace.core:abapspace.core:1.0.0"
+    compile fileTree(dir: 'lib/abapspace-core-1.0.0', include: ['*.jar'])
+	compile fileTree(dir: 'lib/swingx-1.6.5', include: ['*.jar'])
 	compile fileTree(dir: 'lib/log4j-2.11', include: ['*.jar'])
 }
 
