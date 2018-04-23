@@ -39,58 +39,58 @@ import abapspace.core.preset.entity.Preset;
 
 public class ImportXMLToPreset {
 
-	private ResourceBundle messages;
-	private Logger log;
-	private File xmlPresetDir;
+    private ResourceBundle messages;
+    private Logger log;
+    private File xmlPresetDir;
 
-	public ImportXMLToPreset(ResourceBundle messages, Logger log, String xmlPresetDir)
-			throws PresetDirNotFoundException {
+    public ImportXMLToPreset(ResourceBundle messages, Logger log, String xmlPresetDir)
+	    throws PresetDirNotFoundException {
 
-		this.messages = messages;
-		this.log = log;
-		this.xmlPresetDir = getInstanceXMLFile(xmlPresetDir);
+	this.messages = messages;
+	this.log = log;
+	this.xmlPresetDir = getInstanceXMLDir(xmlPresetDir);
 
+    }
+
+    private File getInstanceXMLDir(String xmlPresetDir) throws PresetDirNotFoundException {
+
+	File locXMLDir = new File(xmlPresetDir);
+
+	if (!locXMLDir.exists() && !locXMLDir.isDirectory()) {
+	    throw new PresetDirNotFoundException(this.messages.getString("exception.presetDirNotFound") + xmlPresetDir);
 	}
 
-	private File getInstanceXMLFile(String xmlPresetDir) throws PresetDirNotFoundException {
+	return locXMLDir;
+    }
 
-		File locXMLFile = new File(xmlPresetDir);
+    public List<Preset> importPresetList() {
 
-		if (!locXMLFile.exists() && !locXMLFile.isDirectory()) {
-			throw new PresetDirNotFoundException(this.messages.getString("exception.presetDirNotFound") + xmlPresetDir);
-		}
+	List<Preset> locPresetList = new ArrayList<Preset>();
+	File[] locFiles = xmlPresetDir.listFiles();
 
-		return locXMLFile;
+	for (File file : locFiles) {
+	    try {
+		Preset locPreset = this.importPreset(file);
+		locPresetList.add(locPreset);
+	    } catch (JAXBException e) {
+		this.log.error(this.messages.getString("exception.presetFileImport") + file.getAbsolutePath(), e);
+	    }
 	}
 
-	public List<Preset> importPresetList() {
+	return locPresetList;
+    }
 
-		List<Preset> locPresetList = new ArrayList<Preset>();
-		File[] locFiles = xmlPresetDir.listFiles();
+    private Preset importPreset(File xmlPresetFile) throws JAXBException {
 
-		for (File file : locFiles) {
-			try {
-				Preset locPreset = this.importPreset(file);
-				locPresetList.add(locPreset);
-			} catch (JAXBException e) {
-				this.log.error(this.messages.getString("exception.presetFileNotFound") + file.getAbsolutePath());
-			}
-		}
+	Preset locPreset = new Preset();
 
-		return locPresetList;
-	}
+	JAXBContext locJAXBContext = JAXBContext.newInstance(Preset.class);
 
-	private Preset importPreset(File xmlPresetFile) throws JAXBException {
+	Unmarshaller locJAXBUnmarshaller = locJAXBContext.createUnmarshaller();
 
-		Preset locPreset = new Preset();
+	locPreset = (Preset) locJAXBUnmarshaller.unmarshal(xmlPresetFile);
 
-		JAXBContext locJAXBContext = JAXBContext.newInstance(Preset.class);
-
-		Unmarshaller locJAXBUnmarshaller = locJAXBContext.createUnmarshaller();
-
-		locPreset = (Preset) locJAXBUnmarshaller.unmarshal(xmlPresetFile);
-
-		return locPreset;
-	}
+	return locPreset;
+    }
 
 }

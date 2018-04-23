@@ -30,11 +30,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-
-import javax.xml.bind.JAXBException;
 
 import org.apache.logging.log4j.Logger;
 
@@ -42,9 +39,6 @@ import abapspace.core.context.InterfaceContext;
 import abapspace.core.context.entity.ContextCheckMaxNameLength;
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.MaxNameLengthException;
-import abapspace.core.exception.PresetFileImportException;
-import abapspace.core.exception.PresetFileNotFoundException;
-import abapspace.core.preset.ImportXMLToPreset;
 import abapspace.core.preset.entity.Preset;
 import abapspace.core.process.FileProcessCollectContext;
 import abapspace.core.process.FileProcessRefactorContext;
@@ -52,52 +46,15 @@ import abapspace.core.process.InterfaceFileProcess;
 
 public class Refector {
 
-	private static ResourceBundle messages;
+	private ResourceBundle messages;
 	private Logger log;
 	private Preset preset;
 	private Map<String, Map<String, InterfaceContext>> contextMap;
 	private File sourceDir;
 	private File targetDir;
 
-	public static Refector FactoryGetInstance(Logger log, Locale locale, ResourceBundle messages, String xmlPresetPath)
-			throws PresetFileNotFoundException, PresetFileImportException {
-
-		Refector.messages = messages;
-
-		File locXMLFile = Refector.getInstanceXMLFile(xmlPresetPath);
-
-		Preset locPreset = Refector.getInstancePreset(locXMLFile);
-
-		return new Refector(log, locPreset);
-	}
-
-	private static File getInstanceXMLFile(String xmlPresetPath) throws PresetFileNotFoundException {
-		
-		File locXMLFile = new File(xmlPresetPath);
-
-		if (!locXMLFile.exists() && !locXMLFile.isFile()) {
-			throw new PresetFileNotFoundException(
-					Refector.messages.getString("PresetFileNotFoundException") + xmlPresetPath);
-		}
-
-		return locXMLFile;
-	}
-
-	private static Preset getInstancePreset(File xmlFile) throws PresetFileImportException {
-
-		Preset locPreset = new Preset();
-		ImportXMLToPreset locImport = new ImportXMLToPreset(xmlFile);
-
-		try {
-			locPreset = locImport.importing();
-		} catch (JAXBException e) {
-			throw new PresetFileImportException(Refector.messages.getString("PresetFileImportException"), e);
-		}
-
-		return locPreset;
-	}
-
-	private Refector(Logger log, Preset preset) {
+	public Refector(ResourceBundle messages, Logger log, Preset preset) {
+	    	this.messages = messages;
 		this.log = log;
 		this.preset = preset;
 		this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
@@ -119,7 +76,7 @@ public class Refector {
 		// check max name length
 		if (this.preset.isCheckNameMaxLength()) {
 			if (!checkMaxNameLength()) {
-				throw new MaxNameLengthException(Refector.messages.getString("MaxNameLengthException"));
+				throw new MaxNameLengthException(this.messages.getString("MaxNameLengthException"));
 			}
 		}
 
@@ -135,7 +92,7 @@ public class Refector {
 				ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
 
 				if (!locCheck.isValid()) {
-					this.log.error(MessageFormat.format(Refector.messages.getString("MaxNameLengthCheckFailed"), iContext.getObject(), locCheck.getMaxNameLength(), locCheck.getActualNameLength()));
+					this.log.error(MessageFormat.format(this.messages.getString("MaxNameLengthCheckFailed"), iContext.getObject(), locCheck.getMaxNameLength(), locCheck.getActualNameLength()));
 					locValid[0] = false;
 				}
 			});
@@ -148,7 +105,7 @@ public class Refector {
 
 		File[] locFileList = this.sourceDir.listFiles();
 
-		FileProcessRefactorContext locFPRContext = new FileProcessRefactorContext(this.log, Refector.messages,
+		FileProcessRefactorContext locFPRContext = new FileProcessRefactorContext(this.log, this.messages,
 				this.sourceDir, this.targetDir, this.contextMap);
 
 		processFiles(locFileList, locFPRContext);
@@ -158,7 +115,7 @@ public class Refector {
 
 		File[] locFileList = this.sourceDir.listFiles();
 
-		FileProcessCollectContext locFPCContext = new FileProcessCollectContext(this.log, Refector.messages, this.preset,
+		FileProcessCollectContext locFPCContext = new FileProcessCollectContext(this.log, this.messages, this.preset,
 				this.contextMap);
 
 		processFiles(locFileList, locFPCContext);
