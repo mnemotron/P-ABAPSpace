@@ -40,8 +40,6 @@ import org.apache.logging.log4j.Logger;
 import abapspace.core.Refector;
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.MaxNameLengthException;
-import abapspace.core.exception.PresetFileImportException;
-import abapspace.core.exception.PresetFileNotFoundException;
 
 public class ABAPSpace {
 
