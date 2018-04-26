@@ -28,142 +28,139 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import abapspace.core.context.InterfaceContext;
 import abapspace.core.context.entity.ContextCheckMaxNameLength;
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.MaxNameLengthException;
 import abapspace.core.log.LogEventManager;
+import abapspace.core.log.LogType;
+import abapspace.core.messages.MessageManager;
 import abapspace.core.preset.entity.Preset;
 import abapspace.core.process.FileProcessCollectContext;
 import abapspace.core.process.FileProcessRefactorContext;
 import abapspace.core.process.InterfaceFileProcess;
 
 public class Refector {
-    
-	private ResourceBundle messages;
-	private Preset preset;
-	private Map<String, Map<String, InterfaceContext>> contextMap;
-	private File sourceDir;
-	private File targetDir;
 
-	public Refector(Preset preset) {
-		this.preset = preset;
-		this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
+    private Preset preset;
+    private Map<String, Map<String, InterfaceContext>> contextMap;
+    private File sourceDir;
+    private File targetDir;
+
+    public Refector(Preset preset) {
+	this.preset = preset;
+	this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
+    }
+
+    public void refactor() throws MaxNameLengthException, FileProcessException {
+
+	this.sourceDir = new File(this.preset.getRefactorSourceDir());
+	this.targetDir = new File(this.preset.getRefactorTargetDir());
+
+	// collect context
+	try {
+	    collectContext();
+	} catch (Exception e) {
+	    LogEventManager.fireLog(LogType.ERROR, e.getMessage(), e);
+	    return;
 	}
 
-	public void refactor() throws MaxNameLengthException, FileProcessException {
+	// check max name length
+	if (this.preset.isCheckNameMaxLength()) {
+	    if (!checkMaxNameLength()) {
+		throw new MaxNameLengthException(MessageManager.getMessage("MaxNameLengthException"));
+	    }
+	}
 
-		this.sourceDir = new File(this.preset.getRefactorSourceDir());
-		this.targetDir = new File(this.preset.getRefactorTargetDir());
+	// refactor context
+	refactorContext();
+    }
 
-		// collect context
+    private boolean checkMaxNameLength() {
+	final boolean[] locValid = new boolean[] { true };
+
+	this.contextMap.forEach((fileIdent, contextMap) -> {
+	    contextMap.forEach((objectIdent, iContext) -> {
+		ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
+
+		if (!locCheck.isValid()) {
+		    LogEventManager.fireLog(LogType.ERROR, MessageManager.getMessageFormat("MaxNameLengthCheckFailed",
+			    iContext.getObject(), locCheck.getMaxNameLength(), locCheck.getActualNameLength()));
+		    locValid[0] = false;
+		}
+	    });
+	});
+
+	return locValid[0];
+    }
+
+    private void refactorContext() throws FileProcessException {
+
+	File[] locFileList = this.sourceDir.listFiles();
+
+	FileProcessRefactorContext locFPRContext = new FileProcessRefactorContext(this.sourceDir, this.targetDir,
+		this.contextMap);
+
+	processFiles(locFileList, locFPRContext);
+    }
+
+    private void collectContext() throws FileProcessException {
+
+	File[] locFileList = this.sourceDir.listFiles();
+
+	FileProcessCollectContext locFPCContext = new FileProcessCollectContext(this.preset, this.contextMap);
+
+	processFiles(locFileList, locFPCContext);
+    }
+
+    private void processFiles(File[] fileList, InterfaceFileProcess iFileProcess) throws FileProcessException {
+
+	for (File file : fileList) {
+
+	    if (file.isDirectory()) {
+		processFiles(file.listFiles(), iFileProcess);
+		continue;
+	    }
+
+	    FileReader locFR = null;
+	    BufferedReader locBR = null;
+	    StringBuffer locSB = new StringBuffer();
+	    int locInt;
+
+	    try {
+		locFR = new FileReader(file);
+		locBR = new BufferedReader(locFR);
+
+		while ((locInt = locBR.read()) != -1) {
+		    locSB.append((char) locInt);
+		}
+
+	    } catch (FileNotFoundException e) {
+		e.printStackTrace();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    } finally {
+
 		try {
-			collectContext();
-		} catch (Exception e) {
-		    	LogEventManager.fireLog(e.getMessage(), e);
-			return;
+
+		    if (locBR != null) {
+			locBR.close();
+		    }
+
+		    if (locFR != null) {
+			locFR.close();
+		    }
+
+		} catch (IOException ex) {
+		    ex.printStackTrace();
 		}
+	    }
 
-		// check max name length
-		if (this.preset.isCheckNameMaxLength()) {
-			if (!checkMaxNameLength()) {
-				throw new MaxNameLengthException(this.messages.getString("MaxNameLengthException"));
-			}
-		}
-
-		// refactor context
-		refactorContext();
+	    iFileProcess.processFile(file, locSB);
 	}
 
-	private boolean checkMaxNameLength() {
-		final boolean[] locValid = new boolean[] { true };
-
-		this.contextMap.forEach((fileIdent, contextMap) -> {
-			contextMap.forEach((objectIdent, iContext) -> {
-				ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
-
-				if (!locCheck.isValid()) {
-					this.log.error(MessageFormat.format(this.messages.getString("MaxNameLengthCheckFailed"), iContext.getObject(), locCheck.getMaxNameLength(), locCheck.getActualNameLength()));
-					locValid[0] = false;
-				}
-			});
-		});
-
-		return locValid[0];
-	}
-
-	private void refactorContext() throws FileProcessException {
-
-		File[] locFileList = this.sourceDir.listFiles();
-
-		FileProcessRefactorContext locFPRContext = new FileProcessRefactorContext(this.log, this.messages,
-				this.sourceDir, this.targetDir, this.contextMap);
-
-		processFiles(locFileList, locFPRContext);
-	}
-
-	private void collectContext() throws FileProcessException {
-
-		File[] locFileList = this.sourceDir.listFiles();
-
-		FileProcessCollectContext locFPCContext = new FileProcessCollectContext(this.log, this.messages, this.preset,
-				this.contextMap);
-
-		processFiles(locFileList, locFPCContext);
-	}
-
-	private void processFiles(File[] fileList, InterfaceFileProcess iFileProcess) throws FileProcessException {
-
-		for (File file : fileList) {
-
-			if (file.isDirectory()) {
-				processFiles(file.listFiles(), iFileProcess);
-				continue;
-			}
-
-			FileReader locFR = null;
-			BufferedReader locBR = null;
-			StringBuffer locSB = new StringBuffer();
-			int locInt;
-
-			try {
-				locFR = new FileReader(file);
-				locBR = new BufferedReader(locFR);
-
-				while ((locInt = locBR.read()) != -1) {
-					locSB.append((char) locInt);
-				}
-
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-
-				try {
-
-					if (locBR != null) {
-						locBR.close();
-					}
-
-					if (locFR != null) {
-						locFR.close();
-					}
-
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
-			}
-
-			iFileProcess.processFile(file, locSB);
-		}
-
-	}
+    }
 }

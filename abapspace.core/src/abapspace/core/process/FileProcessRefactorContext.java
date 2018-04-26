@@ -31,27 +31,23 @@ import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.ResourceBundle;
-
-import org.apache.logging.log4j.Logger;
 
 import abapspace.core.context.InterfaceContext;
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.TargetDirectoryNotCreatedException;
 import abapspace.core.exception.TargetFileContentNotWrittenException;
+import abapspace.core.log.LogEventManager;
+import abapspace.core.log.LogType;
+import abapspace.core.messages.MessageManager;
 
 public class FileProcessRefactorContext implements InterfaceFileProcess {
 
     private Map<String, Map<String, InterfaceContext>> contextMap;
-    private Logger log;
-    private ResourceBundle messages;
     private File targetDir;
     private File sourceDir;
 
-    public FileProcessRefactorContext(Logger log, ResourceBundle messages, File sourceDir, File targetDir,
+    public FileProcessRefactorContext(File sourceDir, File targetDir,
 	    Map<String, Map<String, InterfaceContext>> contextMap) {
-	this.log = log;
-	this.messages = messages;
 	this.contextMap = contextMap;
 	this.targetDir = targetDir;
 	this.sourceDir = sourceDir;
@@ -66,13 +62,13 @@ public class FileProcessRefactorContext implements InterfaceFileProcess {
 
 	Iterator<Map.Entry<String, InterfaceContext>> locICMIterator = locIContextMap.entrySet().iterator();
 
-	this.log.info(
-		MessageFormat.format(this.messages.getString("refactor.file.source"), sourceFile.getAbsolutePath()));
+	LogEventManager.fireLog(LogType.INFO,
+		MessageFormat.format(MessageManager.getMessage("refactor.file.source"), sourceFile.getAbsolutePath()));
 
 	while (locICMIterator.hasNext()) {
 	    Map.Entry<String, InterfaceContext> locV = locICMIterator.next();
 
-	    this.log.info(MessageFormat.format(this.messages.getString("refactor.object"),
+	    LogEventManager.fireLog(LogType.INFO, MessageManager.getMessageFormat("refactor.object",
 		    locV.getValue().getObject(), locV.getValue().getReplacement()));
 
 	    locContext = locContext.replaceAll(locV.getValue().getObject(), locV.getValue().getReplacement());
@@ -96,15 +92,14 @@ public class FileProcessRefactorContext implements InterfaceFileProcess {
 
 	locTargetFile = new File(locTargetPath);
 
-	this.log.info(
-		MessageFormat.format(this.messages.getString("refactor.file.target"), locTargetFile.getAbsolutePath()));
+	LogEventManager.fireLog(LogType.INFO,
+		MessageManager.getMessageFormat("refactor.file.target", locTargetFile.getAbsolutePath()));
 
 	try {
 	    Files.createDirectories(locTargetFile.toPath().getParent());
 	} catch (IOException e) {
-	    throw new TargetDirectoryNotCreatedException(
-		    this.messages.getString("TargetDirectoryNotCreatedException") + locTargetFile.toPath().getParent(),
-		    e);
+	    throw new TargetDirectoryNotCreatedException(MessageManager.getMessage("TargetDirectoryNotCreatedException")
+		    + locTargetFile.toPath().getParent(), e);
 	}
 
 	try {
@@ -112,14 +107,15 @@ public class FileProcessRefactorContext implements InterfaceFileProcess {
 	    locBW.write(context);
 	} catch (IOException e) {
 	    throw new TargetFileContentNotWrittenException(
-		    this.messages.getString("TargetFileContentNotWrittenException") + locTargetFile.getAbsolutePath(),
+		    MessageManager.getMessage("TargetFileContentNotWrittenException") + locTargetFile.getAbsolutePath(),
 		    e);
 	} finally {
 	    if (locBW != null) {
 		try {
 		    locBW.close();
 		} catch (IOException e) {
-		    this.log.error(this.messages.getString("FileProcessRefactorContext_BW_NotClosed"), e);
+		    LogEventManager.fireLog(LogType.ERROR,
+			    MessageManager.getMessage("FileProcessRefactorContext_BW_NotClosed"), e);
 		}
 	    }
 	}

@@ -8,7 +8,7 @@ public class LogEventManager {
 
     private List<LogListener> logEventListeners;
 
-    public static LogEventManager getInstance() {
+    public synchronized static LogEventManager getInstance() {
 	if (LogEventManager.logEventManager == null) {
 	    LogEventManager.logEventManager = new LogEventManager();
 	}
@@ -23,6 +23,20 @@ public class LogEventManager {
 	LogEvent locLogEvent = new LogEvent(locLogEventManager, logType, message, exception);
 
 	locLogEventManager.fireLogEvent(locLogEvent);
+    }
+    
+    public static synchronized void fireLog(LogType logType, String message) {
+
+	LogEventManager locLogEventManager = LogEventManager.getInstance();
+
+	LogEvent locLogEvent = new LogEvent(locLogEventManager, logType, message, null);
+
+	locLogEventManager.fireLogEvent(locLogEvent);
+    }
+    
+    private LogEventManager()
+    {
+	
     }
 
     public synchronized void addLogListener(LogListener logListener) {

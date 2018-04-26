@@ -39,11 +39,9 @@ import abapspace.core.preset.entity.Preset;
 
 public class ImportXMLToPreset {
 
-    private MessageManager messages;
     private File xmlPresetDir;
 
     public ImportXMLToPreset(String xmlPresetDir) throws PresetDirNotFoundException {
-	this.messages = MessageManager.getInstance();
 	this.xmlPresetDir = getInstanceXMLDir(xmlPresetDir);
     }
 
@@ -52,7 +50,7 @@ public class ImportXMLToPreset {
 
 	if (!locXMLDir.exists() && !locXMLDir.isDirectory()) {
 	    throw new PresetDirNotFoundException(
-		    this.messages.getMessage("exception.presetDirNotFound") + xmlPresetDir);
+		    MessageManager.getMessage("exception.presetDirNotFound") + xmlPresetDir);
 	}
 
 	return locXMLDir;
@@ -68,7 +66,7 @@ public class ImportXMLToPreset {
 		Preset locPreset = this.importPreset(file);
 		locPresetList.add(locPreset);
 	    } catch (JAXBException e) {
-		LogEventManager.fireLog(LogType.ERROR, this.messages.getMessage("exception.presetFileImport"), e);
+		LogEventManager.fireLog(LogType.ERROR, MessageManager.getMessage("exception.presetFileImport"), e);
 	    }
 	}
 

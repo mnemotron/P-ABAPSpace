@@ -1,6 +1,6 @@
 package abapspace.core.messages;
 
-import java.util.Locale;
+import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -10,25 +10,28 @@ public class MessageManager {
 
     private static final String PROPERTY_RESOURCE_BUNDLE_MESSAGES = "abapspace.core.messages.messages";
 
-    private static MessageManager msgObj;
-    private ResourceBundle messages;
+    private static ResourceBundle messages;
 
-    public static MessageManager getInstance() throws MissingResourceException {
-	if (MessageManager.msgObj == null) {
+    public static ResourceBundle getMessages() throws MissingResourceException {
+	if (MessageManager.messages == null) {
 	    LocaleManager locManager = LocaleManager.getInstance();
-	    MessageManager.msgObj = new MessageManager(locManager.getLocale());
+	    MessageManager.messages = ResourceBundle.getBundle(PROPERTY_RESOURCE_BUNDLE_MESSAGES,
+		    locManager.getLocale());
 	}
 
-	return MessageManager.msgObj;
+	return MessageManager.messages;
     }
 
-    private MessageManager(Locale locale) throws MissingResourceException {
-	this.messages = ResourceBundle.getBundle(PROPERTY_RESOURCE_BUNDLE_MESSAGES, locale);
+    public static String getMessage(String key) {
+	ResourceBundle locRB = MessageManager.getMessages();
+	return locRB.getString(key);
     }
 
-    public String getMessage(String key) {
-	String locMsg = this.messages.getString(key);
-	return locMsg;
-    }
+    public static String getMessageFormat(String key, Object ...arguments) {
+	String locMessage = MessageManager.getMessage(key);
 
+	locMessage = MessageFormat.format(locMessage, arguments);
+
+	return locMessage;
+    }
 }
