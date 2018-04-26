@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -54,7 +55,7 @@ public class GUIMain {
 
     private JLabel getLblLogo() {
 	// TODO Logo
-	JLabel locLblLogo = new JLabel(new ImageIcon(""));
+	JLabel locLblLogo = new JLabel(new ImageIcon(getClass().getResource("/abapspace/gui/res/logo.png")));
 
 	return locLblLogo;
     }
