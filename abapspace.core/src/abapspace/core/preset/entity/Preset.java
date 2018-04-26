@@ -23,6 +23,8 @@
  */
 package abapspace.core.preset.entity;
 
+import java.io.File;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -36,7 +38,6 @@ public class Preset {
 	private String namespaceOld;
 	private String namespaceNew;
 	private String supplement;
-
 	private ObjectClass objectClass;
 	private ObjectInterface objectInterface;
 
@@ -60,7 +61,7 @@ public class Preset {
 	@XmlElement
 	public void setSupplement(String supplement) {
 		this.supplement = supplement;
-	}
+	} 
 
 	public String getRefactorSourceDir() {
 		return refactorSourceDir;
@@ -123,6 +124,18 @@ public class Preset {
 	@XmlElement
 	public void setNamespaceNew(String namespaceNew) {
 		this.namespaceNew = namespaceNew;
+	}
+	
+	public File getFileSourceDir()
+	{
+	    File locSourceDir = new File(this.refactorTargetDir);
+	    
+	    if(!locSourceDir.exists() || !locSourceDir.isDirectory())
+	    {
+		throw SourceDirectoryNotFoundException();
+	    }
+	    
+	    return locSourceDir;
 	}
 
 }

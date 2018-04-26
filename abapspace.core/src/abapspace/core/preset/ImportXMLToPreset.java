@@ -26,38 +26,33 @@ package abapspace.core.preset;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.logging.log4j.Logger;
-
 import abapspace.core.exception.PresetDirNotFoundException;
+import abapspace.core.log.LogEventManager;
+import abapspace.core.log.LogType;
+import abapspace.core.messages.MessageManager;
 import abapspace.core.preset.entity.Preset;
 
 public class ImportXMLToPreset {
 
-    private ResourceBundle messages;
-    private Logger log;
+    private MessageManager messages;
     private File xmlPresetDir;
 
-    public ImportXMLToPreset(ResourceBundle messages, Logger log, String xmlPresetDir)
-	    throws PresetDirNotFoundException {
-
-	this.messages = messages;
-	this.log = log;
+    public ImportXMLToPreset(String xmlPresetDir) throws PresetDirNotFoundException {
+	this.messages = MessageManager.getInstance();
 	this.xmlPresetDir = getInstanceXMLDir(xmlPresetDir);
-
     }
 
     private File getInstanceXMLDir(String xmlPresetDir) throws PresetDirNotFoundException {
-
 	File locXMLDir = new File(xmlPresetDir);
 
 	if (!locXMLDir.exists() && !locXMLDir.isDirectory()) {
-	    throw new PresetDirNotFoundException(this.messages.getString("exception.presetDirNotFound") + xmlPresetDir);
+	    throw new PresetDirNotFoundException(
+		    this.messages.getMessage("exception.presetDirNotFound") + xmlPresetDir);
 	}
 
 	return locXMLDir;
@@ -73,7 +68,7 @@ public class ImportXMLToPreset {
 		Preset locPreset = this.importPreset(file);
 		locPresetList.add(locPreset);
 	    } catch (JAXBException e) {
-		this.log.error(this.messages.getString("exception.presetFileImport") + file.getAbsolutePath(), e);
+		LogEventManager.fireLog(LogType.ERROR, this.messages.getMessage("exception.presetFileImport"), e);
 	    }
 	}
 

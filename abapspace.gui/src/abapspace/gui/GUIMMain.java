@@ -5,9 +5,14 @@ import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import org.apache.logging.log4j.Logger;
 
 public class GUIMMain {
+
+    private static final String LOOKANDFEEL_CLASSNAME_PGS = "com.pagosoft.plaf.PgsLookAndFeel";
 
     private static final String PROPERTY_RESOURCE_BUNDLE_MESSAGES = "abapspace.core.messages.messages";
 
@@ -18,11 +23,14 @@ public class GUIMMain {
     private ResourceBundle messages;
     private Locale locale;
 
-    public GUIMMain() {
+    public GUIMMain() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+	    UnsupportedLookAndFeelException {
+
+	// set look and feel
+	this.setLookAndFeel();
 
 	// set system properties
 	this.setSystemProperties();
-
     }
 
     private ResourceBundle getMessages(Locale locale) throws MissingResourceException {
@@ -31,6 +39,11 @@ public class GUIMMain {
 
 	return locResourceBundle;
 
+    }
+
+    private void setLookAndFeel() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+	    UnsupportedLookAndFeelException {
+	UIManager.setLookAndFeel(LOOKANDFEEL_CLASSNAME_PGS);
     }
 
     private void setSystemProperties() {

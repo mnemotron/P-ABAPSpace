@@ -30,32 +30,30 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import org.apache.logging.log4j.Logger;
 
 import abapspace.core.context.InterfaceContext;
 import abapspace.core.context.entity.ContextCheckMaxNameLength;
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.MaxNameLengthException;
+import abapspace.core.log.LogEventManager;
 import abapspace.core.preset.entity.Preset;
 import abapspace.core.process.FileProcessCollectContext;
 import abapspace.core.process.FileProcessRefactorContext;
 import abapspace.core.process.InterfaceFileProcess;
 
 public class Refector {
-
+    
 	private ResourceBundle messages;
-	private Logger log;
 	private Preset preset;
 	private Map<String, Map<String, InterfaceContext>> contextMap;
 	private File sourceDir;
 	private File targetDir;
 
-	public Refector(ResourceBundle messages, Logger log, Preset preset) {
-	    	this.messages = messages;
-		this.log = log;
+	public Refector(Preset preset) {
 		this.preset = preset;
 		this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
 	}
@@ -69,7 +67,7 @@ public class Refector {
 		try {
 			collectContext();
 		} catch (Exception e) {
-			this.log.error(e.getMessage(), e);
+		    	LogEventManager.fireLog(e.getMessage(), e);
 			return;
 		}
 
