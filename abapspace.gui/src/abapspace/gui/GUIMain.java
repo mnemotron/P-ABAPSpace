@@ -2,15 +2,16 @@ package abapspace.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 import abapspace.gui.panel.PanelMain;
@@ -38,12 +39,13 @@ public class GUIMain {
 		guimainc.stopGUI();
 	    }
 	});
-	this.frameMain.setBounds(10, 10, 700, 700);
+	this.frameMain.setBounds(10, 10, 700, 648);
 	this.frameMain.setExtendedState(Frame.NORMAL);
 	this.frameMain.setResizable(false);
 	this.frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	this.frameMain.getContentPane().add(getPanelMain(), BorderLayout.CENTER);
 	this.frameMain.getContentPane().add(getLblLogo(), BorderLayout.WEST);
+	this.frameMain.getContentPane().add(getBtnRefactor(), BorderLayout.SOUTH);
     }
 
     private JPanel getPanelMain() {
@@ -58,6 +60,24 @@ public class GUIMain {
 	JLabel locLblLogo = new JLabel(new ImageIcon(getClass().getResource("/abapspace/gui/res/logo.png")));
 
 	return locLblLogo;
+    }
+
+    private JMenuBar getMenuBar() {
+	JMenuBar locMenuBar = new JMenuBar();
+	locMenuBar.add(getBtnRefactor());
+	return locMenuBar;
+    }
+
+    private JButton getBtnRefactor() {
+
+	JButton locBtn = new JButton("Refactor");
+
+	locBtn.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+	    }
+	});
+
+	return locBtn;
     }
 
     public JFrame getFrameMain() {

@@ -1,10 +1,20 @@
 package abapspace;
 
 import java.awt.EventQueue;
+import java.util.Properties;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import abapspace.core.log.LogEventManager;
+import abapspace.core.log.LogType;
 import abapspace.gui.GUICMain;
 
 public class ABAPSpace {
+
+    private static final String LOOKANDFEEL_CLASSNAME_PGS = "com.pagosoft.plaf.PgsLookAndFeel";
+    private static final String SYSTEM_PROPERTY_KEY_LOG4J2_CONFIG_FILE = "log4j2.configurationFile";
+    private static final String SYSTEM_PROPERTY_VALUE_LOG4J2_CONFIG_FILE = "abapspace/core/log/log4j2.xml";
 
     public static void main(String[] args) {
 
@@ -12,10 +22,55 @@ public class ABAPSpace {
 
 	    @Override
 	    public void run() {
-		GUICMain locGUICMain = new GUICMain();
+		try {
+		    ABAPSpace locAbapSpace = new ABAPSpace();
 
-		locGUICMain.startGUI();
+		    GUICMain locGUICMain = new GUICMain();
+
+		    locGUICMain.startGUI();
+
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+			| UnsupportedLookAndFeelException e) {
+		    // TODO Exception handling
+		    e.getStackTrace();
+		}
+
 	    }
 	});
     }
+
+    private ABAPSpace() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+	    UnsupportedLookAndFeelException {
+	this.setSystemProperties();
+	this.setLookAndFeel();
+    }
+
+    private void setSystemProperties() {
+
+	Properties locSystemProperties = System.getProperties();
+
+	locSystemProperties.setProperty(SYSTEM_PROPERTY_KEY_LOG4J2_CONFIG_FILE,
+		SYSTEM_PROPERTY_VALUE_LOG4J2_CONFIG_FILE);
+
+    }
+
+    private void setLookAndFeel() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+	    UnsupportedLookAndFeelException {
+	UIManager.setLookAndFeel(LOOKANDFEEL_CLASSNAME_PGS);
+    }
 }
+
+// Runnable run = new Runnable()
+// {
+// public void run()
+// {
+// LogBrokerMonitor lbm = CLog.getLogbrokermonitor();
+// lbm.show();
+// }
+// };
+//
+// Thread t = new Thread(run);
+// t.run();
+
+// LF5Appender lf5a = new LF5Appender(logbrokermonitor);
+// Logger logger.addAppender(lf5a);
