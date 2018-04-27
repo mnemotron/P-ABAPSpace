@@ -34,7 +34,8 @@ import java.util.Map;
 import abapspace.core.context.InterfaceContext;
 import abapspace.core.context.entity.ContextCheckMaxNameLength;
 import abapspace.core.exception.FileProcessException;
-import abapspace.core.exception.MaxNameLengthException;
+import abapspace.core.exception.SourceDirectoryNotFoundException;
+import abapspace.core.exception.TargetDirectoryNotFoundException;
 import abapspace.core.log.LogEventManager;
 import abapspace.core.log.LogType;
 import abapspace.core.messages.MessageManager;
@@ -47,39 +48,14 @@ public class Refector {
 
     private Preset preset;
     private Map<String, Map<String, InterfaceContext>> contextMap;
-    private File sourceDir;
-    private File targetDir;
 
     public Refector(Preset preset) {
 	this.preset = preset;
 	this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
     }
 
-    public void refactor() throws MaxNameLengthException, FileProcessException {
+    public boolean checkMaxNameLength() {
 
-	this.sourceDir = new File(this.preset.getRefactorSourceDir());
-	this.targetDir = new File(this.preset.getRefactorTargetDir());
-
-	// collect context
-	try {
-	    collectContext();
-	} catch (Exception e) {
-	    LogEventManager.fireLog(LogType.ERROR, e.getMessage(), e);
-	    return;
-	}
-
-	// check max name length
-	if (this.preset.isCheckNameMaxLength()) {
-	    if (!checkMaxNameLength()) {
-		throw new MaxNameLengthException(MessageManager.getMessage("MaxNameLengthException"));
-	    }
-	}
-
-	// refactor context
-	refactorContext();
-    }
-
-    private boolean checkMaxNameLength() {
 	final boolean[] locValid = new boolean[] { true };
 
 	this.contextMap.forEach((fileIdent, contextMap) -> {
@@ -97,19 +73,20 @@ public class Refector {
 	return locValid[0];
     }
 
-    private void refactorContext() throws FileProcessException {
+    public void refactorContext()
+	    throws FileProcessException, SourceDirectoryNotFoundException, TargetDirectoryNotFoundException {
 
-	File[] locFileList = this.sourceDir.listFiles();
+	File[] locFileList = this.preset.getFileSourceDir().listFiles();
 
-	FileProcessRefactorContext locFPRContext = new FileProcessRefactorContext(this.sourceDir, this.targetDir,
-		this.contextMap);
+	FileProcessRefactorContext locFPRContext = new FileProcessRefactorContext(this.preset.getFileSourceDir(),
+		this.preset.getFileTargetDir(), this.contextMap);
 
 	processFiles(locFileList, locFPRContext);
     }
 
-    private void collectContext() throws FileProcessException {
+    public void collectContext() throws FileProcessException, SourceDirectoryNotFoundException {
 
-	File[] locFileList = this.sourceDir.listFiles();
+	File[] locFileList = this.preset.getFileSourceDir().listFiles();
 
 	FileProcessCollectContext locFPCContext = new FileProcessCollectContext(this.preset, this.contextMap);
 
