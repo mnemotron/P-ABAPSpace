@@ -18,14 +18,14 @@ import abapspace.gui.panel.PanelMain;
 
 public class GUIMain {
 
-    private GUICMain guimainc;
+    private GUICMain guicmain;
 
     private JFrame frameMain;
     private PanelMain panelMain;
 
-    public GUIMain(GUICMain guimainc) {
+    public GUIMain(GUICMain guicmain) {
 
-	this.guimainc = guimainc;
+	this.guicmain = guicmain;
 
 	// init GUI
 	initialize();
@@ -36,7 +36,7 @@ public class GUIMain {
 	this.frameMain.addWindowListener(new WindowAdapter() {
 	    @Override
 	    public void windowClosing(WindowEvent arg0) {
-		guimainc.stopGUI();
+		guicmain.stopGUI();
 	    }
 	});
 	this.frameMain.setBounds(10, 10, 700, 648);
@@ -50,7 +50,7 @@ public class GUIMain {
 
     public PanelMain getPanelMain() {
 	if (this.panelMain == null) {
-	    this.panelMain = new PanelMain(this.guimainc);
+	    this.panelMain = new PanelMain(this.guicmain);
 	}
 	return this.panelMain;
     }
@@ -74,6 +74,7 @@ public class GUIMain {
 
 	locBtn.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e) {
+		guicmain.startPreRefactor();
 	    }
 	});
 

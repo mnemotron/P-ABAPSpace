@@ -6,7 +6,11 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import abapspace.core.Refector;
+import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.PresetDirNotFoundException;
+import abapspace.core.exception.SourceDirectoryNotFoundException;
+import abapspace.core.exception.TargetDirectoryNotFoundException;
 import abapspace.core.log.LogEvent;
 import abapspace.core.log.LogEventManager;
 import abapspace.core.log.LogListener;
@@ -20,11 +24,13 @@ public class GUIMMain {
     private Logger log;
     private PresetManager presetManager;
     private Preset preset;
+    private Refector refector;
 
     public GUIMMain() {
 	this.presetManager = null;
 	this.log = LogManager.getLogger();
 	this.initLogEventManager();
+	this.refector = null;
     }
 
     public void setPresetManager(String presetDir) throws PresetDirNotFoundException {
@@ -62,6 +68,30 @@ public class GUIMMain {
 
     public void setPreset(Preset preset) {
 	this.preset = preset;
+    }
+    
+    public boolean startPreRefactor() throws FileProcessException, SourceDirectoryNotFoundException, TargetDirectoryNotFoundException
+    {
+	boolean locValid = true;
+	
+	this.refector = new Refector(this.getPreset());
+	
+	this.refector.collectContext();
+	
+	locValid = this.refector.checkMaxNameLength();
+	
+	if(locValid)
+	{
+	   this.startRefactor();
+	}
+	
+	return locValid;
+    }
+    
+    public void startRefactor()
+	    throws FileProcessException, SourceDirectoryNotFoundException, TargetDirectoryNotFoundException
+    {
+	 this.refector.refactorContext();
     }
 
     private void initLogEventManager() {

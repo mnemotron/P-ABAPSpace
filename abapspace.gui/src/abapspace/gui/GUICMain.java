@@ -1,10 +1,10 @@
 package abapspace.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.PresetDirNotFoundException;
 import abapspace.core.exception.SourceDirectoryNotFoundException;
 import abapspace.core.exception.TargetDirectoryNotFoundException;
@@ -61,6 +61,14 @@ public class GUICMain {
 	}
     }
 
+    public void startPreRefactor() {
+	try {
+	    boolean locValid = this.guimmain.startPreRefactor();
+	} catch (FileProcessException | SourceDirectoryNotFoundException | TargetDirectoryNotFoundException e) {
+	    this.guimain.showMessage(e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+	}
+    }
+
     private void setPresetDirToTxf() {
 	this.guimain.getPanelMain().getTxfPresetDir().setText(this.guimmain.getPresetDir());
     }
@@ -72,5 +80,4 @@ public class GUICMain {
 	    this.guimain.getPanelMain().getCbPreset().addItem(preset);
 	}
     }
-
 }

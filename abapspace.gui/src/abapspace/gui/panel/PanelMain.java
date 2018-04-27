@@ -15,11 +15,13 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PanelMain extends JPanel {
+    
+    private static final long serialVersionUID = 7382875965875337426L;
+
     private JPanel panelPreset;
     private JTextField txfPresetDir;
     private JLabel lblPresetDir;
@@ -129,7 +131,7 @@ public class PanelMain extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    guicmain.choosePreset((Preset)cbPreset.getSelectedItem());
+		    guicmain.choosePreset((Preset) cbPreset.getSelectedItem());
 		}
 	    });
 	}
