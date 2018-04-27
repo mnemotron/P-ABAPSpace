@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
 
 public class PanelMain extends JPanel {
     
@@ -114,9 +115,11 @@ public class PanelMain extends JPanel {
 
     private JButton getBtnPresetDir() {
 	if (btnPresetDir == null) {
-	    btnPresetDir = new JButton("DIR");
+	    btnPresetDir = new JButton("");
+	    btnPresetDir.setIcon(new ImageIcon(PanelMain.class.getResource("/abapspace/gui/res/folderopen.png")));
 	    btnPresetDir.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
+			guicmain.chooseDirPreset();
 		}
 	    });
 	}
@@ -206,7 +209,8 @@ public class PanelMain extends JPanel {
 
     private JButton getBtnSourceDir() {
 	if (btnSourceDir == null) {
-	    btnSourceDir = new JButton("DIR");
+	    btnSourceDir = new JButton("");
+	    btnSourceDir.setIcon(new ImageIcon(PanelMain.class.getResource("/abapspace/gui/res/folderopen.png")));
 	    btnSourceDir.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		}
@@ -236,7 +240,8 @@ public class PanelMain extends JPanel {
 
     private JButton getBtnTargetDir() {
 	if (btnTargetDir == null) {
-	    btnTargetDir = new JButton("DIR");
+	    btnTargetDir = new JButton("");
+	    btnTargetDir.setIcon(new ImageIcon(PanelMain.class.getResource("/abapspace/gui/res/folderopen.png")));
 	    btnTargetDir.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		}

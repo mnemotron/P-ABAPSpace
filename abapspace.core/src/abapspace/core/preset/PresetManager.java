@@ -17,79 +17,80 @@ import abapspace.core.preset.entity.Preset;
 
 public class PresetManager {
 
-    private File presetDir;
-    private List<Preset> presetList;
+	private File presetDir;
+	private List<Preset> presetList;
 
-    public static PresetManager getInstance(String presetDir) throws PresetDirNotFoundException {
+	public static PresetManager getInstance(String presetDir) throws PresetDirNotFoundException {
 
-	File locPresetDir = PresetManager.getInstanceXMLDir(presetDir);
-	PresetManager locPresetManager = new PresetManager(locPresetDir);
+		File locPresetDir = PresetManager.getInstanceXMLDir(presetDir);
+		PresetManager locPresetManager = new PresetManager(locPresetDir);
 
-	return locPresetManager;
-    }
-
-    private static File getInstanceXMLDir(String presetDir) throws PresetDirNotFoundException {
-
-	File locPresetDir = new File(presetDir);
-
-	if (!locPresetDir.exists() && !locPresetDir.isDirectory()) {
-	    throw new PresetDirNotFoundException(MessageManager.getMessage("exception.presetDirNotFound") + locPresetDir.getAbsolutePath());
+		return locPresetManager;
 	}
 
-	return locPresetDir;
-    }
+	private static File getInstanceXMLDir(String presetDir) throws PresetDirNotFoundException {
 
-    private PresetManager(File presetDir) {
-	this.presetDir = presetDir;
-	this.presetList = new ArrayList<Preset>();
-	this.importPresetList();
-    }
+		File locPresetDir = new File(presetDir);
 
-    public void importPresetList() {
+		if (!locPresetDir.exists() && !locPresetDir.isDirectory()) {
+			throw new PresetDirNotFoundException(
+					MessageManager.getMessage("exception.presetDirNotFound") + locPresetDir.getAbsolutePath());
+		}
 
-	List<Preset> locPresetList = new ArrayList<Preset>();
-	File[] locFiles = this.presetDir.listFiles();
-
-	for (File file : locFiles) {
-	    try {
-		Preset locPreset = this.importPreset(file);
-		locPresetList.add(locPreset);
-	    } catch (JAXBException e) {
-		LogEventManager.fireLog(LogType.ERROR, MessageManager.getMessage("exception.presetFileImport"), e);
-	    }
+		return locPresetDir;
 	}
 
-	this.presetList = locPresetList;
-    }
+	private PresetManager(File presetDir) {
+		this.presetDir = presetDir;
+		this.presetList = new ArrayList<Preset>();
+		this.importPresetList();
+	}
 
-    private Preset importPreset(File xmlPresetFile) throws JAXBException {
+	public void importPresetList() {
 
-	Preset locPreset = new Preset();
+		List<Preset> locPresetList = new ArrayList<Preset>();
+		File[] locFiles = this.presetDir.listFiles();
 
-	JAXBContext locJAXBContext = JAXBContext.newInstance(Preset.class);
+		for (File file : locFiles) {
+			try {
+				Preset locPreset = this.importPreset(file);
+				locPresetList.add(locPreset);
+			} catch (JAXBException e) {
+				LogEventManager.fireLog(LogType.ERROR, MessageManager.getMessage("exception.presetFileImport"), e);
+			}
+		}
 
-	Unmarshaller locJAXBUnmarshaller = locJAXBContext.createUnmarshaller();
+		this.presetList = locPresetList;
+	}
 
-	locPreset = (Preset) locJAXBUnmarshaller.unmarshal(xmlPresetFile);
+	private Preset importPreset(File xmlPresetFile) throws JAXBException {
 
-	return locPreset;
-    }
+		Preset locPreset = new Preset();
 
-    public void exportPreset(File xmlFile, Preset preset) throws JAXBException {
+		JAXBContext locJAXBContext = JAXBContext.newInstance(Preset.class);
 
-	JAXBContext locJAXBContext = JAXBContext.newInstance(Preset.class);
+		Unmarshaller locJAXBUnmarshaller = locJAXBContext.createUnmarshaller();
 
-	Marshaller locJAXBMarshaller = locJAXBContext.createMarshaller();
-	locJAXBMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-	locJAXBMarshaller.marshal(preset, xmlFile);
-    }
+		locPreset = (Preset) locJAXBUnmarshaller.unmarshal(xmlPresetFile);
 
-    public List<Preset> getPresetList() {
-	return presetList;
-    }
+		return locPreset;
+	}
 
-    public File getPresetDir() {
-	return presetDir;
-    }
+	public void exportPreset(File xmlFile, Preset preset) throws JAXBException {
+
+		JAXBContext locJAXBContext = JAXBContext.newInstance(Preset.class);
+
+		Marshaller locJAXBMarshaller = locJAXBContext.createMarshaller();
+		locJAXBMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		locJAXBMarshaller.marshal(preset, xmlFile);
+	}
+
+	public List<Preset> getPresetList() {
+		return presetList;
+	}
+
+	public File getPresetDir() {
+		return presetDir;
+	}
 
 }

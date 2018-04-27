@@ -10,51 +10,51 @@ import abapspace.gui.GUICMain;
 
 public class ABAPSpace {
 
-    private static final String LOOKANDFEEL_CLASSNAME_PGS = "com.pagosoft.plaf.PgsLookAndFeel";
-    private static final String SYSTEM_PROPERTY_KEY_LOG4J2_CONFIG_FILE = "log4j2.configurationFile";
-    private static final String SYSTEM_PROPERTY_VALUE_LOG4J2_CONFIG_FILE = "abapspace/log/log4j2.xml";
+	private static final String LOOKANDFEEL_CLASSNAME_PGS = "com.pagosoft.plaf.PgsLookAndFeel";
+	private static final String SYSTEM_PROPERTY_KEY_LOG4J2_CONFIG_FILE = "log4j2.configurationFile";
+	private static final String SYSTEM_PROPERTY_VALUE_LOG4J2_CONFIG_FILE = "abapspace/log/log4j2.xml";
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-	EventQueue.invokeLater(new Runnable() {
+		EventQueue.invokeLater(new Runnable() {
 
-	    @Override
-	    public void run() {
-		try {
-		    ABAPSpace locAbapSpace = new ABAPSpace();
+			@Override
+			public void run() {
+				try {
+					ABAPSpace locAbapSpace = new ABAPSpace();
 
-		    GUICMain locGUICMain = new GUICMain();
+					GUICMain locGUICMain = new GUICMain();
 
-		    locGUICMain.startGUI();
+					locGUICMain.startGUI();
 
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-			| UnsupportedLookAndFeelException e) {
-		    e.getStackTrace();
-		}
+				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+						| UnsupportedLookAndFeelException e) {
+					e.getStackTrace();
+				}
 
-	    }
-	});
-    }
+			}
+		});
+	}
 
-    private ABAPSpace() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-	    UnsupportedLookAndFeelException {
-	this.setSystemProperties();
-	this.setLookAndFeel();
-    }
+	private ABAPSpace() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+			UnsupportedLookAndFeelException {
+		this.setSystemProperties();
+		this.setLookAndFeel();
+	}
 
-    private void setSystemProperties() {
+	private void setSystemProperties() {
 
-	Properties locSystemProperties = System.getProperties();
+		Properties locSystemProperties = System.getProperties();
 
-	locSystemProperties.setProperty(SYSTEM_PROPERTY_KEY_LOG4J2_CONFIG_FILE,
-		SYSTEM_PROPERTY_VALUE_LOG4J2_CONFIG_FILE);
+		locSystemProperties.setProperty(SYSTEM_PROPERTY_KEY_LOG4J2_CONFIG_FILE,
+				SYSTEM_PROPERTY_VALUE_LOG4J2_CONFIG_FILE);
 
-    }
+	}
 
-    private void setLookAndFeel() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-	    UnsupportedLookAndFeelException {
-	UIManager.setLookAndFeel(LOOKANDFEEL_CLASSNAME_PGS);
-    }
+	private void setLookAndFeel() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+			UnsupportedLookAndFeelException {
+		UIManager.setLookAndFeel(LOOKANDFEEL_CLASSNAME_PGS);
+	}
 }
 
 // Runnable run = new Runnable()
