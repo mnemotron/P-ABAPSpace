@@ -29,10 +29,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import abapspace.core.exception.SourceDirectoryNotFoundException;
+import abapspace.core.exception.TargetDirectoryNotFoundException;
 import abapspace.core.messages.MessageManager;
 
 @XmlRootElement
-public class Preset {
+public class Preset{
 
     private String description;
     private String refactorSourceDir;
@@ -138,5 +139,22 @@ public class Preset {
 	}
 
 	return locSourceDir;
+    }
+    
+    public File getFileTargetDir() throws TargetDirectoryNotFoundException {
+	File locTargetDir = new File(this.refactorTargetDir);
+
+	if (!locTargetDir.exists() || !locTargetDir.isDirectory()) {
+	    throw new TargetDirectoryNotFoundException(
+		    MessageManager.getMessage("exception.targetDirNotFound") + locTargetDir.getAbsolutePath());
+	}
+
+	return locTargetDir;
+    }
+    
+    @Override
+    public String toString()
+    {
+	return this.getDescription();
     }
 }

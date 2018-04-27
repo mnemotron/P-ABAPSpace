@@ -17,18 +17,15 @@ import abapspace.core.preset.entity.Preset;
 
 public class PresetManager {
 
-    private static PresetManager presetManager;
     private File presetDir;
     private List<Preset> presetList;
 
     public static PresetManager getInstance(String presetDir) throws PresetDirNotFoundException {
 
-	if (PresetManager.presetManager == null) {
-	    File locPresetDir = PresetManager.getInstanceXMLDir(presetDir);
-	    PresetManager.presetManager = new PresetManager(locPresetDir);
-	}
+	File locPresetDir = PresetManager.getInstanceXMLDir(presetDir);
+	PresetManager locPresetManager = new PresetManager(locPresetDir);
 
-	return PresetManager.presetManager;
+	return locPresetManager;
     }
 
     private static File getInstanceXMLDir(String presetDir) throws PresetDirNotFoundException {
@@ -36,7 +33,7 @@ public class PresetManager {
 	File locPresetDir = new File(presetDir);
 
 	if (!locPresetDir.exists() && !locPresetDir.isDirectory()) {
-	    throw new PresetDirNotFoundException(MessageManager.getMessage("exception.presetDirNotFound") + presetDir);
+	    throw new PresetDirNotFoundException(MessageManager.getMessage("exception.presetDirNotFound") + locPresetDir.getAbsolutePath());
 	}
 
 	return locPresetDir;
@@ -45,6 +42,7 @@ public class PresetManager {
     private PresetManager(File presetDir) {
 	this.presetDir = presetDir;
 	this.presetList = new ArrayList<Preset>();
+	this.importPresetList();
     }
 
     public void importPresetList() {
@@ -88,6 +86,10 @@ public class PresetManager {
 
     public List<Preset> getPresetList() {
 	return presetList;
+    }
+
+    public File getPresetDir() {
+	return presetDir;
     }
 
 }

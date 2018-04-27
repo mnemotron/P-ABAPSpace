@@ -1,5 +1,6 @@
 package abapspace.core.log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogEventManager {
@@ -36,7 +37,7 @@ public class LogEventManager {
     
     private LogEventManager()
     {
-	
+	this.logEventListeners = new ArrayList<LogListener>();
     }
 
     public synchronized void addLogListener(LogListener logListener) {

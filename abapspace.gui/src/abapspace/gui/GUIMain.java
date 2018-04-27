@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 
 import abapspace.gui.panel.PanelMain;
 
@@ -21,7 +21,7 @@ public class GUIMain {
     private GUICMain guimainc;
 
     private JFrame frameMain;
-    private JPanel panelMain;
+    private PanelMain panelMain;
 
     public GUIMain(GUICMain guimainc) {
 
@@ -48,9 +48,9 @@ public class GUIMain {
 	this.frameMain.getContentPane().add(getBtnRefactor(), BorderLayout.SOUTH);
     }
 
-    private JPanel getPanelMain() {
+    public PanelMain getPanelMain() {
 	if (this.panelMain == null) {
-	    this.panelMain = new PanelMain();
+	    this.panelMain = new PanelMain(this.guimainc);
 	}
 	return this.panelMain;
     }
@@ -83,4 +83,9 @@ public class GUIMain {
     public JFrame getFrameMain() {
 	return this.frameMain;
     }
+
+    public void showMessage(String message, String title, int msgType) {
+	JOptionPane.showMessageDialog(null, message, title, msgType);
+    }
+
 }
