@@ -1,62 +1,66 @@
 package abapspace.gui.edit;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.border.EmptyBorder;
+
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
 
-public class GUIEdit extends JFrame {
+public class GUIEdit extends JDialog{
 
+	private GUICEdit guicedit;
 	private JPanel contentPane;
+	private JScrollPane spEdit;
 	private JTable tblEdit;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GUIEdit frame = new GUIEdit();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public GUIEdit(GUICEdit guicedit) {
+
+		this.guicedit = guicedit;
+
+		initialize();
 	}
 
-	/**
-	 * Create the frame.
-	 */
-	public GUIEdit() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	private void initialize() {
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setBounds(100, 100, 450, 300);
+//		addWindowListener(new WindowAdapter() {
+//			@Override
+//			public void windowClosing(WindowEvent e) {
+//				guicedit.stopGUI();
+//			}
+//		});
+
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
+		setModal(true);
+		setResizable(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
-		tblEdit = new JTable();
-		tblEdit.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Found Object", "New column"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Object.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		contentPane.add(tblEdit, BorderLayout.CENTER);
+		getContentPane().setLayout(new BorderLayout(0, 0));
+//		setContentPane(contentPane);
+		getContentPane().add(getSpEdit(), BorderLayout.CENTER);
+
 	}
 
+	private JScrollPane getSpEdit() {
+		if (spEdit == null) {
+			spEdit = new JScrollPane(getTblEdit());
+		}
+		return spEdit;
+	}
+
+	private JTable getTblEdit() {
+
+		if (tblEdit == null) {
+			String[] locColNames = {"Found Object", "Replacement", "Maximum Length", "Length"};
+			tblEdit = new JTable(new TableModelEdit(locColNames, guicedit.getData()));
+		}
+		return tblEdit;
+	}
 }

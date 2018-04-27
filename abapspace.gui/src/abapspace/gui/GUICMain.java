@@ -10,6 +10,7 @@ import abapspace.core.exception.PresetDirNotFoundException;
 import abapspace.core.exception.SourceDirectoryNotFoundException;
 import abapspace.core.exception.TargetDirectoryNotFoundException;
 import abapspace.core.preset.entity.Preset;
+import abapspace.gui.edit.GUICEdit;
 
 public class GUICMain {
 
@@ -67,9 +68,27 @@ public class GUICMain {
 	public void startPreRefactor() {
 		try {
 			boolean locValid = this.guimmain.startPreRefactor();
+			
+			if(true)
+			{
+				
+				this.showEdit(this.guimmain.getEditData());
+			}
+			
 		} catch (FileProcessException | SourceDirectoryNotFoundException | TargetDirectoryNotFoundException e) {
 			this.guimain.showMessage(e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	public GUIMain getGuimain() {
+		return guimain;
+	}
+	
+	public void showEdit(Object[][] data)
+	{
+		GUICEdit guicedit = new GUICEdit(this, data);
+		
+		guicedit.startGUI();
 	}
 
 	private void setPresetManager(File preset) {

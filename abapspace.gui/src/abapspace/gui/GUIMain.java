@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 import com.jidesoft.swing.FolderChooser;
 
+import abapspace.gui.edit.GUICEdit;
 import abapspace.gui.panel.PanelMain;
 
 public class GUIMain {
@@ -106,7 +107,7 @@ public class GUIMain {
 	public JFrame getFrameMain() {
 		return this.frameMain;
 	}
-
+	
 	public void showMessage(String message, String title, int msgType) {
 		JOptionPane.showMessageDialog(this.frameMain, message, title, msgType);
 	}

@@ -140,4 +140,8 @@ public class Refector {
 		}
 
 	}
+
+	public Map<String, Map<String, InterfaceContext>> getContextMap() {
+		return contextMap;
+	}
 }
