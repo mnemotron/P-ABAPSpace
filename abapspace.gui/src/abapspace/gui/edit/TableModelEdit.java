@@ -45,7 +45,18 @@ public class TableModelEdit extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object value, int row, int col) {
+
+		// set changed cell data
 		data[row][col] = value;
+
+		switch (col) {
+		case 1: // replacement changed > update length
+			String locString = (String) value;
+			data[row][3] = locString.length();
+			fireTableCellUpdated(row, 3);
+			break;
+		}
+
 		fireTableCellUpdated(row, col);
 	}
 

@@ -1,6 +1,6 @@
 package abapspace.gui.edit;
 
-import abapspace.gui.GUICMain;
+import abapspace.gui.main.GUICMain;
 
 public class GUICEdit {
 
@@ -18,13 +18,15 @@ public class GUICEdit {
 	}
 
 	public void startGUI() {
-//		this.guicmain.getGuimain().getFrameMain().setEnabled(false);
+		this.guicmain.getGuimain().getFrameMain().setEnabled(false);
 		this.guiedit.setVisible(true);
+		this.guiedit.toFront();
+		this.guiedit.requestFocus();
 	}
 
 	public void stopGUI() {
 		this.guiedit.setVisible(false);
-//		this.guicmain.getGuimain().getFrameMain().setEnabled(true);
+		this.guicmain.getGuimain().getFrameMain().setEnabled(true);
 	}
 
 	public Object[][] getData() {

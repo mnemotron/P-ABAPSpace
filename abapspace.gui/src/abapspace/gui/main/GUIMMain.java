@@ -1,4 +1,4 @@
-package abapspace.gui;
+package abapspace.gui.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import abapspace.core.Refector;
 import abapspace.core.context.InterfaceContext;
+import abapspace.core.context.entity.ContextCheckMaxNameLength;
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.PresetDirNotFoundException;
 import abapspace.core.exception.SourceDirectoryNotFoundException;
@@ -33,7 +34,8 @@ public class GUIMMain {
 		this.presetManager = null;
 		this.log = LogManager.getLogger();
 		this.initLogEventManager();
-		this.refector = null;
+		this.refector = new Refector();
+		this.preset = new Preset();
 	}
 
 	public void setPresetManager(String presetDir) throws PresetDirNotFoundException {
@@ -112,8 +114,11 @@ public class GUIMMain {
 		int locRow[] = {0};
 
 		locEditMap.forEach((objectID, iContext) -> {
+			
+			ContextCheckMaxNameLength locMaxNameLength = iContext.checkMaxNameLengthForReplacement();
 
 			for (int j = 0, lj = locObjectArray[locRow[0]].length; j < lj; j++) {
+				
 				switch (j) {
 				case 0: // found object
 					locObjectArray[locRow[0]][j] = iContext.getObject();
@@ -122,10 +127,10 @@ public class GUIMMain {
 					locObjectArray[locRow[0]][j] = iContext.getReplacement();
 					break;
 				case 2: // maximum length
-					locObjectArray[locRow[0]][j] = 30;
+					locObjectArray[locRow[0]][j] = locMaxNameLength.getMaxNameLength();
 					break;
 				case 3: // length
-					locObjectArray[locRow[0]][j] = 40;
+					locObjectArray[locRow[0]][j] = locMaxNameLength.getActualNameLength();
 					break;
 				}
 

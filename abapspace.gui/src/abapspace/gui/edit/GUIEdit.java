@@ -1,22 +1,20 @@
 package abapspace.gui.edit;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JRootPane;
-import javax.swing.border.EmptyBorder;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
-public class GUIEdit extends JDialog{
+public class GUIEdit extends JFrame {
 
+	private static final long serialVersionUID = -2761424855122643093L;
 	private GUICEdit guicedit;
-	private JPanel contentPane;
 	private JScrollPane spEdit;
 	private JTable tblEdit;
 
@@ -28,22 +26,20 @@ public class GUIEdit extends JDialog{
 	}
 
 	private void initialize() {
-//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setBounds(100, 100, 450, 300);
-//		addWindowListener(new WindowAdapter() {
-//			@Override
-//			public void windowClosing(WindowEvent e) {
-//				guicedit.stopGUI();
-//			}
-//		});
-
-		setBounds(100, 100, 450, 300);
-		setModal(true);
-		setResizable(true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				guicedit.stopGUI();
+			}
+		});
+
+		setResizable(true);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setBounds(10, 10, 700, 652);
 		getContentPane().setLayout(new BorderLayout(0, 0));
-//		setContentPane(contentPane);
 		getContentPane().add(getSpEdit(), BorderLayout.CENTER);
 
 	}
@@ -58,7 +54,7 @@ public class GUIEdit extends JDialog{
 	private JTable getTblEdit() {
 
 		if (tblEdit == null) {
-			String[] locColNames = {"Found Object", "Replacement", "Maximum Length", "Length"};
+			String[] locColNames = { "Found Object", "Replacement", "Maximum Length", "Length" };
 			tblEdit = new JTable(new TableModelEdit(locColNames, guicedit.getData()));
 		}
 		return tblEdit;

@@ -6,7 +6,7 @@ import java.util.Properties;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import abapspace.gui.GUICMain;
+import abapspace.gui.main.GUICMain;
 
 public class ABAPSpace {
 

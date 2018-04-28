@@ -1,4 +1,4 @@
-package abapspace.gui.panel;
+package abapspace.gui.main;
 
 import javax.swing.JPanel;
 import javax.swing.GroupLayout;
@@ -6,7 +6,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.TitledBorder;
 
 import abapspace.core.preset.entity.Preset;
-import abapspace.gui.GUICMain;
+import abapspace.gui.messages.GUIMessageManager;
 
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -65,7 +65,7 @@ public class PanelMain extends JPanel {
     private JPanel getPanelPreset() {
 	if (panelPreset == null) {
 	    panelPreset = new JPanel();
-	    panelPreset.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 255)), "Preset", TitledBorder.LEADING,
+	    panelPreset.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 255)), GUIMessageManager.getMessage("border.title.preset"), TitledBorder.LEADING,
 		    TitledBorder.TOP, null, Color.BLUE));
 	    GroupLayout gl_panelPreset = new GroupLayout(panelPreset);
 	    gl_panelPreset.setHorizontalGroup(gl_panelPreset.createParallelGroup(Alignment.LEADING)
@@ -106,7 +106,7 @@ public class PanelMain extends JPanel {
 
     private JLabel getLblPresetDir() {
 	if (lblPresetDir == null) {
-	    lblPresetDir = new JLabel("Preset Directory");
+	    lblPresetDir = new JLabel(GUIMessageManager.getMessage("label.presetDir"));
 	    lblPresetDir.setForeground(Color.BLUE);
 	    lblPresetDir.setLabelFor(getTxfPresetDir());
 	}
@@ -143,7 +143,7 @@ public class PanelMain extends JPanel {
 
     private JLabel getLblPreset() {
 	if (lblPreset == null) {
-	    lblPreset = new JLabel("Preset");
+	    lblPreset = new JLabel(GUIMessageManager.getMessage("label.preset"));
 	    lblPreset.setForeground(Color.BLUE);
 	}
 	return lblPreset;
@@ -152,7 +152,7 @@ public class PanelMain extends JPanel {
     private JPanel getPanelST() {
 	if (panelST == null) {
 	    panelST = new JPanel();
-	    panelST.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 255)), "Source/Target",
+	    panelST.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 255)), GUIMessageManager.getMessage("border.title.targetSourceDir"),
 		    TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLUE));
 	    GroupLayout gl_panelST = new GroupLayout(panelST);
 	    gl_panelST.setHorizontalGroup(gl_panelST.createParallelGroup(Alignment.LEADING)
@@ -200,7 +200,7 @@ public class PanelMain extends JPanel {
 
     private JLabel getLblSourceDir() {
 	if (lblSourceDir == null) {
-	    lblSourceDir = new JLabel("Source Directory");
+	    lblSourceDir = new JLabel(GUIMessageManager.getMessage("label.sourceDir"));
 	    lblSourceDir.setForeground(Color.BLUE);
 	    lblSourceDir.setLabelFor(getTxtSourceDir());
 	}
@@ -213,6 +213,7 @@ public class PanelMain extends JPanel {
 	    btnSourceDir.setIcon(new ImageIcon(PanelMain.class.getResource("/abapspace/gui/res/folderopen.png")));
 	    btnSourceDir.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			guicmain.chooseDirSource();
 		}
 	    });
 	}
@@ -221,7 +222,7 @@ public class PanelMain extends JPanel {
 
     private JLabel getLblTargetDir() {
 	if (lblTargetDir == null) {
-	    lblTargetDir = new JLabel("Target Directory");
+	    lblTargetDir = new JLabel(GUIMessageManager.getMessage("label.targetDir"));
 	    lblTargetDir.setLabelFor(getTxtTargetDir());
 	    lblTargetDir.setForeground(Color.BLUE);
 	}
@@ -244,6 +245,7 @@ public class PanelMain extends JPanel {
 	    btnTargetDir.setIcon(new ImageIcon(PanelMain.class.getResource("/abapspace/gui/res/folderopen.png")));
 	    btnTargetDir.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
+			guicmain.chooseDirTarget();
 		}
 	    });
 	}

@@ -46,7 +46,15 @@ public class Preset{
     private ObjectInterface objectInterface;
 
     public Preset() {
-
+    	this.description = new String();
+    	this.refactorSourceDir = new String();
+    	this.refactorTargetDir = new String();
+    	this.namespaceNew = new String();
+    	this.namespaceOld = new String();
+    	this.supplement = new String();
+    	this.objectClass = new ObjectClass();
+    	this.objectInterface = new ObjectInterface();
+    	this.checkNameMaxLength = false;
     }
 
     public String getDescription() {

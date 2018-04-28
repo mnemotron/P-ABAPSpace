@@ -49,6 +49,12 @@ public class Refector {
 	private Preset preset;
 	private Map<String, Map<String, InterfaceContext>> contextMap;
 
+	public Refector()
+	{
+		this.preset = new Preset();
+		this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
+	}
+	
 	public Refector(Preset preset) {
 		this.preset = preset;
 		this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
@@ -63,8 +69,8 @@ public class Refector {
 				ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
 
 				if (!locCheck.isValid()) {
-					LogEventManager.fireLog(LogType.ERROR, MessageManager.getMessageFormat("MaxNameLengthCheckFailed",
-							iContext.getObject(), locCheck.getMaxNameLength(), locCheck.getActualNameLength()));
+					LogEventManager.fireLog(LogType.ERROR, MessageManager.getMessageFormat("check.maxNameLength",
+							iContext.getObject(), iContext.getReplacement(), locCheck.getMaxNameLength(), locCheck.getActualNameLength()));
 					locValid[0] = false;
 				}
 			});

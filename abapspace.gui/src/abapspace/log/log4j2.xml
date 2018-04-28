@@ -6,12 +6,12 @@
 	</Properties>
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
-			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %msg%n" />
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %msg%n" />
 		</Console>
 		<File name="logFile" fileName="${logPath}/abapspace-${filePattern}.log"
 			immediateFlush="false" append="false" createOnDemand="true">
 			<PatternLayout
-				pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %msg%n" />
+				pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %msg%n" />
 		</File>
 	</Appenders>
 	<Loggers>

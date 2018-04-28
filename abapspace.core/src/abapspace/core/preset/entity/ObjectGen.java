@@ -32,7 +32,9 @@ public class ObjectGen {
 	private Integer nameMaxLength;
 
 	public ObjectGen() {
-
+		this.objectIdent = new String();
+		this.regexIdent = new String();
+		this.nameMaxLength = 0;
 	}
 
 	public String getObjectIdent() {

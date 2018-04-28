@@ -1,7 +1,6 @@
-package abapspace.gui;
+package abapspace.gui.main;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,8 +17,7 @@ import javax.swing.JPanel;
 
 import com.jidesoft.swing.FolderChooser;
 
-import abapspace.gui.edit.GUICEdit;
-import abapspace.gui.panel.PanelMain;
+import abapspace.gui.messages.GUIMessageManager;
 
 public class GUIMain {
 
@@ -37,7 +35,7 @@ public class GUIMain {
 	}
 
 	private void initialize() {
-		this.frameMain = new JFrame();
+		this.frameMain = new JFrame(GUIMessageManager.getMessage("frame.title.abapspace"));
 		this.frameMain.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
@@ -79,7 +77,7 @@ public class GUIMain {
 	
 	private JButton getBtnExit() {
 
-		JButton locBtnExit = new JButton("Exit");
+		JButton locBtnExit = new JButton(GUIMessageManager.getMessage("button.exit"));
 		locBtnExit.setIcon(new ImageIcon(GUIMain.class.getResource("/abapspace/gui/res/exit.png")));
 
 		locBtnExit.addActionListener(new ActionListener() {
@@ -93,7 +91,7 @@ public class GUIMain {
 
 	private JButton getBtnRefactor() {
 
-		JButton locBtn = new JButton("Refactor");
+		JButton locBtn = new JButton(GUIMessageManager.getMessage("button.refactor"));
 
 		locBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -112,11 +110,11 @@ public class GUIMain {
 		JOptionPane.showMessageDialog(this.frameMain, message, title, msgType);
 	}
 
-	public File showDirectoryChooser() {
+	public File showDirectoryChooser(String currentDirPath) {
 
 		File locDir = null;
 
-		FolderChooser locFolderChooser = new FolderChooser();
+		FolderChooser locFolderChooser = new FolderChooser(currentDirPath);
 
 		int result = locFolderChooser.showOpenDialog(this.frameMain);
 

@@ -161,7 +161,7 @@ public class Context implements Cloneable, InterfaceContext {
 
 		ContextCheckMaxNameLength locCheck = new ContextCheckMaxNameLength();
 
-		Integer locActualLength = new Integer(this.getObject().length());
+		Integer locActualLength = new Integer(this.getReplacement().length());
 		Integer locOffset = new Integer(locActualLength - this.nameMaxLength);
 
 		locCheck.setMaxNameLength(this.nameMaxLength);
