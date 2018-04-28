@@ -9,6 +9,9 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
 import javax.swing.JTable;
+
+import abapspace.gui.messages.GUIMessageManager;
+
 import javax.swing.JScrollPane;
 
 public class GUIEdit extends JFrame {
@@ -26,9 +29,9 @@ public class GUIEdit extends JFrame {
 	}
 
 	private void initialize() {
-		
+
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -37,6 +40,7 @@ public class GUIEdit extends JFrame {
 		});
 
 		setResizable(true);
+		setTitle(GUIMessageManager.getMessage("frame.title.edit"));
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setBounds(10, 10, 700, 652);
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -54,7 +58,9 @@ public class GUIEdit extends JFrame {
 	private JTable getTblEdit() {
 
 		if (tblEdit == null) {
-			String[] locColNames = { "Found Object", "Replacement", "Maximum Length", "Length" };
+			String[] locColNames = { GUIMessageManager.getMessage("table.col.1"),
+					GUIMessageManager.getMessage("table.col.2"), GUIMessageManager.getMessage("table.col.3"),
+					GUIMessageManager.getMessage("table.col.4") };
 			tblEdit = new JTable(new TableModelEdit(locColNames, guicedit.getData()));
 		}
 		return tblEdit;
