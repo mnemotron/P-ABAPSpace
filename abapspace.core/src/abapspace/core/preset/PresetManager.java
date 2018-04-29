@@ -1,6 +1,7 @@
 package abapspace.core.preset;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,8 @@ import abapspace.core.messages.MessageManager;
 import abapspace.core.preset.entity.Preset;
 
 public class PresetManager {
+
+	private static String FILE_SUFFIX_XML = "xml";
 
 	private File presetDir;
 	private List<Preset> presetList;
@@ -49,7 +52,19 @@ public class PresetManager {
 	public void importPresetList() {
 
 		List<Preset> locPresetList = new ArrayList<Preset>();
-		File[] locFiles = this.presetDir.listFiles();
+
+		FilenameFilter locFileNameFilter = new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith("." + FILE_SUFFIX_XML);
+			}
+		};
+
+		File[] locFiles = this.presetDir.listFiles(locFileNameFilter);
+
+		// TODO only xml dateien, valid nach xsd schema
+		// isPresetXMLFileValid()
 
 		for (File file : locFiles) {
 			try {
@@ -75,6 +90,29 @@ public class PresetManager {
 
 		return locPreset;
 	}
+
+	// TODO XML Preset Validation With XSD
+	private boolean isPresetXMLFileValid()
+	{
+//		static boolean validateAgainstXSD(InputStream xml, InputStream xsd)
+//		{
+//		    try
+//		    {
+//		        SchemaFactory factory = 
+//		            SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+//		        Schema schema = factory.newSchema(new StreamSource(xsd));
+//		        Validator validator = schema.newValidator();
+//		        validator.validate(new StreamSource(xml));
+//		        return true;
+//		    }
+//		    catch(Exception ex)
+//		    {
+//		        return false;
+//		    }
+//
+//	}
+
+	return false;}
 
 	public void exportPreset(File xmlFile, Preset preset) throws JAXBException {
 

@@ -45,7 +45,7 @@ public class GUIMain {
 		this.frameMain.setBounds(10, 10, 700, 652);
 		this.frameMain.setExtendedState(Frame.NORMAL);
 		this.frameMain.setResizable(false);
-		this.frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.frameMain.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.frameMain.getContentPane().add(getPanelMain(), BorderLayout.CENTER);
 		this.frameMain.getContentPane().add(getLblLogo(), BorderLayout.WEST);
 		this.frameMain.getContentPane().add(getPanelToolBar(), BorderLayout.SOUTH);

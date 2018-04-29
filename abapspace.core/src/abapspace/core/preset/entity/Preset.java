@@ -33,136 +33,135 @@ import abapspace.core.exception.TargetDirectoryNotFoundException;
 import abapspace.core.messages.MessageManager;
 
 @XmlRootElement
-public class Preset{
+public class Preset {
 
-    private String description;
-    private String refactorSourceDir;
-    private String refactorTargetDir;
-    private boolean checkNameMaxLength;
-    private String namespaceOld;
-    private String namespaceNew;
-    private String supplement;
-    private ObjectClass objectClass;
-    private ObjectInterface objectInterface;
+	private String description;
+	private String refactorSourceDir;
+	private String refactorTargetDir;
+	private boolean checkNameMaxLength;
+	private String namespaceOld;
+	private String namespaceNew;
+	private String supplement;
+	private ObjectClass objectClass;
+	private ObjectInterface objectInterface;
 
-    public Preset() {
-    	this.description = new String();
-    	this.refactorSourceDir = new String();
-    	this.refactorTargetDir = new String();
-    	this.namespaceNew = new String();
-    	this.namespaceOld = new String();
-    	this.supplement = new String();
-    	this.objectClass = new ObjectClass();
-    	this.objectInterface = new ObjectInterface();
-    	this.checkNameMaxLength = false;
-    }
-
-    public String getDescription() {
-	return description;
-    }
-
-    @XmlElement
-    public void setDescription(String description) {
-	this.description = description;
-    }
-
-    public String getSupplement() {
-	return supplement;
-    }
-
-    @XmlElement
-    public void setSupplement(String supplement) {
-	this.supplement = supplement;
-    }
-
-    public String getRefactorSourceDir() {
-	return refactorSourceDir;
-    }
-
-    @XmlElement
-    public void setRefactorSourceDir(String refactorSourceDir) {
-	this.refactorSourceDir = refactorSourceDir;
-    }
-
-    public String getRefactorTargetDir() {
-	return refactorTargetDir;
-    }
-
-    @XmlElement
-    public void setRefactorTargetDir(String refactorTargetDir) {
-	this.refactorTargetDir = refactorTargetDir;
-    }
-
-    public boolean isCheckNameMaxLength() {
-	return checkNameMaxLength;
-    }
-
-    @XmlElement
-    public void setCheckNameMaxLength(boolean checkNameMaxLength) {
-	this.checkNameMaxLength = checkNameMaxLength;
-    }
-
-    public ObjectClass getObjectClass() {
-	return objectClass;
-    }
-
-    @XmlElement
-    public void setObjectClass(ObjectClass objectClass) {
-	this.objectClass = objectClass;
-    }
-
-    public ObjectInterface getObjectInterface() {
-	return objectInterface;
-    }
-
-    @XmlElement
-    public void setObjectInterface(ObjectInterface objectInterface) {
-	this.objectInterface = objectInterface;
-    }
-
-    public String getNamespaceOld() {
-	return namespaceOld;
-    }
-
-    @XmlElement
-    public void setNamespaceOld(String namespaceOld) {
-	this.namespaceOld = namespaceOld;
-    }
-
-    public String getNamespaceNew() {
-	return namespaceNew;
-    }
-
-    @XmlElement
-    public void setNamespaceNew(String namespaceNew) {
-	this.namespaceNew = namespaceNew;
-    }
-
-    public File getFileSourceDir() throws SourceDirectoryNotFoundException {
-	File locSourceDir = new File(this.refactorSourceDir);
-
-	if (!locSourceDir.exists() || !locSourceDir.isDirectory()) {
-	    throw new SourceDirectoryNotFoundException(
-		    MessageManager.getMessage("exception.sourceDirNotFound") + locSourceDir.getAbsolutePath());
+	public Preset() {
+		this.description = new String();
+		this.refactorSourceDir = new String();
+		this.refactorTargetDir = new String();
+		this.namespaceNew = new String();
+		this.namespaceOld = new String();
+		this.supplement = new String();
+		this.objectClass = new ObjectClass();
+		this.objectInterface = new ObjectInterface();
+		this.checkNameMaxLength = false;
 	}
 
-	return locSourceDir;
-    }
-    
-    public File getFileTargetDir() throws TargetDirectoryNotFoundException {
-	File locTargetDir = new File(this.refactorTargetDir);
-
-	if (!locTargetDir.exists() || !locTargetDir.isDirectory()) {
-	    throw new TargetDirectoryNotFoundException(
-		    MessageManager.getMessage("exception.targetDirNotFound") + locTargetDir.getAbsolutePath());
+	public String getDescription() {
+		return description;
 	}
 
-	return locTargetDir;
-    }
-    
-    @Override
-    public String toString()
-    {
-	return this.getDescription();
-    }
+	@XmlElement
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getSupplement() {
+		return supplement;
+	}
+
+	@XmlElement
+	public void setSupplement(String supplement) {
+		this.supplement = supplement;
+	}
+
+	public String getRefactorSourceDir() {
+		return refactorSourceDir;
+	}
+
+	@XmlElement
+	public void setRefactorSourceDir(String refactorSourceDir) {
+		this.refactorSourceDir = refactorSourceDir;
+	}
+
+	public String getRefactorTargetDir() {
+		return refactorTargetDir;
+	}
+
+	@XmlElement
+	public void setRefactorTargetDir(String refactorTargetDir) {
+		this.refactorTargetDir = refactorTargetDir;
+	}
+
+	public boolean isCheckNameMaxLength() {
+		return checkNameMaxLength;
+	}
+
+	@XmlElement
+	public void setCheckNameMaxLength(boolean checkNameMaxLength) {
+		this.checkNameMaxLength = checkNameMaxLength;
+	}
+
+	public ObjectClass getObjectClass() {
+		return objectClass;
+	}
+
+	@XmlElement
+	public void setObjectClass(ObjectClass objectClass) {
+		this.objectClass = objectClass;
+	}
+
+	public ObjectInterface getObjectInterface() {
+		return objectInterface;
+	}
+
+	@XmlElement
+	public void setObjectInterface(ObjectInterface objectInterface) {
+		this.objectInterface = objectInterface;
+	}
+
+	public String getNamespaceOld() {
+		return namespaceOld;
+	}
+
+	@XmlElement
+	public void setNamespaceOld(String namespaceOld) {
+		this.namespaceOld = namespaceOld;
+	}
+
+	public String getNamespaceNew() {
+		return namespaceNew;
+	}
+
+	@XmlElement
+	public void setNamespaceNew(String namespaceNew) {
+		this.namespaceNew = namespaceNew;
+	}
+
+	public File getFileSourceDir() throws SourceDirectoryNotFoundException {
+		File locSourceDir = new File(this.refactorSourceDir);
+
+		if (!locSourceDir.exists() || !locSourceDir.isDirectory()) {
+			throw new SourceDirectoryNotFoundException(
+					MessageManager.getMessage("exception.sourceDirNotFound") + locSourceDir.getAbsolutePath());
+		}
+
+		return locSourceDir;
+	}
+
+	public File getFileTargetDir() throws TargetDirectoryNotFoundException {
+		File locTargetDir = new File(this.refactorTargetDir);
+
+		if (!locTargetDir.exists() || !locTargetDir.isDirectory()) {
+			throw new TargetDirectoryNotFoundException(
+					MessageManager.getMessage("exception.targetDirNotFound") + locTargetDir.getAbsolutePath());
+		}
+
+		return locTargetDir;
+	}
+
+	@Override
+	public String toString() {
+		return this.getDescription();
+	}
 }

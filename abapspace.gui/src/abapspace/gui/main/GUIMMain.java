@@ -1,5 +1,6 @@
 package abapspace.gui.main;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,12 +68,40 @@ public class GUIMMain {
 		return locPresetList;
 	}
 
+	public boolean isPresetListEmpty() {
+		if (this.presetManager != null) {
+			return this.presetManager.getPresetList().isEmpty();
+		} else {
+			return true;
+		}
+	}
+
 	public Preset getPreset() {
 		return preset;
 	}
 
 	public void setPreset(Preset preset) {
 		this.preset = preset;
+	}
+
+	public String getSourceDir() throws SourceDirectoryNotFoundException {
+		File locFile = this.getPreset().getFileSourceDir();
+
+		if (locFile != null) {
+			return locFile.getAbsolutePath();
+		} else {
+			return new String();
+		}
+	}
+
+	public String getTargetDir() throws TargetDirectoryNotFoundException {
+		File locFile = this.getPreset().getFileTargetDir();
+
+		if (locFile != null) {
+			return locFile.getAbsolutePath();
+		} else {
+			return new String();
+		}
 	}
 
 	public boolean startPreRefactor()
@@ -90,6 +119,14 @@ public class GUIMMain {
 		}
 
 		return locValid;
+	}
+
+	public void setSourceDir(String sourceDir) {
+		this.preset.setRefactorSourceDir(sourceDir);
+	}
+
+	public void setTargetDir(String targetDir) {
+		this.preset.setRefactorTargetDir(targetDir);
 	}
 
 	public void startRefactor()
@@ -111,14 +148,14 @@ public class GUIMMain {
 
 		Object[][] locObjectArray = new Object[locEditMap.size()][4]; // 1 row, 2 col
 
-		int locRow[] = {0};
+		int locRow[] = { 0 };
 
 		locEditMap.forEach((objectID, iContext) -> {
-			
+
 			ContextCheckMaxNameLength locMaxNameLength = iContext.checkMaxNameLengthForReplacement();
 
 			for (int j = 0, lj = locObjectArray[locRow[0]].length; j < lj; j++) {
-				
+
 				switch (j) {
 				case 0: // found object
 					locObjectArray[locRow[0]][j] = iContext.getObject();

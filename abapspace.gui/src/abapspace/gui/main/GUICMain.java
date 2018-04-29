@@ -20,13 +20,16 @@ public class GUICMain {
 
 	public GUICMain() {
 
-		// init GUI
-		this.guimain = new GUIMain(this);
-
 		// init model
 		this.guimmain = new GUIMMain();
 
+		// init GUI
+		this.guimain = new GUIMain(this);
+
 		this.setPresetManager(null);
+		this.addPresetsToComboBox();
+
+		this.visualController();
 	}
 
 	public void startGUI() {
@@ -36,8 +39,11 @@ public class GUICMain {
 	}
 
 	public void stopGUI() {
-		this.guimain.getFrameMain().setVisible(false);
-		System.exit(0);
+
+		if (this.guimain.getFrameMain().isEnabled()) {
+			this.guimain.getFrameMain().setVisible(false);
+			System.exit(0);
+		}
 	}
 
 	public void chooseDirPreset() {
@@ -48,35 +54,54 @@ public class GUICMain {
 		}
 
 		this.setPresetManager(locPresetDir);
+
+		this.addPresetsToComboBox();
 	}
 
 	public void chooseDirSource() {
-		
+
 		File locSourceDir = this.guimain.showDirectoryChooser(this.guimmain.getPreset().getRefactorSourceDir());
 
+		this.guimmain.setSourceDir(locSourceDir.getAbsolutePath());
+
+		this.setSourceDirToTxf();
 	}
 
 	public void chooseDirTarget() {
 		File locTargetDir = this.guimain.showDirectoryChooser(this.guimmain.getPreset().getRefactorTargetDir());
 
+		this.guimmain.setTargetDir(locTargetDir.getAbsolutePath());
+
+		this.setTargetDirToTxf();
 	}
 
 	public void choosePreset(Preset preset) {
-		this.guimmain.setPreset(preset);
 
-		try {
-			this.guimain.getPanelMain().getTxtSourceDir().setText(preset.getFileSourceDir().getAbsolutePath());
-		} catch (SourceDirectoryNotFoundException e) {
-			this.guimain.getPanelMain().getTxtSourceDir().setText(null);
-			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.sourceDir"),
-					JOptionPane.ERROR_MESSAGE);
+		if (preset != null) {
+			this.guimmain.setPreset(preset);
 		}
 
+		this.setSourceDirToTxf();
+
+		this.setTargetDirToTxf();
+	}
+
+	public void setTargetDirToTxf() {
 		try {
-			this.guimain.getPanelMain().getTxtTargetDir().setText(preset.getFileTargetDir().getAbsolutePath());
+			this.guimain.getPanelMain().getTxtTargetDir().setText(this.guimmain.getTargetDir());
 		} catch (TargetDirectoryNotFoundException e) {
 			this.guimain.getPanelMain().getTxtTargetDir().setText(null);
 			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.targetDir"),
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public void setSourceDirToTxf() {
+		try {
+			this.guimain.getPanelMain().getTxtSourceDir().setText(this.guimmain.getSourceDir());
+		} catch (SourceDirectoryNotFoundException e) {
+			this.guimain.getPanelMain().getTxtSourceDir().setText(null);
+			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.sourceDir"),
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -105,6 +130,24 @@ public class GUICMain {
 		guicedit.startGUI();
 	}
 
+	public void visualController() {
+		PanelMain locPanelMain = this.guimain.getPanelMain();
+
+		if ((this.guimmain.getPresetDir().isEmpty()) || (this.guimmain.isPresetListEmpty())) {
+			locPanelMain.getBtnSourceDir().setEnabled(false);
+			locPanelMain.getBtnTargetDir().setEnabled(false);
+			locPanelMain.getCbPreset().setEnabled(false);
+			
+			locPanelMain.getTxtSourceDir().setText(null);
+			locPanelMain.getTxtTargetDir().setText(null);
+			
+		} else {
+			locPanelMain.getBtnSourceDir().setEnabled(true);
+			locPanelMain.getBtnTargetDir().setEnabled(true);
+			locPanelMain.getCbPreset().setEnabled(true);
+		}
+	}
+
 	private void setPresetManager(File preset) {
 
 		try {
@@ -114,7 +157,6 @@ public class GUICMain {
 				this.guimmain.setPresetManagerDefault();
 			}
 
-			this.addPresetsToComboBox();
 		} catch (PresetDirNotFoundException e) {
 			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.presetDir"),
 					JOptionPane.ERROR_MESSAGE);
