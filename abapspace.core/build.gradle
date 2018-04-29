@@ -22,7 +22,7 @@ jar {
 
 // DEPENDENCIES
 dependencies {
-	compile fileTree(dir: 'lib/log4j-2.11', include: ['*.jar'])
+
 }
 
 // SOURCE SETS
