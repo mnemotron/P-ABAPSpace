@@ -1,3 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Preset" xmlns:tns="http://www.example.org/Preset" elementFormDefault="qualified">
-</schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.org/Preset"
+	xmlns:tns="http://www.example.org/Preset"
+	elementFormDefault="qualified">
+
+	<xs:complexType name="objectTypeGen" mixed="true">
+		<xs:sequence>
+			<xs:element name="objectIdent" type="xs:normalizedString"
+				minOccurs="1" maxOccurs="1"></xs:element>
+			<xs:element name="regexIdent" type="xs:string"
+				minOccurs="1" maxOccurs="1"></xs:element>
+			<xs:element name="nameMaxLength" type="xs:int"
+				minOccurs="1" maxOccurs="1"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="preset">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="description" type="xs:normalizedString"
+					minOccurs="1" maxOccurs="1"></xs:element>
+				<xs:element name="refactorSourceDir"
+					type="xs:normalizedString" minOccurs="1" maxOccurs="1"></xs:element>
+				<xs:element name="refactorTargetDir"
+					type="xs:normalizedString" minOccurs="1" maxOccurs="1"></xs:element>
+				<xs:element name="checkNameMaxLength" type="xs:boolean"
+					minOccurs="1" maxOccurs="1"></xs:element>
+				<xs:element name="namespaceNew"
+					type="xs:normalizedString" minOccurs="1" maxOccurs="1"></xs:element>
+				<xs:element name="supplement" type="xs:normalizedString"
+					minOccurs="0" maxOccurs="1"></xs:element>
+				<xs:element name="namespaceOldList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="namespaceOld" minOccurs="1"
+								maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:normalizedString">
+											<xs:attribute name="objectPolicy"
+												type="xs:boolean" use="optional" />
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="objectPolicy" minOccurs="0"
+					maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="objectPackage" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xs:element>
+							<xs:element name="objectClass" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xs:element>
+							<xs:element name="objectInterface" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

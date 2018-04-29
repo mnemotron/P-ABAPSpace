@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<preset>
+<preset xmlns="http://www.example.org/Preset"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.org/schemas Preset.xsd">
 	<description>Test</description>
 	<refactorSourceDir>source/</refactorSourceDir>
 	<refactorTargetDir>target/</refactorTargetDir>
 	<checkNameMaxLength>true</checkNameMaxLength>
 	<namespaceNew>/xxx/</namespaceNew>
-	<namespaceOld>z</namespaceOld>
 	<supplement>_xyz_x0001_</supplement>
-	<objectPackage>
-		<objectIdent>pa</objectIdent>
-		<regexIdent>\w*</regexIdent>
-		<nameMaxLength>30</nameMaxLength>
-	</objectPackage>
-	<objectClass>
-		<objectIdent>cl</objectIdent>
-		<regexIdent>\w*</regexIdent>
-		<nameMaxLength>30</nameMaxLength>
-	</objectClass>
-	<objectInterface>
-		<objectIdent>if</objectIdent>
-		<regexIdent>\w*</regexIdent>
-		<nameMaxLength>30</nameMaxLength>
-	</objectInterface>
-
-	<!-- <specificRules></specificRules> -->
-	<!-- <namespaceList> -->
-	<!-- <namespace>z</namespace> -->
-	<!-- <namespace specificRule=true>zzzzz</namespace> -->
-	<!-- </namespaceList> -->
+	<namespaceOldList>
+		<namespaceOld objectPolicy="true">z</namespaceOld>
+	</namespaceOldList>
+	<objectPolicy>
+		<objectPackage>
+			<objectIdent>pa</objectIdent>
+			<regexIdent>\w*</regexIdent>
+			<nameMaxLength>30</nameMaxLength>
+		</objectPackage>
+		<objectClass>
+			<objectIdent>cl</objectIdent>
+			<regexIdent>\w*</regexIdent>
+			<nameMaxLength>30</nameMaxLength>
+		</objectClass>
+		<objectInterface>
+			<objectIdent>if</objectIdent>
+			<regexIdent>\w*</regexIdent>
+			<nameMaxLength>30</nameMaxLength>
+		</objectInterface>
+	</objectPolicy>
 </preset>
