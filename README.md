@@ -10,13 +10,24 @@ ABAP Namespace Refactoring
   + the refactoring is configurable via a XML preset file
 
 + <b>CHECKS</b><br>
-  + the maximum object name length can be checked
+  + the maximum object name length can be checked (if the extended object naming policy is used)
   
 + <b>OBJECTS</b><br>
   + classes, interfaces
   
 ## Get Started
-### Prerequisites
+Coming soon...
+
+## Build
+The following projects can be build with [Gradle](https://gradle.org):
+
++ abapspace.core
++ abapspace.gui (uses the abapspace.core library)
+
+Command line:
+```bash
+gradle build
+```
   
 ## Basis for Refactoring
 Use the abapGit client and its created object files as basis for the refactoring.
