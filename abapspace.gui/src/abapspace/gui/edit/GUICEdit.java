@@ -27,6 +27,8 @@ public class GUICEdit {
 	public void stopGUI() {
 		this.guiedit.setVisible(false);
 		this.guicmain.getGuimain().getFrameMain().setEnabled(true);
+		this.guicmain.getGuimain().getFrameMain().toFront();
+		this.guicmain.getGuimain().getFrameMain().requestFocus();
 	}
 
 	public Object[][] getData() {
