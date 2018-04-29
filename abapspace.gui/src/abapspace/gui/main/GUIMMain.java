@@ -41,10 +41,14 @@ public class GUIMMain {
 
 	public void setPresetManager(String presetDir) throws PresetDirNotFoundException {
 		this.presetManager = PresetManager.getInstance(presetDir);
+		
+		this.preset = new Preset();
 	}
 
 	public void setPresetManagerDefault() throws PresetDirNotFoundException {
 		this.setPresetManager(GUIMMain.PRESET_DIR_DEFAULT);
+		
+		this.preset = new Preset();
 	}
 
 	public String getPresetDir() {

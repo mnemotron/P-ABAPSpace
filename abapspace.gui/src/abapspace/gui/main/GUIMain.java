@@ -25,6 +25,7 @@ public class GUIMain {
 
 	private JFrame frameMain;
 	private PanelMain panelMain;
+	private JButton btnRefactor;
 
 	public GUIMain(GUICMain guicmain) {
 
@@ -63,18 +64,17 @@ public class GUIMain {
 
 		return locLblLogo;
 	}
-	
-	private JPanel getPanelToolBar()
-	{
+
+	private JPanel getPanelToolBar() {
 		JPanel locPanel = new JPanel();
 		locPanel.setLayout(new BorderLayout(0, 0));
-		
+
 		locPanel.add(getBtnExit(), BorderLayout.WEST);
 		locPanel.add(getBtnRefactor(), BorderLayout.CENTER);
-		
+
 		return locPanel;
 	}
-	
+
 	private JButton getBtnExit() {
 
 		JButton locBtnExit = new JButton(GUIMessageManager.getMessage("button.exit"));
@@ -89,23 +89,25 @@ public class GUIMain {
 		return locBtnExit;
 	}
 
-	private JButton getBtnRefactor() {
+	public JButton getBtnRefactor() {
 
-		JButton locBtn = new JButton(GUIMessageManager.getMessage("button.refactor"));
+		if (btnRefactor == null) {
+			btnRefactor = new JButton(GUIMessageManager.getMessage("button.refactor"));
 
-		locBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				guicmain.startPreRefactor();
-			}
-		});
+			btnRefactor.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					guicmain.startPreRefactor();
+				}
+			});
+		}
 
-		return locBtn;
+		return btnRefactor;
 	}
 
 	public JFrame getFrameMain() {
 		return this.frameMain;
 	}
-	
+
 	public void showMessage(String message, String title, int msgType) {
 		JOptionPane.showMessageDialog(this.frameMain, message, title, msgType);
 	}

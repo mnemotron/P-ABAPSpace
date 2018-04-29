@@ -62,17 +62,21 @@ public class GUICMain {
 
 		File locSourceDir = this.guimain.showDirectoryChooser(this.guimmain.getPreset().getRefactorSourceDir());
 
-		this.guimmain.setSourceDir(locSourceDir.getAbsolutePath());
+		if (locSourceDir != null) {
+			this.guimmain.setSourceDir(locSourceDir.getAbsolutePath());
 
-		this.setSourceDirToTxf();
+			this.setSourceDirToTxf();
+		}
 	}
 
 	public void chooseDirTarget() {
 		File locTargetDir = this.guimain.showDirectoryChooser(this.guimmain.getPreset().getRefactorTargetDir());
 
-		this.guimmain.setTargetDir(locTargetDir.getAbsolutePath());
+		if (locTargetDir != null) {
+			this.guimmain.setTargetDir(locTargetDir.getAbsolutePath());
 
-		this.setTargetDirToTxf();
+			this.setTargetDirToTxf();
+		}
 	}
 
 	public void choosePreset(Preset preset) {
@@ -91,8 +95,8 @@ public class GUICMain {
 			this.guimain.getPanelMain().getTxtTargetDir().setText(this.guimmain.getTargetDir());
 		} catch (TargetDirectoryNotFoundException e) {
 			this.guimain.getPanelMain().getTxtTargetDir().setText(null);
-			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.targetDir"),
-					JOptionPane.ERROR_MESSAGE);
+//			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.targetDir"),
+//					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -101,8 +105,8 @@ public class GUICMain {
 			this.guimain.getPanelMain().getTxtSourceDir().setText(this.guimmain.getSourceDir());
 		} catch (SourceDirectoryNotFoundException e) {
 			this.guimain.getPanelMain().getTxtSourceDir().setText(null);
-			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.sourceDir"),
-					JOptionPane.ERROR_MESSAGE);
+//			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.sourceDir"),
+//					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -137,14 +141,24 @@ public class GUICMain {
 			locPanelMain.getBtnSourceDir().setEnabled(false);
 			locPanelMain.getBtnTargetDir().setEnabled(false);
 			locPanelMain.getCbPreset().setEnabled(false);
-			
+
 			locPanelMain.getTxtSourceDir().setText(null);
 			locPanelMain.getTxtTargetDir().setText(null);
-			
 		} else {
 			locPanelMain.getBtnSourceDir().setEnabled(true);
 			locPanelMain.getBtnTargetDir().setEnabled(true);
 			locPanelMain.getCbPreset().setEnabled(true);
+		}
+
+		try {
+			if (this.guimmain.getPreset().getFileSourceDir() != null
+					&& this.guimmain.getPreset().getFileTargetDir() != null) {
+				this.guimain.getBtnRefactor().setEnabled(true);
+			} else {
+				this.guimain.getBtnRefactor().setEnabled(false);
+			}
+		} catch (SourceDirectoryNotFoundException | TargetDirectoryNotFoundException e) {
+			this.guimain.getBtnRefactor().setEnabled(false);
 		}
 	}
 
