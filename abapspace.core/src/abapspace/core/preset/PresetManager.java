@@ -2,13 +2,21 @@ package abapspace.core.preset;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+
+import org.xml.sax.SAXException;
 
 import abapspace.core.exception.PresetDirNotFoundException;
 import abapspace.core.log.LogEventManager;
@@ -18,15 +26,19 @@ import abapspace.core.preset.entity.Preset;
 
 public class PresetManager {
 
-	private static String FILE_SUFFIX_XML = "xml";
+	private static String FILE_SUFFIX_XPX = "xpx";
+	private static String PRESET_XML_SCHEMA_PATH = "/abapspace/core/preset/entity/Preset.xsd";
 
 	private File presetDir;
+	private File presetSchemaFile;
 	private List<Preset> presetList;
 
-	public static PresetManager getInstance(String presetDir) throws PresetDirNotFoundException {
+	public static PresetManager getInstance(String presetDir)
+			throws PresetDirNotFoundException{
 
+		File locPresetSchemaFile = PresetManager.getInstanceXMLSchemaFile();
 		File locPresetDir = PresetManager.getInstanceXMLDir(presetDir);
-		PresetManager locPresetManager = new PresetManager(locPresetDir);
+		PresetManager locPresetManager = new PresetManager(locPresetDir, locPresetSchemaFile);
 
 		return locPresetManager;
 	}
@@ -43,9 +55,15 @@ public class PresetManager {
 		return locPresetDir;
 	}
 
-	private PresetManager(File presetDir) {
+	private static File getInstanceXMLSchemaFile() {
+		File locPresetSchemaFile = new File(PRESET_XML_SCHEMA_PATH);
+		return locPresetSchemaFile;
+	}
+
+	private PresetManager(File presetDir, File presetSchemaFile) {
 		this.presetDir = presetDir;
 		this.presetList = new ArrayList<Preset>();
+		this.presetSchemaFile = presetSchemaFile;
 		this.importPresetList();
 	}
 
@@ -57,19 +75,22 @@ public class PresetManager {
 
 			@Override
 			public boolean accept(File dir, String name) {
-				return name.endsWith("." + FILE_SUFFIX_XML);
+				return name.endsWith("." + FILE_SUFFIX_XPX);
 			}
 		};
 
 		File[] locFiles = this.presetDir.listFiles(locFileNameFilter);
 
-		// TODO only xml dateien, valid nach xsd schema
-		// isPresetXMLFileValid()
-
 		for (File file : locFiles) {
 			try {
 				Preset locPreset = this.importPreset(file);
-				locPresetList.add(locPreset);
+
+				if (!this.isPresetXMLFileValid(file)) {
+					LogEventManager.fireLog(LogType.WARNING, MessageManager.getMessage("check.presetFile") + file.getAbsolutePath());
+				} else {
+					locPresetList.add(locPreset);
+				}
+				
 			} catch (JAXBException e) {
 				LogEventManager.fireLog(LogType.ERROR, MessageManager.getMessage("exception.presetFileImport"), e);
 			}
@@ -91,28 +112,22 @@ public class PresetManager {
 		return locPreset;
 	}
 
-	// TODO XML Preset Validation With XSD
-	private boolean isPresetXMLFileValid()
-	{
-//		static boolean validateAgainstXSD(InputStream xml, InputStream xsd)
-//		{
-//		    try
-//		    {
-//		        SchemaFactory factory = 
-//		            SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-//		        Schema schema = factory.newSchema(new StreamSource(xsd));
-//		        Validator validator = schema.newValidator();
-//		        validator.validate(new StreamSource(xml));
-//		        return true;
-//		    }
-//		    catch(Exception ex)
-//		    {
-//		        return false;
-//		    }
-//
-//	}
+	private boolean isPresetXMLFileValid(File presetFile) {
 
-	return false;}
+		boolean locValid = false;
+
+		try {
+			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema = factory.newSchema(new StreamSource(this.presetSchemaFile));
+			Validator validator = schema.newValidator();
+			validator.validate(new StreamSource(presetFile));
+			locValid = true;
+		} catch (SAXException | IOException e) {
+			locValid = false;
+		}
+
+		return locValid;
+	}
 
 	public void exportPreset(File xmlFile, Preset preset) throws JAXBException {
 
