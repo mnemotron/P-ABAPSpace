@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class ObjectGen {
 
-    	private String objectIdent;
+	private String objectIdent;
 	private String regexIdent;
 	private Integer nameMaxLength;
 
@@ -38,21 +38,21 @@ public class ObjectGen {
 	}
 
 	public String getObjectIdent() {
-	    return objectIdent;
+		return objectIdent;
 	}
 
 	@XmlElement
 	public void setObjectIdent(String objectIdent) {
-	    this.objectIdent = objectIdent;
+		this.objectIdent = objectIdent;
 	}
 
 	public String getRegexIdent() {
-	    return regexIdent;
+		return regexIdent;
 	}
 
 	@XmlElement
 	public void setRegexIdent(String regexIdent) {
-	    this.regexIdent = regexIdent;
+		this.regexIdent = regexIdent;
 	}
 
 	public Integer getNameMaxLength() {

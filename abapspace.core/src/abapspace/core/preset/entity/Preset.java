@@ -24,6 +24,8 @@
 package abapspace.core.preset.entity;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,22 +41,20 @@ public class Preset {
 	private String refactorSourceDir;
 	private String refactorTargetDir;
 	private boolean checkNameMaxLength;
-	private String namespaceOld;
 	private String namespaceNew;
 	private String supplement;
-	private ObjectClass objectClass;
-	private ObjectInterface objectInterface;
+	private List<NamespaceOld> namespaceOldList;
+	private ObjectPolicy objectPolicy;
 
 	public Preset() {
 		this.description = new String();
 		this.refactorSourceDir = new String();
 		this.refactorTargetDir = new String();
 		this.namespaceNew = new String();
-		this.namespaceOld = new String();
 		this.supplement = new String();
-		this.objectClass = new ObjectClass();
-		this.objectInterface = new ObjectInterface();
+		this.namespaceOldList = new ArrayList<NamespaceOld>();
 		this.checkNameMaxLength = false;
+		this.objectPolicy = new ObjectPolicy();
 	}
 
 	public String getDescription() {
@@ -102,35 +102,26 @@ public class Preset {
 		this.checkNameMaxLength = checkNameMaxLength;
 	}
 
-	public ObjectClass getObjectClass() {
-		return objectClass;
-	}
-
-	@XmlElement
-	public void setObjectClass(ObjectClass objectClass) {
-		this.objectClass = objectClass;
-	}
-
-	public ObjectInterface getObjectInterface() {
-		return objectInterface;
-	}
-
-	@XmlElement
-	public void setObjectInterface(ObjectInterface objectInterface) {
-		this.objectInterface = objectInterface;
-	}
-
-	public String getNamespaceOld() {
-		return namespaceOld;
-	}
-
-	@XmlElement
-	public void setNamespaceOld(String namespaceOld) {
-		this.namespaceOld = namespaceOld;
-	}
-
 	public String getNamespaceNew() {
 		return namespaceNew;
+	}
+
+	public List<NamespaceOld> getNamespaceOldList() {
+		return namespaceOldList;
+	}
+
+	@XmlElement
+	public void setNamespaceOldList(List<NamespaceOld> namespaceOldList) {
+		this.namespaceOldList = namespaceOldList;
+	}
+
+	public ObjectPolicy getObjectPolicy() {
+		return objectPolicy;
+	}
+
+	@XmlElement
+	public void setObjectPolicy(ObjectPolicy objectPolicy) {
+		this.objectPolicy = objectPolicy;
 	}
 
 	@XmlElement
