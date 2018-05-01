@@ -41,7 +41,7 @@ public class ObjectGen {
 		return objectIdent;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setObjectIdent(String objectIdent) {
 		this.objectIdent = objectIdent;
 	}
@@ -50,7 +50,7 @@ public class ObjectGen {
 		return regexIdent;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setRegexIdent(String regexIdent) {
 		this.regexIdent = regexIdent;
 	}
@@ -59,7 +59,7 @@ public class ObjectGen {
 		return nameMaxLength;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setNameMaxLength(Integer nameMaxLength) {
 		this.nameMaxLength = nameMaxLength;
 	}

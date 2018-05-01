@@ -18,7 +18,7 @@ public class ObjectPolicy {
 		return objectPackage;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setObjectPackage(ObjectPackage objectPackage) {
 		this.objectPackage = objectPackage;
 	}
@@ -27,7 +27,7 @@ public class ObjectPolicy {
 		return objectClass;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setObjectClass(ObjectClass objectClass) {
 		this.objectClass = objectClass;
 	}
@@ -36,7 +36,7 @@ public class ObjectPolicy {
 		return objectInterface;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setObjectInterface(ObjectInterface objectInterface) {
 		this.objectInterface = objectInterface;
 	}

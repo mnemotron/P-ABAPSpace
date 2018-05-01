@@ -6,28 +6,29 @@ import javax.xml.bind.annotation.XmlValue;
 public class NamespaceOld {
 
 	private boolean objectPolicy;
-	private String namespaceOld;
+	private String value;
 
 	public NamespaceOld() {
 		this.objectPolicy = false;
-		this.namespaceOld = new String();
+		this.value = new String();
 	}
 
 	public boolean isObjectPolicy() {
 		return objectPolicy;
 	}
 
-	@XmlAttribute
+	@XmlAttribute(namespace = "http://www.example.org/Preset")
 	public void setObjectPolicy(boolean objectPolicy) {
 		this.objectPolicy = objectPolicy;
 	}
 
-	public String getNamespaceOld() {
-		return namespaceOld;
+	public String getValue() {
+		return value;
 	}
 
 	@XmlValue
-	public void setNamespaceOld(String namespaceOld) {
-		this.namespaceOld = namespaceOld;
+	public void setValue(String value) {
+		this.value = value;
 	}
+
 }

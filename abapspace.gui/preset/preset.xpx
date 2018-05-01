@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<preset xmlns="http://www.example.org/Preset"
+<tns:preset xmlns:tns="http://www.example.org/Preset"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.example.org/schemas Preset.xsd">
-	<description>Test</description>
-	<refactorSourceDir>source/</refactorSourceDir>
-	<refactorTargetDir>target/</refactorTargetDir>
-	<checkNameMaxLength>true</checkNameMaxLength>
-	<namespaceNew>/xxx/</namespaceNew>
-	<supplement>_xyz_x0001_</supplement>
-	<namespaceOldList>
-		<namespaceOld objectPolicy="true">z</namespaceOld>
-		<namespaceOld>z</namespaceOld>
-	</namespaceOldList>
-	<objectPolicyGeneral>
-		<regexIdent>\w*</regexIdent>
-	</objectPolicyGeneral>
-	<objectPolicy>
-		<objectPackage>
-			<objectIdent>pa</objectIdent>
-			<regexIdent>\w*</regexIdent>
-			<nameMaxLength>30</nameMaxLength>
-		</objectPackage>
-		<objectClass>
-			<objectIdent>cl</objectIdent>
-			<regexIdent>\w*</regexIdent>
-			<nameMaxLength>30</nameMaxLength>
-		</objectClass>
-		<objectInterface>
-			<objectIdent>if</objectIdent>
-			<regexIdent>\w*</regexIdent>
-			<nameMaxLength>30</nameMaxLength>
-		</objectInterface>
-	</objectPolicy>
-</preset>
+	xsi:schemaLocation="http://www.example.org/Preset Preset.xsd">
+	<tns:description>Test</tns:description>
+	<tns:refactorSourceDir>source/</tns:refactorSourceDir>
+	<tns:refactorTargetDir>target/</tns:refactorTargetDir>
+	<tns:checkNameMaxLength>true</tns:checkNameMaxLength>
+	<tns:namespaceNew>/xxx/</tns:namespaceNew>
+	<tns:supplement>_xyz_x0001_</tns:supplement>
+	<tns:namespaceOldList>
+		<tns:namespaceOld objectPolicy="true">z</tns:namespaceOld>
+		<tns:namespaceOld>z</tns:namespaceOld>
+	</tns:namespaceOldList>
+	<tns:objectPolicyGeneral>
+		<tns:regexIdent>\w*</tns:regexIdent>
+	</tns:objectPolicyGeneral>
+	<tns:objectPolicy>
+		<tns:objectPackage>
+			<tns:objectIdent>pa</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>30</tns:nameMaxLength>
+		</tns:objectPackage>
+		<tns:objectClass>
+			<tns:objectIdent>cl</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>30</tns:nameMaxLength>
+		</tns:objectClass>
+		<tns:objectInterface>
+			<tns:objectIdent>if</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>30</tns:nameMaxLength>
+		</tns:objectInterface>
+	</tns:objectPolicy>
+</tns:preset>

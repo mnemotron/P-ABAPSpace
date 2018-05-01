@@ -28,13 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import abapspace.core.exception.SourceDirectoryNotFoundException;
 import abapspace.core.exception.TargetDirectoryNotFoundException;
 import abapspace.core.messages.MessageManager;
 
-@XmlRootElement
+@XmlRootElement(namespace="http://www.example.org/Preset")
 public class Preset {
 
 	private String description;
@@ -63,7 +64,7 @@ public class Preset {
 		return description;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -72,7 +73,7 @@ public class Preset {
 		return supplement;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setSupplement(String supplement) {
 		this.supplement = supplement;
 	}
@@ -81,7 +82,7 @@ public class Preset {
 		return refactorSourceDir;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setRefactorSourceDir(String refactorSourceDir) {
 		this.refactorSourceDir = refactorSourceDir;
 	}
@@ -90,7 +91,7 @@ public class Preset {
 		return refactorTargetDir;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setRefactorTargetDir(String refactorTargetDir) {
 		this.refactorTargetDir = refactorTargetDir;
 	}
@@ -99,7 +100,7 @@ public class Preset {
 		return checkNameMaxLength;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setCheckNameMaxLength(boolean checkNameMaxLength) {
 		this.checkNameMaxLength = checkNameMaxLength;
 	}
@@ -112,7 +113,8 @@ public class Preset {
 		return namespaceOldList;
 	}
 
-	@XmlElement
+	@XmlElementWrapper(namespace="http://www.example.org/Preset", name = "namespaceOldList")
+	@XmlElement(namespace="http://www.example.org/Preset", name="namespaceOld")
 	public void setNamespaceOldList(List<NamespaceOld> namespaceOldList) {
 		this.namespaceOldList = namespaceOldList;
 	}
@@ -121,7 +123,7 @@ public class Preset {
 		return objectPolicyGeneral;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setObjectPolicyGeneral(ObjectPolicyGeneral objectPolicyGeneral) {
 		this.objectPolicyGeneral = objectPolicyGeneral;
 	}
@@ -130,12 +132,12 @@ public class Preset {
 		return objectPolicy;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setObjectPolicy(ObjectPolicy objectPolicy) {
 		this.objectPolicy = objectPolicy;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setNamespaceNew(String namespaceNew) {
 		this.namespaceNew = namespaceNew;
 	}

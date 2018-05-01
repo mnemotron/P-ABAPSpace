@@ -1,105 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	targetNamespace="http://www.example.org/Preset"
 	xmlns:tns="http://www.example.org/Preset"
 	elementFormDefault="qualified">
 
-	<xs:complexType name="objectTypeGen" mixed="true">
-		<xs:sequence>
-			<xs:element name="objectIdent" minOccurs="1" maxOccurs="1">
-				<xs:simpleType>
-					<xs:restriction base="xs:normalizedString">
-						<xs:minLength value="1" />
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element ref="tns:regexIdent" minOccurs="1"
-				maxOccurs="1"></xs:element>
-			<xs:element name="nameMaxLength" minOccurs="1"
+	<xsd:complexType name="objectTypeGen" mixed="true">
+		<xsd:sequence>
+			<xsd:element name="objectIdent" minOccurs="1" maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:normalizedString">
+						<xsd:minLength value="1" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element ref="tns:regexIdent" minOccurs="1"
+				maxOccurs="1"></xsd:element>
+			<xsd:element name="nameMaxLength" minOccurs="1"
 				maxOccurs="1">
-				<xs:simpleType>
-					<xs:restriction base="xs:int">
-						<xs:minInclusive value="0" />
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:int">
+						<xsd:minInclusive value="0" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
 
-	<xs:element name="regexIdent">
-		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:minLength value="1" />
-			</xs:restriction>
-		</xs:simpleType>
-	</xs:element>
+	<xsd:element name="regexIdent">
+		<xsd:simpleType>
+			<xsd:restriction base="xsd:string">
+				<xsd:minLength value="1" />
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:element>
 
-	<xs:element name="preset">
-		<xs:complexType>
-			<xs:sequence>
+	<xsd:element name="preset">
+		<xsd:complexType>
+			<xsd:sequence>
 
-				<xs:element name="description" minOccurs="1"
+				<xsd:element name="description" minOccurs="1"
 					maxOccurs="1">
-					<xs:simpleType>
-						<xs:restriction base="xs:normalizedString">
-							<xs:minLength value="1" />
-							<xs:maxLength value="200" />
-						</xs:restriction>
-					</xs:simpleType>
-				</xs:element>
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:normalizedString">
+							<xsd:minLength value="1" />
+							<xsd:maxLength value="200" />
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
 
-				<xs:element name="refactorSourceDir"
-					type="xs:normalizedString" minOccurs="1" maxOccurs="1"></xs:element>
-				<xs:element name="refactorTargetDir"
-					type="xs:normalizedString" minOccurs="1" maxOccurs="1"></xs:element>
-				<xs:element name="checkNameMaxLength" type="xs:boolean"
-					minOccurs="1" maxOccurs="1"></xs:element>
-				<xs:element name="namespaceNew"
-					type="xs:normalizedString" minOccurs="1" maxOccurs="1"></xs:element>
-				<xs:element name="supplement" type="xs:normalizedString"
-					minOccurs="0" maxOccurs="1"></xs:element>
-				<xs:element name="namespaceOldList" minOccurs="1"
+				<xsd:element name="refactorSourceDir"
+					type="xsd:normalizedString" minOccurs="1" maxOccurs="1"></xsd:element>
+				<xsd:element name="refactorTargetDir"
+					type="xsd:normalizedString" minOccurs="1" maxOccurs="1"></xsd:element>
+				<xsd:element name="checkNameMaxLength" type="xsd:boolean"
+					minOccurs="1" maxOccurs="1"></xsd:element>
+				<xsd:element name="namespaceNew"
+					type="xsd:normalizedString" minOccurs="1" maxOccurs="1"></xsd:element>
+				<xsd:element name="supplement" type="xsd:normalizedString"
+					minOccurs="0" maxOccurs="1"></xsd:element>
+				<xsd:element name="namespaceOldList" minOccurs="1"
 					maxOccurs="1">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="namespaceOld" minOccurs="1"
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="namespaceOld" minOccurs="1"
 								maxOccurs="unbounded">
-								<xs:complexType>
-									<xs:simpleContent>
-										<xs:extension base="xs:normalizedString">
-											<xs:attribute name="objectPolicy"
-												type="xs:boolean" use="optional" />
-										</xs:extension>
-									</xs:simpleContent>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="objectPolicyGeneral" minOccurs="0"
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:normalizedString">
+											<xsd:attribute name="objectPolicy"
+												type="xsd:boolean" use="optional" />
+										</xsd:extension>
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="objectPolicyGeneral" minOccurs="0"
 					maxOccurs="1">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element ref="tns:regexIdent" minOccurs="1"
-								maxOccurs="1"></xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="objectPolicy" minOccurs="0"
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element ref="tns:regexIdent" minOccurs="1"
+								maxOccurs="1"></xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="objectPolicy" minOccurs="0"
 					maxOccurs="1">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="objectPackage" minOccurs="0"
-								maxOccurs="1" type="tns:objectTypeGen"></xs:element>
-							<xs:element name="objectClass" minOccurs="0"
-								maxOccurs="1" type="tns:objectTypeGen"></xs:element>
-							<xs:element name="objectInterface" minOccurs="0"
-								maxOccurs="1" type="tns:objectTypeGen"></xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="objectPackage" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectClass" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectInterface" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
 
-</xs:schema>
+</xsd:schema>

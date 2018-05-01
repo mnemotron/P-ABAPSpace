@@ -14,7 +14,7 @@ public class ObjectPolicyGeneral {
 		return regexIdent;
 	}
 
-	@XmlElement
+	@XmlElement(namespace="http://www.example.org/Preset")
 	public void setRegexIdent(String regexIdent) {
 		this.regexIdent = regexIdent;
 	}

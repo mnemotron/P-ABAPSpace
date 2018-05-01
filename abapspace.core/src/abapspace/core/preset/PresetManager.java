@@ -3,6 +3,7 @@ package abapspace.core.preset;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,13 +31,12 @@ public class PresetManager {
 	private static String PRESET_XML_SCHEMA_PATH = "/abapspace/core/preset/entity/Preset.xsd";
 
 	private File presetDir;
-	private File presetSchemaFile;
+	private InputStream presetSchemaFile;
 	private List<Preset> presetList;
 
-	public static PresetManager getInstance(String presetDir)
-			throws PresetDirNotFoundException{
+	public static PresetManager getInstance(String presetDir) throws PresetDirNotFoundException {
 
-		File locPresetSchemaFile = PresetManager.getInstanceXMLSchemaFile();
+		InputStream locPresetSchemaFile = PresetManager.getInstanceXMLSchemaFile();
 		File locPresetDir = PresetManager.getInstanceXMLDir(presetDir);
 		PresetManager locPresetManager = new PresetManager(locPresetDir, locPresetSchemaFile);
 
@@ -55,12 +55,12 @@ public class PresetManager {
 		return locPresetDir;
 	}
 
-	private static File getInstanceXMLSchemaFile() {
-		File locPresetSchemaFile = new File(PRESET_XML_SCHEMA_PATH);
+	private static InputStream getInstanceXMLSchemaFile() {
+		InputStream locPresetSchemaFile = PresetManager.class.getResourceAsStream(PRESET_XML_SCHEMA_PATH);
 		return locPresetSchemaFile;
 	}
 
-	private PresetManager(File presetDir, File presetSchemaFile) {
+	private PresetManager(File presetDir, InputStream presetSchemaFile) {
 		this.presetDir = presetDir;
 		this.presetList = new ArrayList<Preset>();
 		this.presetSchemaFile = presetSchemaFile;
@@ -83,14 +83,15 @@ public class PresetManager {
 
 		for (File file : locFiles) {
 			try {
-				Preset locPreset = this.importPreset(file);
 
 				if (!this.isPresetXMLFileValid(file)) {
-					LogEventManager.fireLog(LogType.WARNING, MessageManager.getMessage("check.presetFile") + file.getAbsolutePath());
+					LogEventManager.fireLog(LogType.WARNING,
+							MessageManager.getMessage("check.presetFile") + file.getAbsolutePath());
 				} else {
+					Preset locPreset = this.importPreset(file);
 					locPresetList.add(locPreset);
 				}
-				
+
 			} catch (JAXBException e) {
 				LogEventManager.fireLog(LogType.ERROR, MessageManager.getMessage("exception.presetFileImport"), e);
 			}
@@ -123,6 +124,7 @@ public class PresetManager {
 			validator.validate(new StreamSource(presetFile));
 			locValid = true;
 		} catch (SAXException | IOException e) {
+			LogEventManager.fireLog(LogType.ERROR, e.getMessage(), e);
 			locValid = false;
 		}
 
