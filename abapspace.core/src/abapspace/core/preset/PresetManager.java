@@ -84,13 +84,13 @@ public class PresetManager {
 		for (File file : locFiles) {
 			try {
 
-				if (!this.isPresetXMLFileValid(file)) {
-					LogEventManager.fireLog(LogType.WARNING,
-							MessageManager.getMessage("check.presetFile") + file.getAbsolutePath());
-				} else {
+//				if (!this.isPresetXMLFileValid(file)) {
+//					LogEventManager.fireLog(LogType.WARNING,
+//							MessageManager.getMessage("check.presetFile") + file.getAbsolutePath());
+//				} else {
 					Preset locPreset = this.importPreset(file);
 					locPresetList.add(locPreset);
-				}
+//				}
 
 			} catch (JAXBException e) {
 				LogEventManager.fireLog(LogType.ERROR, MessageManager.getMessage("exception.presetFileImport"), e);

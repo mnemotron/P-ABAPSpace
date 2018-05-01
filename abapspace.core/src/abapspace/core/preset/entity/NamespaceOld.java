@@ -1,34 +1,35 @@
 package abapspace.core.preset.entity;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlValue;
 
 public class NamespaceOld {
 
 	private boolean objectPolicy;
-	private String value;
+	private String namespaceOld;
 
 	public NamespaceOld() {
 		this.objectPolicy = false;
-		this.value = new String();
+		this.namespaceOld = new String();
 	}
 
 	public boolean isObjectPolicy() {
 		return objectPolicy;
 	}
 
-	@XmlAttribute(namespace = "http://www.example.org/Preset")
+	@XmlElement(namespace = "http://www.example.org/Preset")
 	public void setObjectPolicy(boolean objectPolicy) {
 		this.objectPolicy = objectPolicy;
 	}
 
-	public String getValue() {
-		return value;
+	public String getNamespaceOld() {
+		return namespaceOld;
 	}
 
-	@XmlValue
-	public void setValue(String value) {
-		this.value = value;
+	@XmlElement(namespace = "http://www.example.org/Preset")
+	public void setNamespaceOld(String namespaceOld) {
+		this.namespaceOld = namespaceOld;
 	}
 
 }

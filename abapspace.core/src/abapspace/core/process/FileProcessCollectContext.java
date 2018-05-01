@@ -113,10 +113,10 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 
 			// get policy objects
 			if (namespaceOld.isObjectPolicy()) {
-				locContextTmpList = this.getObjectPolicy(namespaceOld.getValue());
+				locContextTmpList = this.getObjectPolicy(namespaceOld.getNamespaceOld());
 				locContextList.addAll(locContextTmpList);
 			} else {
-				locContextTmpList = this.getObjectDefault(namespaceOld.getValue());
+				locContextTmpList = this.getObjectDefault(namespaceOld.getNamespaceOld());
 				locContextList.addAll(locContextTmpList);
 			}
 		}
