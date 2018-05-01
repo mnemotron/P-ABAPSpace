@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import abapspace.core.Refector;
 import abapspace.core.context.InterfaceContext;
-import abapspace.core.context.entity.ContextCheckMaxNameLength;
+import abapspace.core.context.ContextCheckMaxNameLength;
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.PresetDirNotFoundException;
 import abapspace.core.exception.SourceDirectoryNotFoundException;

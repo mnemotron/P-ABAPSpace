@@ -6,20 +6,48 @@
 
 	<xs:complexType name="objectTypeGen" mixed="true">
 		<xs:sequence>
-			<xs:element name="objectIdent" type="xs:normalizedString"
-				minOccurs="1" maxOccurs="1"></xs:element>
-			<xs:element name="regexIdent" type="xs:string"
-				minOccurs="1" maxOccurs="1"></xs:element>
-			<xs:element name="nameMaxLength" type="xs:int"
-				minOccurs="1" maxOccurs="1"></xs:element>
+			<xs:element name="objectIdent" minOccurs="1" maxOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:normalizedString">
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element ref="tns:regexIdent" minOccurs="1"
+				maxOccurs="1"></xs:element>
+			<xs:element name="nameMaxLength" minOccurs="1"
+				maxOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="0" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+
+	<xs:element name="regexIdent">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:minLength value="1" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
 
 	<xs:element name="preset">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="description" type="xs:normalizedString"
-					minOccurs="1" maxOccurs="1"></xs:element>
+
+				<xs:element name="description" minOccurs="1"
+					maxOccurs="1">
+					<xs:simpleType>
+						<xs:restriction base="xs:normalizedString">
+							<xs:minLength value="1" />
+							<xs:maxLength value="200" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+
 				<xs:element name="refactorSourceDir"
 					type="xs:normalizedString" minOccurs="1" maxOccurs="1"></xs:element>
 				<xs:element name="refactorTargetDir"
@@ -30,7 +58,8 @@
 					type="xs:normalizedString" minOccurs="1" maxOccurs="1"></xs:element>
 				<xs:element name="supplement" type="xs:normalizedString"
 					minOccurs="0" maxOccurs="1"></xs:element>
-				<xs:element name="namespaceOldList">
+				<xs:element name="namespaceOldList" minOccurs="1"
+					maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="namespaceOld" minOccurs="1"
@@ -44,6 +73,15 @@
 									</xs:simpleContent>
 								</xs:complexType>
 							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="objectPolicyGeneral" minOccurs="0"
+					maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="tns:regexIdent" minOccurs="1"
+								maxOccurs="1"></xs:element>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>

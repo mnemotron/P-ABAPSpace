@@ -31,8 +31,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import abapspace.core.context.ContextCheckMaxNameLength;
 import abapspace.core.context.InterfaceContext;
-import abapspace.core.context.entity.ContextCheckMaxNameLength;
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.SourceDirectoryNotFoundException;
 import abapspace.core.exception.TargetDirectoryNotFoundException;

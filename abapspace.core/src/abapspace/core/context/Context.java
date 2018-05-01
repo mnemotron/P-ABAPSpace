@@ -21,9 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package abapspace.core.context.entity;
-
-import abapspace.core.context.InterfaceContext;
+package abapspace.core.context;
 
 public class Context implements Cloneable, InterfaceContext {
 

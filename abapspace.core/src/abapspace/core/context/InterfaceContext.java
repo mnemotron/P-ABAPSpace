@@ -23,8 +23,6 @@
  */
 package abapspace.core.context;
 
-import abapspace.core.context.entity.ContextCheckMaxNameLength;
-
 public interface InterfaceContext {
 	
 	public String getRegex();

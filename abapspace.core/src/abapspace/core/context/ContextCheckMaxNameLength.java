@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package abapspace.core.context.entity;
+package abapspace.core.context;
 
 public class ContextCheckMaxNameLength {
     

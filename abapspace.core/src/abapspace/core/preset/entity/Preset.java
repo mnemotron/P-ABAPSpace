@@ -44,6 +44,7 @@ public class Preset {
 	private String namespaceNew;
 	private String supplement;
 	private List<NamespaceOld> namespaceOldList;
+	private ObjectPolicyGeneral objectPolicyGeneral;
 	private ObjectPolicy objectPolicy;
 
 	public Preset() {
@@ -54,6 +55,7 @@ public class Preset {
 		this.supplement = new String();
 		this.namespaceOldList = new ArrayList<NamespaceOld>();
 		this.checkNameMaxLength = false;
+		this.objectPolicyGeneral = new ObjectPolicyGeneral();
 		this.objectPolicy = new ObjectPolicy();
 	}
 
@@ -113,6 +115,15 @@ public class Preset {
 	@XmlElement
 	public void setNamespaceOldList(List<NamespaceOld> namespaceOldList) {
 		this.namespaceOldList = namespaceOldList;
+	}
+
+	public ObjectPolicyGeneral getObjectPolicyGeneral() {
+		return objectPolicyGeneral;
+	}
+
+	@XmlElement
+	public void setObjectPolicyGeneral(ObjectPolicyGeneral objectPolicyGeneral) {
+		this.objectPolicyGeneral = objectPolicyGeneral;
 	}
 
 	public ObjectPolicy getObjectPolicy() {

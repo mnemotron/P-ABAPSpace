@@ -10,7 +10,11 @@
 	<supplement>_xyz_x0001_</supplement>
 	<namespaceOldList>
 		<namespaceOld objectPolicy="true">z</namespaceOld>
+		<namespaceOld>z</namespaceOld>
 	</namespaceOldList>
+	<objectPolicyGeneral>
+		<regexIdent>\w*</regexIdent>
+	</objectPolicyGeneral>
 	<objectPolicy>
 		<objectPackage>
 			<objectIdent>pa</objectIdent>
