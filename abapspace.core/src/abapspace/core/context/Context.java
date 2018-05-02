@@ -40,6 +40,7 @@ public class Context implements Cloneable, InterfaceContext {
 		this.identRegex = new String();
 		this.supplement = new String();
 		this.object = new String[] {};
+		this.nameMaxLength = new Integer(0);
 	}
 
 	@Override
@@ -130,7 +131,7 @@ public class Context implements Cloneable, InterfaceContext {
 		String locRegex = new String();
 
 		// group 1, 2
-		locRegex = "(" + this.namespaceOld + this.objectID + ")" + "(" + this.identRegex + ")";
+		locRegex = "[\\s>](" + this.namespaceOld + this.objectID + ")" + "(" + this.identRegex + ")";
 
 		return locRegex;
 	}
