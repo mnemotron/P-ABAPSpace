@@ -10,12 +10,8 @@
 	<tns:supplement>_xyz_x0001_</tns:supplement>
 	<tns:namespaceOldList>
 		<tns:namespaceOld>
-			<tns:objectPolicy>false</tns:objectPolicy>
+			<tns:objectPolicy>true</tns:objectPolicy>
 			<tns:namespaceOld>z</tns:namespaceOld>
-		</tns:namespaceOld>
-			<tns:namespaceOld>
-			<tns:objectPolicy>false</tns:objectPolicy>
-			<tns:namespaceOld>x</tns:namespaceOld>
 		</tns:namespaceOld>
 	</tns:namespaceOldList>
 	<tns:objectPolicyGeneral>

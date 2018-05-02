@@ -60,4 +60,8 @@ public class TableModelEdit extends AbstractTableModel {
 		fireTableCellUpdated(row, col);
 	}
 
+	public Object[][] getData() {
+		return data;
+	}
+	
 }

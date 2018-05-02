@@ -42,7 +42,7 @@ public class GUIEdit extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				guicedit.stopGUI();
+				guicedit.cancel();
 			}
 		});
 
@@ -115,7 +115,7 @@ public class GUIEdit extends JFrame {
 
 			btnRefactor.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					guicedit.refactor(((TableModelEdit)tblEdit.getModel()).getData());
 				}
 			});
 		}
@@ -130,7 +130,7 @@ public class GUIEdit extends JFrame {
 			btnCancel.setIcon(new ImageIcon(GUIMain.class.getResource("/abapspace/gui/res/cancel.png")));
 			btnCancel.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					guicedit.cancel();
 				}
 			});
 		}

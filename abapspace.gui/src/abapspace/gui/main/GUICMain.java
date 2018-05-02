@@ -95,8 +95,9 @@ public class GUICMain {
 			this.guimain.getPanelMain().getTxtTargetDir().setText(this.guimmain.getTargetDir());
 		} catch (TargetDirectoryNotFoundException e) {
 			this.guimain.getPanelMain().getTxtTargetDir().setText(null);
-//			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.targetDir"),
-//					JOptionPane.ERROR_MESSAGE);
+			// this.guimain.showMessage(e.getMessage(),
+			// GUIMessageManager.getMessage("dialog.title.targetDir"),
+			// JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -105,8 +106,9 @@ public class GUICMain {
 			this.guimain.getPanelMain().getTxtSourceDir().setText(this.guimmain.getSourceDir());
 		} catch (SourceDirectoryNotFoundException e) {
 			this.guimain.getPanelMain().getTxtSourceDir().setText(null);
-//			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.sourceDir"),
-//					JOptionPane.ERROR_MESSAGE);
+			// this.guimain.showMessage(e.getMessage(),
+			// GUIMessageManager.getMessage("dialog.title.sourceDir"),
+			// JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -132,6 +134,19 @@ public class GUICMain {
 		GUICEdit guicedit = new GUICEdit(this, data);
 
 		guicedit.startGUI();
+	}
+
+	public void responseEdit(Object[][] data, boolean cancel) {
+		if (!cancel) {
+			this.guimmain.setEditData(data);
+
+			try {
+				this.guimmain.startRefactor();
+			} catch (FileProcessException | SourceDirectoryNotFoundException | TargetDirectoryNotFoundException e) {
+				this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.exception"),
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 
 	public void visualController() {

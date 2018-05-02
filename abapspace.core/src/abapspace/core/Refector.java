@@ -150,4 +150,8 @@ public class Refector {
 	public Map<String, Map<String, InterfaceContext>> getContextMap() {
 		return contextMap;
 	}
+
+	public void setContextMap(Map<String, Map<String, InterfaceContext>> contextMap) {
+		this.contextMap = contextMap;
+	}
 }

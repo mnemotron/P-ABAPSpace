@@ -13,7 +13,7 @@ public class GUICEdit {
 		this.guicmain = parent;
 
 		this.guimedit = new GUIMEdit(data);
-		
+
 		this.guiedit = new GUIEdit(this);
 	}
 
@@ -24,15 +24,25 @@ public class GUICEdit {
 		this.guiedit.requestFocus();
 	}
 
-	public void stopGUI() {
-		this.guiedit.setVisible(false);
-		this.guicmain.getGuimain().getFrameMain().setEnabled(true);
-		this.guicmain.getGuimain().getFrameMain().toFront();
-		this.guicmain.getGuimain().getFrameMain().requestFocus();
+	public void refactor(Object[][] data) {
+		this.guicmain.responseEdit(data, false);
+		this.stopGUI();
+	}
+
+	public void cancel() {
+		this.guicmain.responseEdit(null, true);
+		this.stopGUI();
 	}
 
 	public Object[][] getData() {
 		return this.guimedit.getData();
+	}
+
+	private void stopGUI() {
+		this.guiedit.setVisible(false);
+		this.guicmain.getGuimain().getFrameMain().setEnabled(true);
+		this.guicmain.getGuimain().getFrameMain().toFront();
+		this.guicmain.getGuimain().getFrameMain().requestFocus();
 	}
 
 }

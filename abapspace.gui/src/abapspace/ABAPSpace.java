@@ -56,15 +56,3 @@ public class ABAPSpace {
 		UIManager.setLookAndFeel(LOOKANDFEEL_CLASSNAME_PGS);
 	}
 }
-
-// Runnable run = new Runnable()
-// {
-// public void run()
-// {
-// LogBrokerMonitor lbm = CLog.getLogbrokermonitor();
-// lbm.show();
-// }
-// };
-//
-// Thread t = new Thread(run);
-// t.run();

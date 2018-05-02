@@ -33,6 +33,8 @@ public interface InterfaceContext {
 	
 	public String getReplacement();
 	
+	public void setReplacement(String replacement);
+	
 	public ContextCheckMaxNameLength checkMaxNameLengthForReplacement();
 	
 	public InterfaceContext clone() throws CloneNotSupportedException;

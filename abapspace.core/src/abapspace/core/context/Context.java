@@ -32,6 +32,7 @@ public class Context implements Cloneable, InterfaceContext {
 	private String[] object;
 	private String supplement;
 	private Integer nameMaxLength;
+	private String replacement;
 
 	public Context() {
 		this.namespaceOld = new String();
@@ -41,6 +42,7 @@ public class Context implements Cloneable, InterfaceContext {
 		this.supplement = new String();
 		this.object = new String[] {};
 		this.nameMaxLength = new Integer(0);
+		this.replacement = new String();
 	}
 
 	@Override
@@ -120,6 +122,10 @@ public class Context implements Cloneable, InterfaceContext {
 		this.nameMaxLength = nameMaxLength;
 	}
 
+	public void setReplacement(String replacement) {
+		this.replacement = replacement;
+	}
+
 	@Override
 	public InterfaceContext clone() throws CloneNotSupportedException {
 		return (InterfaceContext) super.clone();
@@ -141,16 +147,24 @@ public class Context implements Cloneable, InterfaceContext {
 
 		String locReplacement = new String();
 
-		// change namespace
-		Object locGroup1 = this.object[0].toLowerCase().replaceAll("^" + this.namespaceOld.toLowerCase(),
-				this.namespaceNew.toLowerCase());
+		if (!this.replacement.isEmpty()) {
+			
+			locReplacement = this.replacement;
 
-		// group1 = namespace + object ID
-		// group2 = object name
-		// remove '_' from the beginning
-		Object locGroup2 = object[1].replaceAll("^_*", "");
+		} else {
 
-		locReplacement = locGroup1 + this.supplement + locGroup2;
+			// change namespace
+			Object locGroup1 = this.object[0].toLowerCase().replaceAll("^" + this.namespaceOld.toLowerCase(),
+					this.namespaceNew.toLowerCase());
+
+			// group1 = namespace + object ID
+			// group2 = object name
+			// remove '_' from the beginning
+			Object locGroup2 = object[1].replaceAll("^_*", "");
+
+			locReplacement = locGroup1 + this.supplement + locGroup2;
+
+		}
 
 		return locReplacement.toLowerCase();
 	}
@@ -175,4 +189,5 @@ public class Context implements Cloneable, InterfaceContext {
 
 		return locCheck;
 	}
+
 }

@@ -39,15 +39,15 @@ public class GUIMMain {
 		this.preset = new Preset();
 	}
 
-	public void setPresetManager(String presetDir) throws PresetDirNotFoundException{
+	public void setPresetManager(String presetDir) throws PresetDirNotFoundException {
 		this.presetManager = PresetManager.getInstance(presetDir);
-		
+
 		this.preset = new Preset();
 	}
 
 	public void setPresetManagerDefault() throws PresetDirNotFoundException {
 		this.setPresetManager(GUIMMain.PRESET_DIR_DEFAULT);
-		
+
 		this.preset = new Preset();
 	}
 
@@ -182,6 +182,25 @@ public class GUIMMain {
 		});
 
 		return locObjectArray;
+	}
+
+	public void setEditData(Object[][] data) {
+
+		Map<String, Map<String, InterfaceContext>> locContextMap = this.refector.getContextMap();
+
+		locContextMap.forEach((fileIdent, contextMap) -> {
+			contextMap.forEach((objectIdent, iContext) -> {
+
+				for (int i = 0, li = data.length; i < li; i++) { // row
+					if (objectIdent.equals(data[i][0])) {
+						iContext.setReplacement((String) data[i][1]);
+					}
+				}
+
+			});
+		});
+
+		this.refector.setContextMap(locContextMap);
 	}
 
 	private void initLogEventManager() {
