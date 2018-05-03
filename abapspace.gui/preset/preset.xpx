@@ -32,6 +32,65 @@
 			<tns:objectIdent>if</tns:objectIdent>
 			<tns:regexIdent>\w*</tns:regexIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
-		</tns:objectInterface>
+		</tns:objectProgram>
+				<tns:objectExceptionClass
+			<tns:objectIdent>cx</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>30</tns:nameMaxLength>
+		</tns:objectExceptionClass>
+		<tns:objectIdent>pr</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>40</tns:nameMaxLength>
+		</tns:objectProgram>
+				</tns:objectInclude>
+		<tns:objectIdent>in</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>40</tns:nameMaxLength>
+		</tns:objectInclude>
+						</tns:objectFunctionGroup>
+		<tns:objectIdent>fg</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>26</tns:nameMaxLength>
+		</tns:objectFunctionGroup>
+				</tns:objectFunctionModule>
+		<tns:objectIdent>fm</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>30</tns:nameMaxLength>
+		</tns:objectFunctionModule>
+						</tns:objectDatabaseTable>
+		<tns:objectIdent>ta</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>16</tns:nameMaxLength>
+		</tns:objectDatabaseTable>
+								</tns:objectDatabaseView>
+		<tns:objectIdent>vw</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>16</tns:nameMaxLength>
+		</tns:objectDatabaseView>
+												</tns:objectTableType>
+		<tns:objectIdent>tt</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>30</tns:nameMaxLength>
+		</tns:objectTableType>
+														</tns:objectStructure>
+		<tns:objectIdent>st</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>30</tns:nameMaxLength>
+		</tns:objectStructure>
+										</tns:objectDataElement>
+		<tns:objectIdent>da</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>30</tns:nameMaxLength>
+		</tns:objectDataElement>
+												</tns:objectDomain>
+		<tns:objectIdent>do</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>30</tns:nameMaxLength>
+		</tns:objectDomain>
+														</tns:objectMessageClass>
+		<tns:objectIdent>mc</tns:objectIdent>
+			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:nameMaxLength>20</tns:nameMaxLength>
+		</tns:objectMessageClass
 	</tns:objectPolicy>
 </tns:preset>
