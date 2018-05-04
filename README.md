@@ -16,7 +16,7 @@ ABAP Namespace Refactoring
   + classes, interfaces
   
 ## Get Started
-Coming soon...
+[Read the manual](https://github.com/SAPAssets/ABAPSpace/blob/master/abapspace.doc/manual/abapspace_manual.pdf)
 
 ## Build
 The following projects can be build with [Gradle](https://gradle.org):
