@@ -27,8 +27,10 @@ public class Context implements Cloneable, InterfaceContext {
 
 	private String namespaceOld;
 	private String namespaceNew;
+	private String preIdent;
+	private String postIdent;
 	private String objectID;
-	private String identRegex;
+	private String objectNameIdent;
 	private String[] object;
 	private String supplement;
 	private Integer nameMaxLength;
@@ -37,8 +39,10 @@ public class Context implements Cloneable, InterfaceContext {
 	public Context() {
 		this.namespaceOld = new String();
 		this.namespaceNew = new String();
+		this.preIdent = new String();
+		this.postIdent = new String();
 		this.objectID = new String();
-		this.identRegex = new String();
+		this.objectNameIdent = new String();
 		this.supplement = new String();
 		this.object = new String[] {};
 		this.nameMaxLength = new Integer(0);
@@ -106,12 +110,12 @@ public class Context implements Cloneable, InterfaceContext {
 		this.namespaceNew = namespaceNew;
 	}
 
-	public String getIdentRegex() {
-		return identRegex;
+	public String getObjectNameIdent() {
+		return objectNameIdent;
 	}
 
-	public void setIdentRegex(String identRegex) {
-		this.identRegex = identRegex;
+	public void setObjectNameIdent(String objectNameIdent) {
+		this.objectNameIdent = objectNameIdent;
 	}
 
 	public Integer getNameMaxLength() {
@@ -126,6 +130,22 @@ public class Context implements Cloneable, InterfaceContext {
 		this.replacement = replacement;
 	}
 
+	public String getPreIdent() {
+		return preIdent;
+	}
+
+	public void setPreIdent(String preIdent) {
+		this.preIdent = preIdent;
+	}
+
+	public String getPostIdent() {
+		return postIdent;
+	}
+
+	public void setPostIdent(String postIdent) {
+		this.postIdent = postIdent;
+	}
+
 	@Override
 	public InterfaceContext clone() throws CloneNotSupportedException {
 		return (InterfaceContext) super.clone();
@@ -137,7 +157,7 @@ public class Context implements Cloneable, InterfaceContext {
 		String locRegex = new String();
 
 		// group 1, 2
-		locRegex = "[\\s>](" + this.namespaceOld + this.objectID + ")" + "(" + this.identRegex + ")";
+		locRegex = this.preIdent + "(" + this.namespaceOld + this.objectID + ")" + "(" + this.objectNameIdent + ")" + this.postIdent;
 
 		return locRegex;
 	}
@@ -148,7 +168,7 @@ public class Context implements Cloneable, InterfaceContext {
 		String locReplacement = new String();
 
 		if (!this.replacement.isEmpty()) {
-			
+
 			locReplacement = this.replacement;
 
 		} else {

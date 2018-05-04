@@ -130,7 +130,10 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 
 		if (this.preset.getObjectPolicyGeneral() != null) {
 			Context locContext = new Context();
-			locContext.setIdentRegex(this.preset.getObjectPolicyGeneral().getRegexIdent());
+			locContext.setPreIdent(this.preset.getObjectPolicyGeneral().getPreIdent());
+			locContext.setObjectNameIdent(this.preset.getObjectPolicyGeneral().getObjectNameIdent());
+			locContext.setSupplement(this.preset.getSupplement());
+			locContext.setPostIdent(this.preset.getObjectPolicyGeneral().getPostIdent());
 			locContext.setNamespaceNew(this.preset.getNamespaceNew());
 			locContext.setNamespaceOld(namespaceOld);
 			locContextList.add(locContext);
@@ -146,9 +149,11 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 		// object: package
 		if (this.preset.getObjectPolicy().getObjectPackage() != null) {
 			Context locContext = new Context();
+			locContext.setPreIdent(this.preset.getObjectPolicy().getObjectPackage().getPreIdent());
 			locContext.setObjectID(this.preset.getObjectPolicy().getObjectPackage().getObjectIdent());
-			locContext.setIdentRegex(this.preset.getObjectPolicy().getObjectPackage().getRegexIdent());
+			locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectPackage().getObjectNameIdent());
 			locContext.setSupplement(this.preset.getSupplement());
+			locContext.setPostIdent(this.preset.getObjectPolicy().getObjectPackage().getPostIdent());
 			locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectPackage().getNameMaxLength());
 			locContext.setNamespaceNew(this.preset.getNamespaceNew());
 			locContext.setNamespaceOld(namespaceOld);
@@ -158,9 +163,11 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 		// object: class
 		if (this.preset.getObjectPolicy().getObjectClass() != null) {
 			Context locContext = new Context();
+			locContext.setPreIdent(this.preset.getObjectPolicy().getObjectClass().getPreIdent());
 			locContext.setObjectID(this.preset.getObjectPolicy().getObjectClass().getObjectIdent());
-			locContext.setIdentRegex(this.preset.getObjectPolicy().getObjectClass().getRegexIdent());
+			locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectClass().getObjectNameIdent());
 			locContext.setSupplement(this.preset.getSupplement());
+			locContext.setPostIdent(this.preset.getObjectPolicy().getObjectClass().getPostIdent());
 			locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectClass().getNameMaxLength());
 			locContext.setNamespaceNew(this.preset.getNamespaceNew());
 			locContext.setNamespaceOld(namespaceOld);
@@ -170,9 +177,11 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 		// object: interface
 		if (this.preset.getObjectPolicy().getObjectInterface() != null) {
 			Context locContext = new Context();
+			locContext.setPreIdent(this.preset.getObjectPolicy().getObjectInterface().getPreIdent());
 			locContext.setObjectID(this.preset.getObjectPolicy().getObjectInterface().getObjectIdent());
-			locContext.setIdentRegex(this.preset.getObjectPolicy().getObjectInterface().getRegexIdent());
+			locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectInterface().getObjectNameIdent());
 			locContext.setSupplement(this.preset.getSupplement());
+			locContext.setPostIdent(this.preset.getObjectPolicy().getObjectInterface().getPostIdent());
 			locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectInterface().getNameMaxLength());
 			locContext.setNamespaceNew(this.preset.getNamespaceNew());
 			locContext.setNamespaceOld(namespaceOld);

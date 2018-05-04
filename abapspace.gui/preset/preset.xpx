@@ -13,84 +13,93 @@
 			<tns:objectPolicy>true</tns:objectPolicy>
 			<tns:namespaceOld>z</tns:namespaceOld>
 		</tns:namespaceOld>
+		<tns:namespaceOld>
+			<tns:objectPolicy>false</tns:objectPolicy>
+			<tns:namespaceOld>y</tns:namespaceOld>
+		</tns:namespaceOld>
 	</tns:namespaceOldList>
 	<tns:objectPolicyGeneral>
-		<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:preIdent>\W</tns:preIdent>
+		<tns:objectNameIdent>\w*</tns:objectNameIdent>
+		<tns:postIdent>\W</tns:postIdent>
 	</tns:objectPolicyGeneral>
 	<tns:objectPolicy>
 		<tns:objectPackage>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>pa</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent>\W</tns:postIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectPackage>
 		<tns:objectClass>
 			<tns:objectIdent>cl</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectClass>
 		<tns:objectInterface>
 			<tns:objectIdent>if</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
-		</tns:objectProgram>
-				<tns:objectExceptionClass
+		</tns:objectInterface>
+		<tns:objectExceptionClass>
 			<tns:objectIdent>cx</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectExceptionClass>
-		<tns:objectIdent>pr</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:objectProgram>
+			<tns:objectIdent>pr</tns:objectIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>40</tns:nameMaxLength>
 		</tns:objectProgram>
-				</tns:objectInclude>
-		<tns:objectIdent>in</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:objectInclude>
+			<tns:objectIdent>in</tns:objectIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>40</tns:nameMaxLength>
 		</tns:objectInclude>
-						</tns:objectFunctionGroup>
-		<tns:objectIdent>fg</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:objectFunctionGroup>
+			<tns:objectIdent>fg</tns:objectIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>26</tns:nameMaxLength>
 		</tns:objectFunctionGroup>
-				</tns:objectFunctionModule>
-		<tns:objectIdent>fm</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:objectFunctionModule>
+			<tns:objectIdent>fm</tns:objectIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectFunctionModule>
-						</tns:objectDatabaseTable>
-		<tns:objectIdent>ta</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:objectDatabaseTable>
+			<tns:objectIdent>ta</tns:objectIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>16</tns:nameMaxLength>
 		</tns:objectDatabaseTable>
-								</tns:objectDatabaseView>
-		<tns:objectIdent>vw</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:objectDatabaseView>
+			<tns:objectIdent>vw</tns:objectIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>16</tns:nameMaxLength>
 		</tns:objectDatabaseView>
-												</tns:objectTableType>
-		<tns:objectIdent>tt</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:objectTableType>
+			<tns:objectIdent>tt</tns:objectIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectTableType>
-														</tns:objectStructure>
-		<tns:objectIdent>st</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:objectStructure>
+			<tns:objectIdent>st</tns:objectIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectStructure>
-										</tns:objectDataElement>
-		<tns:objectIdent>da</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:objectDataElement>
+			<tns:objectIdent>da</tns:objectIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectDataElement>
-												</tns:objectDomain>
-		<tns:objectIdent>do</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:objectDomain>
+			<tns:objectIdent>do</tns:objectIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectDomain>
-														</tns:objectMessageClass>
-		<tns:objectIdent>mc</tns:objectIdent>
-			<tns:regexIdent>\w*</tns:regexIdent>
+		<tns:objectMessageClass>
+			<tns:objectIdent>mc</tns:objectIdent>
+			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:nameMaxLength>20</tns:nameMaxLength>
-		</tns:objectMessageClass
+		</tns:objectMessageClass>	
 	</tns:objectPolicy>
 </tns:preset>

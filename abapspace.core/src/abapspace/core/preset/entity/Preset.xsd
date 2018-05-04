@@ -4,8 +4,34 @@
 	xmlns:tns="http://www.example.org/Preset"
 	elementFormDefault="qualified">
 
+	<xsd:element name="objectNameIdent">
+		<xsd:simpleType>
+			<xsd:restriction base="xsd:string">
+				<xsd:minLength value="1" />
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:element>
+
+	<xsd:element name="preIdent">
+		<xsd:simpleType>
+			<xsd:restriction base="xsd:string">
+				<xsd:minLength value="0" />
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:element>
+
+	<xsd:element name="postIdent">
+		<xsd:simpleType>
+			<xsd:restriction base="xsd:string">
+				<xsd:minLength value="0" />
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:element>
+
 	<xsd:complexType name="objectTypeGen" mixed="true">
 		<xsd:sequence>
+			<xsd:element ref="tns:preIdent" minOccurs="0"
+				maxOccurs="1"></xsd:element>
 			<xsd:element name="objectIdent" minOccurs="1"
 				maxOccurs="1">
 				<xsd:simpleType>
@@ -14,7 +40,9 @@
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:element>
-			<xsd:element ref="tns:regexIdent" minOccurs="1"
+			<xsd:element ref="tns:objectNameIdent" minOccurs="1"
+				maxOccurs="1"></xsd:element>
+			<xsd:element ref="tns:postIdent" minOccurs="0"
 				maxOccurs="1"></xsd:element>
 			<xsd:element name="nameMaxLength" minOccurs="1"
 				maxOccurs="1">
@@ -26,14 +54,6 @@
 			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
-
-	<xsd:element name="regexIdent">
-		<xsd:simpleType>
-			<xsd:restriction base="xsd:string">
-				<xsd:minLength value="1" />
-			</xsd:restriction>
-		</xsd:simpleType>
-	</xsd:element>
 
 	<xsd:element name="preset">
 		<xsd:complexType>
@@ -87,7 +107,11 @@
 					maxOccurs="1">
 					<xsd:complexType>
 						<xsd:sequence>
-							<xsd:element ref="tns:regexIdent" minOccurs="1"
+							<xsd:element ref="tns:preIdent" minOccurs="0"
+								maxOccurs="1"></xsd:element>
+							<xsd:element ref="tns:objectNameIdent" minOccurs="1"
+								maxOccurs="1"></xsd:element>
+							<xsd:element ref="tns:postIdent" minOccurs="0"
 								maxOccurs="1"></xsd:element>
 						</xsd:sequence>
 					</xsd:complexType>
@@ -101,6 +125,30 @@
 							<xsd:element name="objectClass" minOccurs="0"
 								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
 							<xsd:element name="objectInterface" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectExceptionClass"
+								minOccurs="0" maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectProgram" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectInclude" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectFunctionGroup" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectFunctionModule"
+								minOccurs="0" maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectDatabaseTable" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectDatabaseView" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectTableType" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectStructure" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectDataElement" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectDomain" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectMessageClass" minOccurs="0"
 								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
 						</xsd:sequence>
 					</xsd:complexType>

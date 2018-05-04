@@ -27,13 +27,17 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class ObjectGen {
 
+	private String preIdent;
 	private String objectIdent;
-	private String regexIdent;
+	private String objectNameIdent;
+	private String postIdent;
 	private Integer nameMaxLength;
 
 	public ObjectGen() {
+		this.preIdent = new String();
 		this.objectIdent = new String();
-		this.regexIdent = new String();
+		this.objectNameIdent = new String();
+		this.postIdent = new String();
 		this.nameMaxLength = 0;
 	}
 
@@ -41,25 +45,43 @@ public class ObjectGen {
 		return objectIdent;
 	}
 
-	@XmlElement(namespace="http://www.example.org/Preset")
+	@XmlElement(namespace = "http://www.example.org/Preset")
 	public void setObjectIdent(String objectIdent) {
 		this.objectIdent = objectIdent;
 	}
 
-	public String getRegexIdent() {
-		return regexIdent;
+	public String getPreIdent() {
+		return preIdent;
 	}
 
-	@XmlElement(namespace="http://www.example.org/Preset")
-	public void setRegexIdent(String regexIdent) {
-		this.regexIdent = regexIdent;
+	@XmlElement(namespace = "http://www.example.org/Preset")
+	public void setPreIdent(String preIdent) {
+		this.preIdent = preIdent;
+	}
+
+	public String getObjectNameIdent() {
+		return objectNameIdent;
+	}
+
+	@XmlElement(namespace = "http://www.example.org/Preset")
+	public void setObjectNameIdent(String objectNameIdent) {
+		this.objectNameIdent = objectNameIdent;
+	}
+
+	public String getPostIdent() {
+		return postIdent;
+	}
+
+	@XmlElement(namespace = "http://www.example.org/Preset")
+	public void setPostIdent(String postIdent) {
+		this.postIdent = postIdent;
 	}
 
 	public Integer getNameMaxLength() {
 		return nameMaxLength;
 	}
 
-	@XmlElement(namespace="http://www.example.org/Preset")
+	@XmlElement(namespace = "http://www.example.org/Preset")
 	public void setNameMaxLength(Integer nameMaxLength) {
 		this.nameMaxLength = nameMaxLength;
 	}
