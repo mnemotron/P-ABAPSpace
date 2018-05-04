@@ -40,6 +40,13 @@ import abapspace.core.log.LogEventManager;
 import abapspace.core.log.LogType;
 import abapspace.core.messages.MessageManager;
 
+/**
+ * File Process - Refactor Context
+ *  
+ * @author mnemotron
+ * @version 1.0.0
+ * @since 2018-05-04
+ */
 public class FileProcessRefactorContext implements InterfaceFileProcess {
 
 	private Map<String, Map<String, InterfaceContext>> contextMap;

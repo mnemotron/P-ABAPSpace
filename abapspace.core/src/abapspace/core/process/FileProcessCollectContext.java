@@ -40,6 +40,13 @@ import abapspace.core.messages.MessageManager;
 import abapspace.core.preset.entity.NamespaceOld;
 import abapspace.core.preset.entity.Preset;
 
+/**
+ * File Process - Collect Context
+ *  
+ * @author mnemotron
+ * @version 1.0.0
+ * @since 2018-05-04
+ */
 public class FileProcessCollectContext implements InterfaceFileProcess {
 
 	private Map<String, Map<String, InterfaceContext>> contextMap;

@@ -44,6 +44,13 @@ import abapspace.core.process.FileProcessCollectContext;
 import abapspace.core.process.FileProcessRefactorContext;
 import abapspace.core.process.InterfaceFileProcess;
 
+/**
+ * Refector
+ *  
+ * @author mnemotron
+ * @version 1.0.0
+ * @since 2018-05-04
+ */
 public class Refector {
 
 	private Preset preset;

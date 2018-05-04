@@ -31,6 +31,13 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import abapspace.gui.main.GUICMain;
 
+/**
+ * ABAPSpace
+ *  
+ * @author mnemotron
+ * @version 1.0.0
+ * @since 2018-05-04
+ */
 public class ABAPSpace {
 
 	private static final String LOOKANDFEEL_CLASSNAME_PGS = "com.pagosoft.plaf.PgsLookAndFeel";

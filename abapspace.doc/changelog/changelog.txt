@@ -7,9 +7,11 @@ ABAPSpace - Change Log
 * Fixed
 
 [1.0.0] | 2018-01-05
-+ ABAPSpace refactoring tool
++ ABAPSpace namespace refactoring tool
++ general: refactor namespaces
++ specific: refactor namespace based on a extended object naming policy for classes, interfaces
 + support XML configuration file as refactor preset
-+ check maximum object name length
++ check maximum object name length (if the extended object naming policy is used)
 + message logging with file appenders
-+ refactor namespace for classes, interfaces
 + add specific supplement to the object name
++ adaptation of the object name before the namespace is changed
