@@ -30,18 +30,20 @@ public class ObjectPolicy {
 	private ObjectPackage objectPackage;
 	private ObjectClass objectClass;
 	private ObjectInterface objectInterface;
+	private ObjectExceptionClass objectExceptionClass;
 
 	public ObjectPolicy() {
 		this.objectPackage = new ObjectPackage();
 		this.objectClass = new ObjectClass();
 		this.objectInterface = new ObjectInterface();
+		this.objectExceptionClass = new ObjectExceptionClass();
 	}
 
 	public ObjectPackage getObjectPackage() {
 		return objectPackage;
 	}
 
-	@XmlElement(namespace="http://www.abapspace.com/Preset")
+	@XmlElement(namespace = "http://www.abapspace.com/Preset")
 	public void setObjectPackage(ObjectPackage objectPackage) {
 		this.objectPackage = objectPackage;
 	}
@@ -50,7 +52,7 @@ public class ObjectPolicy {
 		return objectClass;
 	}
 
-	@XmlElement(namespace="http://www.abapspace.com/Preset")
+	@XmlElement(namespace = "http://www.abapspace.com/Preset")
 	public void setObjectClass(ObjectClass objectClass) {
 		this.objectClass = objectClass;
 	}
@@ -59,9 +61,18 @@ public class ObjectPolicy {
 		return objectInterface;
 	}
 
-	@XmlElement(namespace="http://www.abapspace.com/Preset")
+	@XmlElement(namespace = "http://www.abapspace.com/Preset")
 	public void setObjectInterface(ObjectInterface objectInterface) {
 		this.objectInterface = objectInterface;
+	}
+
+	public ObjectExceptionClass getObjectExceptionClass() {
+		return objectExceptionClass;
+	}
+
+	@XmlElement(namespace = "http://www.abapspace.com/Preset")
+	public void setObjectExceptionClass(ObjectExceptionClass objectExceptionClass) {
+		this.objectExceptionClass = objectExceptionClass;
 	}
 
 }

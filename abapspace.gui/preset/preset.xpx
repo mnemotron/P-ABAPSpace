@@ -32,74 +32,102 @@
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectPackage>
 		<tns:objectClass>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>cl</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectClass>
 		<tns:objectInterface>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>if</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectInterface>
 		<tns:objectExceptionClass>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>cx</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectExceptionClass>
 		<tns:objectProgram>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>pr</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>40</tns:nameMaxLength>
 		</tns:objectProgram>
 		<tns:objectInclude>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>in</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>40</tns:nameMaxLength>
 		</tns:objectInclude>
 		<tns:objectFunctionGroup>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>fg</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>26</tns:nameMaxLength>
 		</tns:objectFunctionGroup>
 		<tns:objectFunctionModule>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>fm</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectFunctionModule>
 		<tns:objectDatabaseTable>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>ta</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>16</tns:nameMaxLength>
 		</tns:objectDatabaseTable>
 		<tns:objectDatabaseView>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>vw</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>16</tns:nameMaxLength>
 		</tns:objectDatabaseView>
 		<tns:objectTableType>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>tt</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectTableType>
 		<tns:objectStructure>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>st</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectStructure>
 		<tns:objectDataElement>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>da</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectDataElement>
 		<tns:objectDomain>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>do</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>30</tns:nameMaxLength>
 		</tns:objectDomain>
 		<tns:objectMessageClass>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>mc</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
+			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>20</tns:nameMaxLength>
-		</tns:objectMessageClass>	
+		</tns:objectMessageClass>
 	</tns:objectPolicy>
 </tns:preset>

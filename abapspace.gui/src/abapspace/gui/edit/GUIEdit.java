@@ -36,6 +36,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
 import abapspace.gui.main.GUIMain;
 import abapspace.gui.messages.GUIMessageManager;
@@ -93,20 +94,26 @@ public class GUIEdit extends JFrame {
 					GUIMessageManager.getMessage("table.col.2"), GUIMessageManager.getMessage("table.col.3"),
 					GUIMessageManager.getMessage("table.col.4") };
 			tblEdit = new JTable(new TableModelEdit(locColNames, guicedit.getData()));
+			tblEdit.getTableHeader().setReorderingAllowed(false);
 			tblEdit.setDefaultRenderer(Object.class, new TableCellRendererEdit());
 			Font locFont = tblEdit.getFont();
 			Font locNewFont = new Font(locFont.getFontName(), locFont.getStyle(), 16);
 			tblEdit.setFont(locNewFont);
 
-			//adjust row height
+			// adjust row height
 			try {
-				for (int row = 0; row < tblEdit.getRowCount(); row++) {
+				for (int row = 0, rc = tblEdit.getRowCount(); row < rc; row++) {
 					int rowHeight = tblEdit.getRowHeight();
 
-					for (int column = 0; column < tblEdit.getColumnCount(); column++) {
+					for (int column = 0, cc = tblEdit.getColumnCount(); column < cc; column++) {
 						Component locComponent = tblEdit.prepareRenderer(tblEdit.getCellRenderer(row, column), row,
 								column);
 						rowHeight = Math.max(rowHeight, locComponent.getPreferredSize().height);
+
+						// set cell editor
+						TableColumn locCol = tblEdit.getColumnModel().getColumn(column);
+						locCol.setCellEditor(new TableCellEditorEdit());
+
 					}
 
 					tblEdit.setRowHeight(row, rowHeight);
@@ -138,7 +145,7 @@ public class GUIEdit extends JFrame {
 
 			btnRefactor.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					guicedit.refactor(((TableModelEdit)tblEdit.getModel()).getData());
+					guicedit.refactor(((TableModelEdit) tblEdit.getModel()).getData());
 				}
 			});
 		}

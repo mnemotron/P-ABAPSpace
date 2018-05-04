@@ -194,6 +194,20 @@ public class FileProcessCollectContext implements InterfaceFileProcess {
 			locContext.setNamespaceOld(namespaceOld);
 			locContextList.add(locContext);
 		}
+		
+		// object: exception class
+		if (this.preset.getObjectPolicy().getObjectExceptionClass() != null) {
+			Context locContext = new Context();
+			locContext.setPreIdent(this.preset.getObjectPolicy().getObjectExceptionClass().getPreIdent());
+			locContext.setObjectID(this.preset.getObjectPolicy().getObjectExceptionClass().getObjectIdent());
+			locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectExceptionClass().getObjectNameIdent());
+			locContext.setSupplement(this.preset.getSupplement());
+			locContext.setPostIdent(this.preset.getObjectPolicy().getObjectExceptionClass().getPostIdent());
+			locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectExceptionClass().getNameMaxLength());
+			locContext.setNamespaceNew(this.preset.getNamespaceNew());
+			locContext.setNamespaceOld(namespaceOld);
+			locContextList.add(locContext);
+		}
 
 		return locContextList;
 	}
