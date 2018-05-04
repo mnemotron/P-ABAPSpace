@@ -45,7 +45,7 @@ public class ObjectGen {
 		return objectIdent;
 	}
 
-	@XmlElement(namespace = "http://www.example.org/Preset")
+	@XmlElement(namespace = "http://www.abapspace.com/Preset")
 	public void setObjectIdent(String objectIdent) {
 		this.objectIdent = objectIdent;
 	}
@@ -54,7 +54,7 @@ public class ObjectGen {
 		return preIdent;
 	}
 
-	@XmlElement(namespace = "http://www.example.org/Preset")
+	@XmlElement(namespace = "http://www.abapspace.com/Preset")
 	public void setPreIdent(String preIdent) {
 		this.preIdent = preIdent;
 	}
@@ -63,7 +63,7 @@ public class ObjectGen {
 		return objectNameIdent;
 	}
 
-	@XmlElement(namespace = "http://www.example.org/Preset")
+	@XmlElement(namespace = "http://www.abapspace.com/Preset")
 	public void setObjectNameIdent(String objectNameIdent) {
 		this.objectNameIdent = objectNameIdent;
 	}
@@ -72,7 +72,7 @@ public class ObjectGen {
 		return postIdent;
 	}
 
-	@XmlElement(namespace = "http://www.example.org/Preset")
+	@XmlElement(namespace = "http://www.abapspace.com/Preset")
 	public void setPostIdent(String postIdent) {
 		this.postIdent = postIdent;
 	}
@@ -81,7 +81,7 @@ public class ObjectGen {
 		return nameMaxLength;
 	}
 
-	@XmlElement(namespace = "http://www.example.org/Preset")
+	@XmlElement(namespace = "http://www.abapspace.com/Preset")
 	public void setNameMaxLength(Integer nameMaxLength) {
 		this.nameMaxLength = nameMaxLength;
 	}

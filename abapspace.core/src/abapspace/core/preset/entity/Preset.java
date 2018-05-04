@@ -35,7 +35,7 @@ import abapspace.core.exception.SourceDirectoryNotFoundException;
 import abapspace.core.exception.TargetDirectoryNotFoundException;
 import abapspace.core.messages.MessageManager;
 
-@XmlRootElement(namespace="http://www.example.org/Preset")
+@XmlRootElement(namespace="http://www.abapspace.com/Preset")
 public class Preset {
 
 	private String description;
@@ -64,7 +64,7 @@ public class Preset {
 		return description;
 	}
 
-	@XmlElement(namespace="http://www.example.org/Preset")
+	@XmlElement(namespace="http://www.abapspace.com/Preset")
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -73,7 +73,7 @@ public class Preset {
 		return supplement;
 	}
 
-	@XmlElement(namespace="http://www.example.org/Preset")
+	@XmlElement(namespace="http://www.abapspace.com/Preset")
 	public void setSupplement(String supplement) {
 		this.supplement = supplement;
 	}
@@ -82,7 +82,7 @@ public class Preset {
 		return refactorSourceDir;
 	}
 
-	@XmlElement(namespace="http://www.example.org/Preset")
+	@XmlElement(namespace="http://www.abapspace.com/Preset")
 	public void setRefactorSourceDir(String refactorSourceDir) {
 		this.refactorSourceDir = refactorSourceDir;
 	}
@@ -91,7 +91,7 @@ public class Preset {
 		return refactorTargetDir;
 	}
 
-	@XmlElement(namespace="http://www.example.org/Preset")
+	@XmlElement(namespace="http://www.abapspace.com/Preset")
 	public void setRefactorTargetDir(String refactorTargetDir) {
 		this.refactorTargetDir = refactorTargetDir;
 	}
@@ -100,7 +100,7 @@ public class Preset {
 		return checkNameMaxLength;
 	}
 
-	@XmlElement(namespace="http://www.example.org/Preset")
+	@XmlElement(namespace="http://www.abapspace.com/Preset")
 	public void setCheckNameMaxLength(boolean checkNameMaxLength) {
 		this.checkNameMaxLength = checkNameMaxLength;
 	}
@@ -113,8 +113,8 @@ public class Preset {
 		return namespaceOldList;
 	}
 
-	@XmlElementWrapper(namespace="http://www.example.org/Preset", name = "namespaceOldList")
-	@XmlElement(namespace="http://www.example.org/Preset", name="namespaceOld")
+	@XmlElementWrapper(namespace="http://www.abapspace.com/Preset", name = "namespaceOldList")
+	@XmlElement(namespace="http://www.abapspace.com/Preset", name="namespaceOld")
 	public void setNamespaceOldList(List<NamespaceOld> namespaceOldList) {
 		this.namespaceOldList = namespaceOldList;
 	}
@@ -123,7 +123,7 @@ public class Preset {
 		return objectPolicyGeneral;
 	}
 
-	@XmlElement(namespace="http://www.example.org/Preset")
+	@XmlElement(namespace="http://www.abapspace.com/Preset")
 	public void setObjectPolicyGeneral(ObjectPolicyGeneral objectPolicyGeneral) {
 		this.objectPolicyGeneral = objectPolicyGeneral;
 	}
@@ -132,12 +132,12 @@ public class Preset {
 		return objectPolicy;
 	}
 
-	@XmlElement(namespace="http://www.example.org/Preset")
+	@XmlElement(namespace="http://www.abapspace.com/Preset")
 	public void setObjectPolicy(ObjectPolicy objectPolicy) {
 		this.objectPolicy = objectPolicy;
 	}
 
-	@XmlElement(namespace="http://www.example.org/Preset")
+	@XmlElement(namespace="http://www.abapspace.com/Preset")
 	public void setNamespaceNew(String namespaceNew) {
 		this.namespaceNew = namespaceNew;
 	}
