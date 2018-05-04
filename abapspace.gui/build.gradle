@@ -45,8 +45,83 @@ sourceSets {
 
 // TASKS
 task copyToLib(type: Copy) {
-    into "$buildDir/libs"
     from configurations.runtime
+    into "$buildDir/libs"
+}
+
+task copyToPreset(type: Copy) {
+     from fileTree(dir: 'preset', include: ['*.xpx'])
+   	 into file("${buildDir}/preset")
+}
+
+task copyToLicense(type: Copy) {
+     from fileTree(dir: 'license')
+   	 into file("${buildDir}/license")
+}
+
+task addPresetToDistribution{
+	def presetDir = file("${buildDir}/preset")
+	outputs.dir presetDir
+		
+	    doLast {
+        	presetDir.mkdirs()
+        	copyToPreset.execute()
+    }
+}
+
+task addSourceToDistribution{
+	def sourceDir = file("${buildDir}/source")
+	
+	outputs.dir sourceDir
+		
+	    doLast {       	
+        	sourceDir.mkdirs()
+        	new File(sourceDir, "readme.txt").write("Copy your source into this directory.")
+    }
+}
+
+task addTargetToDistribution{
+	def targetDir = file("${buildDir}/target")
+	
+	outputs.dir targetDir
+		
+	    doLast {       	
+        	targetDir.mkdirs()
+        	new File(targetDir, "readme.txt").write("Thats the target directory.")
+    }
+}
+
+task addLicenseToDistribution{
+	def licenseDir = file("${buildDir}/license")
+	
+	outputs.dir licenseDir
+		
+	    doLast {       	
+        	licenseDir.mkdirs()
+        	copyToLicense.execute()
+    }
+}
+
+distributions {
+    main {
+        contents {
+          from(addPresetToDistribution) {
+          	into "bin/preset"
+           }
+           
+          from(addSourceToDistribution) {
+          	into "bin/source"
+           }
+           
+          from(addTargetToDistribution) {
+          	into "bin/target"
+           }
+           
+          from(addLicenseToDistribution) {
+          	into "license"
+          }
+    	}
+    }
 }
 
 build.dependsOn(copyToLib)
