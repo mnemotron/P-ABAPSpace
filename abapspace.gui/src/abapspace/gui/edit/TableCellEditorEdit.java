@@ -39,6 +39,7 @@ public class TableCellEditorEdit extends AbstractCellEditor implements TableCell
 	public TableCellEditorEdit() {
 		super();
 		this.component = new JTextField();
+		this.component.setBorder(null);
 	}
 
 	@Override

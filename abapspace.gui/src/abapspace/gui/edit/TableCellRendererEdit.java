@@ -46,6 +46,7 @@ public class TableCellRendererEdit extends DefaultTableCellRenderer {
 			JTextField locTxfReplacement = new JTextField();
 			locTxfReplacement.setText((String) value);
 			locTxfReplacement.setBackground(this.getColorCheckMaxLength(table, row));
+			locTxfReplacement.setBorder(null);
 			Font locFont1 = locTxfReplacement.getFont();
 			Font locNewFont1 = new Font(locFont1.getFontName(), locFont1.getStyle(), 16);
 			locTxfReplacement.setFont(locNewFont1);
@@ -56,6 +57,7 @@ public class TableCellRendererEdit extends DefaultTableCellRenderer {
 			locTxfLength.setText((new Integer((int) value)).toString());
 			locTxfLength.setEditable(false);
 			locTxfLength.setBackground(this.getColorCheckMaxLength(table, row));
+			locTxfLength.setBorder(null);
 			Font locFont3 = locTxfLength.getFont();
 			Font locNewFont3 = new Font(locFont3.getFontName(), locFont3.getStyle(), 16);
 			locTxfLength.setFont(locNewFont3);
