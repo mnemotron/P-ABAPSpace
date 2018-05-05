@@ -25,6 +25,8 @@ package abapspace.gui.edit;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +53,8 @@ public class GUIEdit extends JFrame {
 	private JTable tblEdit;
 	private JButton btnCancel;
 	private JButton btnRefactor;
+	private JButton btnUpperCase;
+	private JButton btnLowerCase;
 
 	public GUIEdit(GUICEdit guicedit) {
 
@@ -75,8 +79,9 @@ public class GUIEdit extends JFrame {
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setBounds(10, 10, 700, 652);
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		getContentPane().add(getPanelTopToolBar(), BorderLayout.NORTH);
 		getContentPane().add(getSpEdit(), BorderLayout.CENTER);
-		getContentPane().add(getPanelToolBar(), BorderLayout.SOUTH);
+		getContentPane().add(getPanelBottomToolBar(), BorderLayout.SOUTH);
 
 	}
 
@@ -127,7 +132,20 @@ public class GUIEdit extends JFrame {
 		return tblEdit;
 	}
 
-	private JPanel getPanelToolBar() {
+	private JPanel getPanelTopToolBar() {
+		JPanel locPanel = new JPanel();
+		FlowLayout locFL = new FlowLayout();
+		locFL.setAlignment(FlowLayout.LEFT);
+		locPanel.setLayout(locFL);
+
+		locPanel.add(getBtnUpperCase());
+		locPanel.add(getBtnLowerCase());
+		locPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+
+		return locPanel;
+	}
+
+	private JPanel getPanelBottomToolBar() {
 		JPanel locPanel = new JPanel();
 		locPanel.setLayout(new BorderLayout(0, 0));
 
@@ -135,6 +153,39 @@ public class GUIEdit extends JFrame {
 		locPanel.add(getBtnCancel(), BorderLayout.EAST);
 
 		return locPanel;
+	}
+	
+	private JButton getBtnLowerCase() {
+
+		if (btnLowerCase == null) {
+			btnLowerCase = new JButton();
+			btnLowerCase.setIcon(new ImageIcon(GUIMain.class.getResource("/abapspace/gui/res/lowercase.png")));
+
+			btnLowerCase.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+				}
+			});
+		}
+
+		return btnLowerCase;
+	}
+
+
+	private JButton getBtnUpperCase() {
+
+		if (btnUpperCase == null) {
+			btnUpperCase = new JButton();
+		    btnUpperCase.setIcon(new ImageIcon(GUIMain.class.getResource("/abapspace/gui/res/uppercase.png")));
+
+			btnUpperCase.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+				}
+			});
+		}
+
+		return btnUpperCase;
 	}
 
 	public JButton getBtnRefactor() {
