@@ -146,6 +146,24 @@ public class Context implements Cloneable, InterfaceContext {
 		this.postIdent = postIdent;
 	}
 
+	private boolean isStringUpperCase(String string) {
+		boolean locUpperCase = true;
+
+		char[] locChars = string.toCharArray();
+
+		for (int i = 0, l = locChars.length; i < l; ++i) {
+			
+			char locChar = locChars[i];
+			
+			if (Character.isLetter(locChar) && !Character.isUpperCase(locChar)) {
+				locUpperCase = false;
+				break;
+			}
+		}
+
+		return locUpperCase;
+	}
+
 	@Override
 	public InterfaceContext clone() throws CloneNotSupportedException {
 		return (InterfaceContext) super.clone();
@@ -157,7 +175,8 @@ public class Context implements Cloneable, InterfaceContext {
 		String locRegex = new String();
 
 		// group 1, 2
-		locRegex = this.preIdent + "(" + this.namespaceOld + this.objectID + ")" + "(" + this.objectNameIdent + ")" + this.postIdent;
+		locRegex = this.preIdent + "(" + this.namespaceOld + this.objectID + ")" + "(" + this.objectNameIdent + ")"
+				+ this.postIdent;
 
 		return locRegex;
 	}
@@ -186,7 +205,14 @@ public class Context implements Cloneable, InterfaceContext {
 
 		}
 
-		return locReplacement.toLowerCase();
+		// check object name is upper case or lower case
+		if (this.isStringUpperCase(this.getObject())) {
+			locReplacement = locReplacement.toUpperCase();
+		} else {
+			locReplacement = locReplacement.toLowerCase();
+		}
+
+		return locReplacement;
 	}
 
 	@Override
