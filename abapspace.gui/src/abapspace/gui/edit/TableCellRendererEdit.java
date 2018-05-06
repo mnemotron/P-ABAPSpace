@@ -58,6 +58,7 @@ public class TableCellRendererEdit extends DefaultTableCellRenderer {
 			locTxfLength.setEditable(false);
 			locTxfLength.setBackground(this.getColorCheckMaxLength(table, row));
 			locTxfLength.setBorder(null);
+			locTxfLength.setHorizontalAlignment(JTextField.CENTER);
 			Font locFont3 = locTxfLength.getFont();
 			Font locNewFont3 = new Font(locFont3.getFontName(), locFont3.getStyle(), 16);
 			locTxfLength.setFont(locNewFont3);

@@ -40,6 +40,7 @@ public class TableCellEditorBooleanEdit extends AbstractCellEditor implements Ta
 		super();
 		this.cbxBoolean = new JCheckBox();
 		this.cbxBoolean.setBorder(null);
+		this.cbxBoolean.setHorizontalAlignment(SwingConstants.CENTER);
 	}
 
 	@Override
@@ -49,9 +50,7 @@ public class TableCellEditorBooleanEdit extends AbstractCellEditor implements Ta
 
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-		
-		this.cbxBoolean.setHorizontalAlignment(SwingConstants.CENTER);
-		
+			
 		return this.cbxBoolean;
 	}
 

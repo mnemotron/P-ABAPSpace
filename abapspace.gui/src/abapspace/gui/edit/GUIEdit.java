@@ -56,6 +56,7 @@ public class GUIEdit extends JFrame {
 	private JButton btnUpperCase;
 	private JButton btnLowerCase;
 	private JButton btnIgnore;
+
 	public GUIEdit(GUICEdit guicedit) {
 
 		this.guicedit = guicedit;
@@ -103,7 +104,7 @@ public class GUIEdit extends JFrame {
 			tblEdit = new JTable(new TableModelEdit(locColNames, guicedit.getData()));
 			tblEdit.getTableHeader().setReorderingAllowed(false);
 			tblEdit.setDefaultRenderer(Object.class, new TableCellRendererEdit());
-//			tblEdit.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+			// tblEdit.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 			Font locFont = tblEdit.getFont();
 			Font locNewFont = new Font(locFont.getFontName(), locFont.getStyle(), 16);
 			tblEdit.setFont(locNewFont);
@@ -128,7 +129,16 @@ public class GUIEdit extends JFrame {
 							locCol.setMaxWidth(200);
 							locCol.setPreferredWidth(150);
 							break;
-
+						case TableModelEdit.COLUMN_INDEX_MAX_LENGTH:
+							locCol.setMinWidth(150);
+							locCol.setMaxWidth(200);
+							locCol.setPreferredWidth(150);
+							break;
+						case TableModelEdit.COLUMN_INDEX_LENGTH:
+							locCol.setMinWidth(150);
+							locCol.setMaxWidth(200);
+							locCol.setPreferredWidth(150);
+							break;
 						default:
 							locCol.setCellEditor(new TableCellEditorStringEdit());
 							break;
@@ -202,7 +212,7 @@ public class GUIEdit extends JFrame {
 
 		return btnUpperCase;
 	}
-	
+
 	private JButton getBtnIgnore() {
 
 		if (btnIgnore == null) {
@@ -211,7 +221,7 @@ public class GUIEdit extends JFrame {
 			btnIgnore.setToolTipText(GUIMessageManager.getMessage("button.tooltip.ignore"));
 			btnIgnore.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+
 				}
 			});
 		}
