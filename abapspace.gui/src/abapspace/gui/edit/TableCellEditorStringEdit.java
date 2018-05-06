@@ -27,7 +27,6 @@ import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.AbstractCellEditor;
-import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;

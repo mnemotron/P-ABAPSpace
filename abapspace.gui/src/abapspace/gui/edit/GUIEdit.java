@@ -40,7 +40,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-import abapspace.core.messages.MessageManager;
 import abapspace.gui.main.GUIMain;
 import abapspace.gui.messages.GUIMessageManager;
 
