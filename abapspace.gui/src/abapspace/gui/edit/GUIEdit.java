@@ -40,6 +40,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
+import abapspace.core.messages.MessageManager;
 import abapspace.gui.main.GUIMain;
 import abapspace.gui.messages.GUIMessageManager;
 
@@ -55,7 +56,7 @@ public class GUIEdit extends JFrame {
 	private JButton btnRefactor;
 	private JButton btnUpperCase;
 	private JButton btnLowerCase;
-
+	private JButton btnIgnore;
 	public GUIEdit(GUICEdit guicedit) {
 
 		this.guicedit = guicedit;
@@ -95,12 +96,15 @@ public class GUIEdit extends JFrame {
 	private JTable getTblEdit() {
 
 		if (tblEdit == null) {
-			String[] locColNames = { GUIMessageManager.getMessage("table.col.1"),
-					GUIMessageManager.getMessage("table.col.2"), GUIMessageManager.getMessage("table.col.3"),
-					GUIMessageManager.getMessage("table.col.4") };
+			String[] locColNames = { GUIMessageManager.getMessage("table.col.ignore"),
+					GUIMessageManager.getMessage("table.col.object"),
+					GUIMessageManager.getMessage("table.col.replacement"),
+					GUIMessageManager.getMessage("table.col.maxLength"),
+					GUIMessageManager.getMessage("table.col.length") };
 			tblEdit = new JTable(new TableModelEdit(locColNames, guicedit.getData()));
 			tblEdit.getTableHeader().setReorderingAllowed(false);
 			tblEdit.setDefaultRenderer(Object.class, new TableCellRendererEdit());
+//			tblEdit.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 			Font locFont = tblEdit.getFont();
 			Font locNewFont = new Font(locFont.getFontName(), locFont.getStyle(), 16);
 			tblEdit.setFont(locNewFont);
@@ -117,7 +121,19 @@ public class GUIEdit extends JFrame {
 
 						// set cell editor
 						TableColumn locCol = tblEdit.getColumnModel().getColumn(column);
-						locCol.setCellEditor(new TableCellEditorEdit());
+
+						switch (column) {
+						case TableModelEdit.COLUMN_INDEX_IGNORE:
+							locCol.setCellEditor(new TableCellEditorBooleanEdit());
+							locCol.setMinWidth(150);
+							locCol.setMaxWidth(200);
+							locCol.setPreferredWidth(150);
+							break;
+
+						default:
+							locCol.setCellEditor(new TableCellEditorStringEdit());
+							break;
+						}
 
 					}
 
@@ -138,6 +154,7 @@ public class GUIEdit extends JFrame {
 		locFL.setAlignment(FlowLayout.LEFT);
 		locPanel.setLayout(locFL);
 
+		locPanel.add(getBtnIgnore());
 		locPanel.add(getBtnUpperCase());
 		locPanel.add(getBtnLowerCase());
 		locPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -154,16 +171,16 @@ public class GUIEdit extends JFrame {
 
 		return locPanel;
 	}
-	
+
 	private JButton getBtnLowerCase() {
 
 		if (btnLowerCase == null) {
 			btnLowerCase = new JButton();
 			btnLowerCase.setIcon(new ImageIcon(GUIMain.class.getResource("/abapspace/gui/res/lowercase.png")));
-
+			btnLowerCase.setToolTipText(GUIMessageManager.getMessage("button.tooltip.lowerCase"));
 			btnLowerCase.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					toCase(true);
 				}
 			});
 		}
@@ -171,21 +188,36 @@ public class GUIEdit extends JFrame {
 		return btnLowerCase;
 	}
 
-
 	private JButton getBtnUpperCase() {
 
 		if (btnUpperCase == null) {
 			btnUpperCase = new JButton();
-		    btnUpperCase.setIcon(new ImageIcon(GUIMain.class.getResource("/abapspace/gui/res/uppercase.png")));
-
+			btnUpperCase.setIcon(new ImageIcon(GUIMain.class.getResource("/abapspace/gui/res/uppercase.png")));
+			btnUpperCase.setToolTipText(GUIMessageManager.getMessage("button.tooltip.upperCase"));
 			btnUpperCase.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					toCase(false);
 				}
 			});
 		}
 
 		return btnUpperCase;
+	}
+	
+	private JButton getBtnIgnore() {
+
+		if (btnIgnore == null) {
+			btnIgnore = new JButton();
+			btnIgnore.setIcon(new ImageIcon(GUIMain.class.getResource("/abapspace/gui/res/ignore.png")));
+			btnIgnore.setToolTipText(GUIMessageManager.getMessage("button.tooltip.ignore"));
+			btnIgnore.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
+		}
+
+		return btnIgnore;
 	}
 
 	public JButton getBtnRefactor() {
@@ -217,5 +249,22 @@ public class GUIEdit extends JFrame {
 		}
 
 		return btnCancel;
+	}
+
+	private void toCase(boolean lowerCase) {
+		JTable locTbl = getTblEdit();
+		int[] locSelRows = locTbl.getSelectedRows();
+
+		for (int row : locSelRows) {
+			String locObj = (String) locTbl.getValueAt(row, TableModelEdit.COLUMN_INDEX_REPLACEMENT);
+
+			if (lowerCase) {
+				locObj = locObj.toLowerCase();
+			} else {
+				locObj = locObj.toUpperCase();
+			}
+
+			locTbl.setValueAt(locObj, row, TableModelEdit.COLUMN_INDEX_REPLACEMENT);
+		}
 	}
 }

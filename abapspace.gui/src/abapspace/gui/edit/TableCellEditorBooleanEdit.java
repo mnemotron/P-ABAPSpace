@@ -23,59 +23,36 @@
  */
 package abapspace.gui.edit;
 
-import abapspace.gui.main.GUICMain;
+import java.awt.Component;
 
-public class GUICEdit {
+import javax.swing.AbstractCellEditor;
+import javax.swing.JCheckBox;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.TableCellEditor;
 
-	private GUIEdit guiedit;
-	private GUIMEdit guimedit;
-	private GUICMain guicmain;
+public class TableCellEditorBooleanEdit extends AbstractCellEditor implements TableCellEditor {
 
-	public GUICEdit(GUICMain parent, Object[][] data) {
+	private static final long serialVersionUID = 1454149277636761746L;
+	private JCheckBox cbxBoolean;
 
-		this.guicmain = parent;
-
-		this.guimedit = new GUIMEdit(data);
-
-		this.guiedit = new GUIEdit(this);
+	public TableCellEditorBooleanEdit() {
+		super();
+		this.cbxBoolean = new JCheckBox();
+		this.cbxBoolean.setBorder(null);
 	}
 
-	public void startGUI() {
-		this.guicmain.getGuimain().getFrameMain().setEnabled(false);
-		this.guiedit.setVisible(true);
-		this.guiedit.toFront();
-		this.guiedit.requestFocus();
+	@Override
+	public Object getCellEditorValue() {
+		return this.cbxBoolean.isSelected();
 	}
 
-	public void refactor(Object[][] data) {
-		this.guicmain.responseEdit(data, false);
-		this.stopGUI();
-	}
-
-	public void cancel() {
-		this.guicmain.responseEdit(null, true);
-		this.stopGUI();
-	}
-
-	public Object[][] getData() {
-		return this.guimedit.getData();
-	}
-	
-	public void toUpperCase()
-	{
+	@Override
+	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		
-	}
-	
-	public void toLowerCase()
-	{
+		this.cbxBoolean.setHorizontalAlignment(SwingConstants.CENTER);
 		
-	}
-
-	private void stopGUI() {
-		this.guiedit.setVisible(false);
-		this.guicmain.getGuimain().getFrameMain().setEnabled(true);
-		this.guicmain.getGuimain().getFrameMain().toFront();
-		this.guicmain.getGuimain().getFrameMain().requestFocus();
+		return this.cbxBoolean;
 	}
 
 }

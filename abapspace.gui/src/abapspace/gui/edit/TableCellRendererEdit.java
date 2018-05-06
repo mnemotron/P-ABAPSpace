@@ -42,7 +42,7 @@ public class TableCellRendererEdit extends DefaultTableCellRenderer {
 		Component locComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 		switch (column) {
-		case 1: // replacement}
+		case TableModelEdit.COLUMN_INDEX_REPLACEMENT: // replacement}
 			JTextField locTxfReplacement = new JTextField();
 			locTxfReplacement.setText((String) value);
 			locTxfReplacement.setBackground(this.getColorCheckMaxLength(table, row));
@@ -52,7 +52,7 @@ public class TableCellRendererEdit extends DefaultTableCellRenderer {
 			locTxfReplacement.setFont(locNewFont1);
 			locComponent = locTxfReplacement;
 			break;
-		case 3: // length
+		case TableModelEdit.COLUMN_INDEX_LENGTH: // length
 			JTextField locTxfLength = new JTextField();
 			locTxfLength.setText((new Integer((int) value)).toString());
 			locTxfLength.setEditable(false);
@@ -71,8 +71,8 @@ public class TableCellRendererEdit extends DefaultTableCellRenderer {
 	private Color getColorCheckMaxLength(JTable table, int row) {
 		TableModel locTableModel = table.getModel();
 
-		Integer locMaxLength = (Integer) locTableModel.getValueAt(row, 2); // get max length
-		Integer locLength = (Integer) locTableModel.getValueAt(row, 3); // get length
+		Integer locMaxLength = (Integer) locTableModel.getValueAt(row, TableModelEdit.COLUMN_INDEX_MAX_LENGTH); // get max length
+		Integer locLength = (Integer) locTableModel.getValueAt(row, TableModelEdit.COLUMN_INDEX_LENGTH); // get length
 
 		if (locLength > locMaxLength) {
 			return new Color(255, 205, 205);

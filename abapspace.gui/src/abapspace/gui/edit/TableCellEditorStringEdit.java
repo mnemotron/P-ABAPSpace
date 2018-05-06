@@ -27,35 +27,36 @@ import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.AbstractCellEditor;
+import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
-public class TableCellEditorEdit extends AbstractCellEditor implements TableCellEditor {
+public class TableCellEditorStringEdit extends AbstractCellEditor implements TableCellEditor {
 
 	private static final long serialVersionUID = -3020325703387830377L;
-	private JTextField component;
+	private JTextField txfString;
 
-	public TableCellEditorEdit() {
+	public TableCellEditorStringEdit() {
 		super();
-		this.component = new JTextField();
-		this.component.setBorder(null);
+		this.txfString = new JTextField();
+		this.txfString.setBorder(null);
 	}
 
 	@Override
 	public Object getCellEditorValue() {
-		return component.getText();
+		return txfString.getText();
 	}
 
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 
-		Font locFont1 = this.component.getFont();
+		Font locFont1 = this.txfString.getFont();
 		Font locNewFont1 = new Font(locFont1.getFontName(), locFont1.getStyle(), 16);
-		this.component.setFont(locNewFont1);
-		this.component.setText((String) value);
+		this.txfString.setFont(locNewFont1);
+		this.txfString.setText((String) value);
 
-		return this.component;
+		return this.txfString;
 	}
 
 }

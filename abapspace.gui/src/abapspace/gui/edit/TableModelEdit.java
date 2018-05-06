@@ -28,6 +28,11 @@ import javax.swing.table.AbstractTableModel;
 public class TableModelEdit extends AbstractTableModel {
 
 	private static final long serialVersionUID = -9070204988905662706L;
+	public static final int COLUMN_INDEX_IGNORE = 0;
+	public static final int COLUMN_INDEX_OBJECT = 1;
+	public static final int COLUMN_INDEX_REPLACEMENT = 2;
+	public static final int COLUMN_INDEX_MAX_LENGTH = 3;
+	public static final int COLUMN_INDEX_LENGTH = 4;
 
 	private String[] colNames;
 	private Object[][] data;
@@ -59,7 +64,7 @@ public class TableModelEdit extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		if (col != 1) {
+		if (col != COLUMN_INDEX_REPLACEMENT && col != COLUMN_INDEX_IGNORE) {
 			return false;
 		} else {
 			return true;
@@ -73,10 +78,10 @@ public class TableModelEdit extends AbstractTableModel {
 		data[row][col] = value;
 
 		switch (col) {
-		case 1: // replacement changed > update length
+		case COLUMN_INDEX_REPLACEMENT: // replacement changed > update length
 			String locString = (String) value;
-			data[row][3] = locString.length();
-			fireTableCellUpdated(row, 3);
+			data[row][COLUMN_INDEX_LENGTH] = locString.length();
+			fireTableCellUpdated(row, COLUMN_INDEX_LENGTH);
 			break;
 		}
 
@@ -86,5 +91,23 @@ public class TableModelEdit extends AbstractTableModel {
 	public Object[][] getData() {
 		return data;
 	}
+
+	@Override
+	public Class<?> getColumnClass(int column) {
 	
+		switch (column) {
+		case TableModelEdit.COLUMN_INDEX_IGNORE:
+			return Boolean.class;
+		case TableModelEdit.COLUMN_INDEX_OBJECT:
+			return String.class;
+		case TableModelEdit.COLUMN_INDEX_REPLACEMENT:
+			return String.class;
+		case TableModelEdit.COLUMN_INDEX_MAX_LENGTH:
+			return String.class;
+		case TableModelEdit.COLUMN_INDEX_LENGTH:
+			return String.class;
+		default:
+			return String.class;
+		}
+	}
 }

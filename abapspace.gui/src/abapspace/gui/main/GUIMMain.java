@@ -44,6 +44,7 @@ import abapspace.core.log.LogEventManager;
 import abapspace.core.log.LogListener;
 import abapspace.core.preset.PresetManager;
 import abapspace.core.preset.entity.Preset;
+import abapspace.gui.edit.TableModelEdit;
 
 public class GUIMMain {
 
@@ -173,7 +174,7 @@ public class GUIMMain {
 			});
 		});
 
-		Object[][] locObjectArray = new Object[locEditMap.size()][4]; // 1 row, 2 col
+		Object[][] locObjectArray = new Object[locEditMap.size()][5]; // 1 row, 2 col
 
 		int locRow[] = { 0 };
 
@@ -184,16 +185,19 @@ public class GUIMMain {
 			for (int j = 0, lj = locObjectArray[locRow[0]].length; j < lj; j++) {
 
 				switch (j) {
-				case 0: // found object
+				case TableModelEdit.COLUMN_INDEX_IGNORE:
+					locObjectArray[locRow[0]][j] = false;
+					break;
+				case TableModelEdit.COLUMN_INDEX_OBJECT: // found object
 					locObjectArray[locRow[0]][j] = iContext.getObject();
 					break;
-				case 1: // replacement
+				case TableModelEdit.COLUMN_INDEX_REPLACEMENT: // replacement
 					locObjectArray[locRow[0]][j] = iContext.getReplacement();
 					break;
-				case 2: // maximum length
+				case TableModelEdit.COLUMN_INDEX_MAX_LENGTH: // maximum length
 					locObjectArray[locRow[0]][j] = locMaxNameLength.getMaxNameLength();
 					break;
-				case 3: // length
+				case TableModelEdit.COLUMN_INDEX_LENGTH: // length
 					locObjectArray[locRow[0]][j] = locMaxNameLength.getActualNameLength();
 					break;
 				}
@@ -215,8 +219,8 @@ public class GUIMMain {
 			contextMap.forEach((objectIdent, iContext) -> {
 
 				for (int i = 0, li = data.length; i < li; i++) { // row
-					if (objectIdent.equals(data[i][0])) {
-						iContext.setReplacement((String) data[i][1]);
+					if (objectIdent.equals(data[i][TableModelEdit.COLUMN_INDEX_OBJECT])) {
+						iContext.setReplacement((String) data[i][TableModelEdit.COLUMN_INDEX_REPLACEMENT]);
 					}
 				}
 
