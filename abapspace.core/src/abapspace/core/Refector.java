@@ -32,6 +32,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import abapspace.core.context.ContextCheckMaxNameLength;
+import abapspace.core.context.ContextDirectory;
+import abapspace.core.context.ContextFile;
+import abapspace.core.context.ContextManager;
 import abapspace.core.context.InterfaceContext;
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.SourceDirectoryNotFoundException;
@@ -40,125 +43,124 @@ import abapspace.core.log.LogEventManager;
 import abapspace.core.log.LogType;
 import abapspace.core.messages.MessageManager;
 import abapspace.core.preset.entity.Preset;
-import abapspace.core.process.FileProcessCollectContext;
 import abapspace.core.process.FileProcessRefactorContext;
 import abapspace.core.process.InterfaceFileProcess;
 
 /**
  * Refector
- *  
+ * 
  * @author mnemotron
  * @version 1.0.0
  * @since 2018-05-04
  */
 public class Refector {
 
-	private Preset preset;
-	private Map<String, Map<String, InterfaceContext>> contextMap;
+    private Preset preset;
+    private ContextDirectory sourceDir;
+    private ContextManager contextManager;
 
-	public Refector()
-	{
-		this.preset = new Preset();
-		this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
-	}
-	
-	public Refector(Preset preset) {
-		this.preset = preset;
-		this.contextMap = new HashMap<String, Map<String, InterfaceContext>>();
-	}
+    public Refector() {
+	this.preset = new Preset();
+	this.contextManager = new ContextManager(this.preset);
+	this.sourceDir = null;
+    }
 
-	public boolean checkMaxNameLength() {
+    public Refector(Preset preset) throws SourceDirectoryNotFoundException {
+	this.preset = preset;
+	this.contextManager = new ContextManager(this.preset);
+	this.sourceDir = new ContextDirectory(this.preset.getFileSourceDir().getAbsolutePath(), this.preset, this.contextManager);
+    }
 
-		final boolean[] locValid = new boolean[] { true };
+    public boolean checkMaxNameLength() {
 
-		this.contextMap.forEach((fileIdent, contextMap) -> {
-			contextMap.forEach((objectIdent, iContext) -> {
-				ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
+	final boolean[] locValid = new boolean[] { true };
 
-				if (!locCheck.isValid()) {
-					LogEventManager.fireLog(LogType.ERROR, MessageManager.getMessageFormat("check.maxNameLength",
-							iContext.getObject(), iContext.getReplacement(), locCheck.getMaxNameLength(), locCheck.getActualNameLength()));
-					locValid[0] = false;
-				}
-			});
-		});
+	this.contextMap.forEach((fileIdent, contextMap) -> {
+	    contextMap.forEach((objectIdent, iContext) -> {
+		ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
 
-		return locValid[0];
-	}
-
-	public void refactorContext()
-			throws FileProcessException, SourceDirectoryNotFoundException, TargetDirectoryNotFoundException {
-
-		File[] locFileList = this.preset.getFileSourceDir().listFiles();
-
-		FileProcessRefactorContext locFPRContext = new FileProcessRefactorContext(this.preset.getFileSourceDir(),
-				this.preset.getFileTargetDir(), this.contextMap);
-
-		processFiles(locFileList, locFPRContext);
-	}
-
-	public void collectContext() throws FileProcessException, SourceDirectoryNotFoundException {
-
-		File[] locFileList = this.preset.getFileSourceDir().listFiles();
-
-		FileProcessCollectContext locFPCContext = new FileProcessCollectContext(this.preset, this.contextMap);
-
-		processFiles(locFileList, locFPCContext);
-	}
-
-	private void processFiles(File[] fileList, InterfaceFileProcess iFileProcess) throws FileProcessException {
-
-		for (File file : fileList) {
-
-			if (file.isDirectory()) {
-				processFiles(file.listFiles(), iFileProcess);
-				continue;
-			}
-
-			FileReader locFR = null;
-			BufferedReader locBR = null;
-			StringBuffer locSB = new StringBuffer();
-			int locInt;
-
-			try {
-				locFR = new FileReader(file);
-				locBR = new BufferedReader(locFR);
-
-				while ((locInt = locBR.read()) != -1) {
-					locSB.append((char) locInt);
-				}
-
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-
-				try {
-
-					if (locBR != null) {
-						locBR.close();
-					}
-
-					if (locFR != null) {
-						locFR.close();
-					}
-
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
-			}
-
-			iFileProcess.processFile(file, locSB);
+		if (!locCheck.isValid()) {
+		    LogEventManager.fireLog(LogType.ERROR,
+			    MessageManager.getMessageFormat("check.maxNameLength", iContext.getObject(),
+				    iContext.getReplacement(), locCheck.getMaxNameLength(),
+				    locCheck.getActualNameLength()));
+		    locValid[0] = false;
 		}
+	    });
+	});
 
-	}
+	return locValid[0];
+    }
 
-	public Map<String, Map<String, InterfaceContext>> getContextMap() {
-		return contextMap;
-	}
+    public void refactorContext()
+	    throws FileProcessException, SourceDirectoryNotFoundException, TargetDirectoryNotFoundException {
 
-	public void setContextMap(Map<String, Map<String, InterfaceContext>> contextMap) {
-		this.contextMap = contextMap;
-	}
+	File[] locFileList = this.preset.getFileSourceDir().listFiles();
+
+	FileProcessRefactorContext locFPRContext = new FileProcessRefactorContext(this.preset.getFileSourceDir(),
+		this.preset.getFileTargetDir(), this.contextMap);
+
+	processFiles(locFileList, locFPRContext);
+    }
+
+    public void collectContext() throws FileProcessException{
+	
+	this.sourceDir.collectContext();
+
+//	File[] locFileList = this.preset.getFileSourceDir().listFiles();
+//
+//	OBSOLETEFileProcessCollectContext locFPCContext = new OBSOLETEFileProcessCollectContext(this.preset,
+//		this.contextMap);
+//
+//	processFiles(locFileList, locFPCContext);
+    }
+
+//    private void processFiles(File[] fileList, InterfaceFileProcess iFileProcess) throws FileProcessException {
+//
+//	for (File file : fileList) {
+//
+//	    if (file.isDirectory()) {
+//		processFiles(file.listFiles(), iFileProcess);
+//		continue;
+//	    }
+//
+//	    FileReader locFR = null;
+//	    BufferedReader locBR = null;
+//	    StringBuffer locSB = new StringBuffer();
+//	    int locInt;
+//
+//	    try {
+//		locFR = new FileReader(file);
+//		locBR = new BufferedReader(locFR);
+//
+//		while ((locInt = locBR.read()) != -1) {
+//		    locSB.append((char) locInt);
+//		}
+//
+//	    } catch (FileNotFoundException e) {
+//		e.printStackTrace();
+//	    } catch (IOException e) {
+//		e.printStackTrace();
+//	    } finally {
+//
+//		try {
+//
+//		    if (locBR != null) {
+//			locBR.close();
+//		    }
+//
+//		    if (locFR != null) {
+//			locFR.close();
+//		    }
+//
+//		} catch (IOException ex) {
+//		    ex.printStackTrace();
+//		}
+//	    }
+//
+//	    iFileProcess.processFile(file, locSB);
+//	}
+//
+//    }
+
 }
