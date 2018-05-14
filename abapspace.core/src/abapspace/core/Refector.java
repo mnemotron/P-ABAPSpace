@@ -25,7 +25,6 @@ package abapspace.core;
 
 import java.util.Map;
 
-import abapspace.core.context.ContextDirectory;
 import abapspace.core.context.ContextManager;
 import abapspace.core.context.InterfaceContext;
 import abapspace.core.exception.FileProcessException;
@@ -46,13 +45,12 @@ public class Refector {
 
     public Refector() {
 	this.preset = new Preset();
-	this.contextManager = new ContextManager(this.preset, null);
+	this.contextManager = null;
     }
 
     public Refector(Preset preset) throws SourceDirectoryNotFoundException {
 	this.preset = preset;
-	this.contextManager = new ContextManager(this.preset,
-		new ContextDirectory(this.preset.getFileSourceDir().getAbsolutePath(), this.contextManager));
+	this.contextManager = new ContextManager(this.preset, this.preset.getFileSourceDir().getAbsolutePath());
     }
 
     public void refactorContext() throws FileProcessException {

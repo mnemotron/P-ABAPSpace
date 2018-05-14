@@ -14,9 +14,9 @@ public class ContextManager {
     private List<InterfaceContext> contextList;
     private ContextDirectory contextRoot;
 
-    public ContextManager(Preset preset, ContextDirectory contextRoot) {
+    public ContextManager(Preset preset, String contextRootPath) {
 	this.preset = preset;
-	this.contextRoot = contextRoot;
+	this.contextRoot = new ContextDirectory(contextRootPath, this);
 	this.contextList = buildContextList();
     }
 
