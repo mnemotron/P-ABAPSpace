@@ -2,6 +2,7 @@ package abapspace.core.context;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.preset.entity.NamespaceOld;
@@ -136,6 +137,18 @@ public class ContextManager {
 
     public void refactorContext() throws FileProcessException {
 	this.contextRoot.refactorContext();
+    }
+
+    public boolean checkMaxNameLength() {
+	return this.contextRoot.checkMaxNameLength();
+    }
+
+    public void setContextMap(Map<String, InterfaceContext> contextMap) {
+	this.contextRoot.setContextMap(contextMap);
+    }
+
+    public Map<String, InterfaceContext> getContextMap() {
+	return this.contextRoot.getContextMap();
     }
 
 }

@@ -23,8 +23,11 @@
  */
 package abapspace.core;
 
+import java.util.Map;
+
 import abapspace.core.context.ContextDirectory;
 import abapspace.core.context.ContextManager;
+import abapspace.core.context.InterfaceContext;
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.SourceDirectoryNotFoundException;
 import abapspace.core.preset.entity.Preset;
@@ -58,5 +61,17 @@ public class Refector {
 
     public void collectContext() throws FileProcessException {
 	this.contextManager.collectContext();
+    }
+
+    public boolean checkMaxNameLength() {
+	return this.contextManager.checkMaxNameLength();
+    }
+
+    public void setContextMap(Map<String, InterfaceContext> contextMap) {
+	this.contextManager.setContextMap(contextMap);
+    }
+
+    public Map<String, InterfaceContext> getContextMap() {
+	return this.contextManager.getContextMap();
     }
 }

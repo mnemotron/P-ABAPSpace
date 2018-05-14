@@ -2,7 +2,9 @@ package abapspace.core.context;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.process.InterfaceFileProcess;
@@ -83,6 +85,50 @@ public class ContextDirectory extends File implements InterfaceFileProcess {
 	}
 
 	return locValid;
+    }
+
+    @Override
+    public Map<String, InterfaceContext> getContextMap() {
+
+	Map<String, InterfaceContext> locContextMap = new HashMap<String, InterfaceContext>();
+
+	// TODO directory name
+
+	// directory children
+	for (File child : childList) {
+	    if (child.isDirectory() && child instanceof ContextDirectory) {
+		ContextDirectory locCD = (ContextDirectory) child;
+		Map<String, InterfaceContext> locCM = locCD.getContextMap();
+
+		locContextMap.putAll(locCM);
+
+	    } else if (child instanceof ContextFile) {
+		ContextFile locCF = (ContextFile) child;
+		Map<String, InterfaceContext> locCM = locCF.getContextMap();
+
+		locContextMap.putAll(locCM);
+	    }
+	}
+
+	return locContextMap;
+    }
+
+    @Override
+    public void setContextMap(Map<String, InterfaceContext> contextMap) {
+
+	// TODO directory name
+
+	// directory children
+	for (File child : childList) {
+	    if (child.isDirectory() && child instanceof ContextDirectory) {
+		ContextDirectory locCD = (ContextDirectory) child;
+		locCD.setContextMap(contextMap);
+
+	    } else if (child instanceof ContextFile) {
+		ContextFile locCF = (ContextFile) child;
+		locCF.setContextMap(contextMap);
+	    }
+	}
     }
 
 }

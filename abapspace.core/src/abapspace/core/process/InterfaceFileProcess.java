@@ -23,6 +23,9 @@
  */
 package abapspace.core.process;
 
+import java.util.Map;
+
+import abapspace.core.context.InterfaceContext;
 import abapspace.core.exception.FileProcessException;
 
 public interface InterfaceFileProcess {
@@ -32,4 +35,8 @@ public interface InterfaceFileProcess {
     public void refactorContext() throws FileProcessException;
 
     public boolean checkMaxNameLength();
+
+    public Map<String, InterfaceContext> getContextMap();
+
+    public void setContextMap(Map<String, InterfaceContext> contextMap);
 }

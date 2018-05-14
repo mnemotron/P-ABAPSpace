@@ -221,4 +221,20 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	return locValid[0];
     }
 
+    @Override
+    public Map<String, InterfaceContext> getContextMap() {
+	return this.contextMap;
+    }
+
+    @Override
+    public void setContextMap(Map<String, InterfaceContext> contextMap) {
+
+	contextMap.forEach((objectIdent, iContext) -> {
+	    if (this.contextMap.containsKey(objectIdent)) {
+		this.contextMap.get(objectIdent).setReplacement(iContext.getReplacement());
+	    }
+	});
+
+    }
+
 }
