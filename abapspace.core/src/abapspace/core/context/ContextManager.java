@@ -3,6 +3,7 @@ package abapspace.core.context;
 import java.util.ArrayList;
 import java.util.List;
 
+import abapspace.core.exception.FileProcessException;
 import abapspace.core.preset.entity.NamespaceOld;
 import abapspace.core.preset.entity.Preset;
 
@@ -10,9 +11,11 @@ public class ContextManager {
 
     private Preset preset;
     private List<InterfaceContext> contextList;
+    private ContextDirectory contextRoot;
 
-    public ContextManager(Preset preset) {
+    public ContextManager(Preset preset, ContextDirectory contextRoot) {
 	this.preset = preset;
+	this.contextRoot = contextRoot;
 	this.contextList = buildContextList();
     }
 
@@ -121,6 +124,18 @@ public class ContextManager {
 
     public List<InterfaceContext> getContextList() {
 	return contextList;
+    }
+
+    public Preset getPreset() {
+	return preset;
+    }
+
+    public void collectContext() throws FileProcessException {
+	this.contextRoot.collectContext();
+    }
+
+    public void refactorContext() throws FileProcessException {
+	this.contextRoot.refactorContext();
     }
 
 }

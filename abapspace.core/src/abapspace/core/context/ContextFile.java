@@ -1,33 +1,39 @@
 package abapspace.core.context;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import abapspace.core.exception.FileProcessException;
+import abapspace.core.exception.SourceDirectoryNotFoundException;
+import abapspace.core.exception.TargetDirectoryNotCreatedException;
+import abapspace.core.exception.TargetDirectoryNotFoundException;
+import abapspace.core.exception.TargetFileContentNotWrittenException;
 import abapspace.core.log.LogEventManager;
 import abapspace.core.log.LogType;
 import abapspace.core.messages.MessageManager;
-import abapspace.core.preset.entity.Preset;
 import abapspace.core.process.InterfaceFileProcess;
 
 public class ContextFile extends File implements InterfaceFileProcess {
 
     private static final long serialVersionUID = 6780539753747307909L;
 
-    private Preset preset;
     private ContextManager contextManager;
     private Map<String, InterfaceContext> contextMap;
 
-    public ContextFile(String pathname, Preset preset, ContextManager contextManager) {
+    public ContextFile(String pathname, ContextManager contextManager) {
 	super(pathname);
-	this.preset = preset;
 	this.contextManager = contextManager;
 	this.contextMap = new HashMap<String, InterfaceContext>();
     }
@@ -38,9 +44,10 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	LogEventManager.fireLog(LogType.INFO,
 		MessageManager.getMessage("collect.context.file") + this.getAbsolutePath());
 
-	//file name
-	
-	//file content
+	// file name
+	// TODO file name collect
+
+	// file content
 	try {
 	    StringBuffer locSB = this.getContextBuffer();
 
@@ -56,8 +63,41 @@ public class ContextFile extends File implements InterfaceFileProcess {
     }
 
     @Override
-    public void RefactorContext() {
+    public void refactorContext() throws FileProcessException {
 
+	LogEventManager.fireLog(LogType.INFO,
+		MessageFormat.format(MessageManager.getMessage("refactor.file.source"), this.getAbsolutePath()));
+
+	try {
+	    StringBuffer locSB = this.getContextBuffer();
+	    String locContext = locSB.toString();
+
+	    Iterator<Map.Entry<String, InterfaceContext>> locICMIterator = this.contextMap.entrySet().iterator();
+
+	    while (locICMIterator.hasNext()) {
+		Map.Entry<String, InterfaceContext> locV = locICMIterator.next();
+
+		LogEventManager.fireLog(LogType.INFO, MessageManager.getMessageFormat("refactor.object",
+			locV.getValue().getObject(), locV.getValue().getReplacement()));
+
+		locContext = locContext.replaceAll(locV.getValue().getObject(), locV.getValue().getReplacement());
+	    }
+
+	    this.saveTargetFile(this.contextManager.getPreset().getFileSourceDir(), this,
+		    this.contextManager.getPreset().getFileTargetDir(), locContext);
+
+	} catch (IOException e) {
+	    throw new FileProcessException(MessageManager.getMessageFormat(
+		    "exception.fileProcessRefactorContext.fileNotReachable" + this.getAbsolutePath()), e);
+	} catch (TargetDirectoryNotCreatedException e) {
+	    throw new FileProcessException(e.getMessage(), e);
+	} catch (TargetFileContentNotWrittenException e) {
+	    throw new FileProcessException(e.getMessage(), e);
+	} catch (SourceDirectoryNotFoundException e) {
+	    throw new FileProcessException(e.getMessage(), e);
+	} catch (TargetDirectoryNotFoundException e) {
+	    throw new FileProcessException(e.getMessage(), e);
+	}
     }
 
     private Map<String, InterfaceContext> processFileSearch(String fileContextString,
@@ -119,6 +159,66 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	}
 
 	return locSB;
+    }
+
+    private void saveTargetFile(File sourceDir, File sourceFile, File targetDir, String context)
+	    throws TargetDirectoryNotCreatedException, TargetFileContentNotWrittenException {
+
+	BufferedWriter locBW = null;
+	File locTargetFile = null;
+	String locTargetPath = sourceFile.getAbsolutePath();
+
+	locTargetPath = locTargetPath.replaceAll(sourceDir.getAbsolutePath(), targetDir.getAbsolutePath());
+
+	locTargetFile = new File(locTargetPath);
+
+	LogEventManager.fireLog(LogType.INFO,
+		MessageManager.getMessageFormat("refactor.file.target", locTargetFile.getAbsolutePath()));
+
+	try {
+	    Files.createDirectories(locTargetFile.toPath().getParent());
+	} catch (IOException e) {
+	    throw new TargetDirectoryNotCreatedException(MessageManager.getMessage("TargetDirectoryNotCreatedException")
+		    + locTargetFile.toPath().getParent(), e);
+	}
+
+	try {
+	    locBW = new BufferedWriter(new FileWriter(locTargetFile));
+	    locBW.write(context);
+	} catch (IOException e) {
+	    throw new TargetFileContentNotWrittenException(
+		    MessageManager.getMessage("TargetFileContentNotWrittenException") + locTargetFile.getAbsolutePath(),
+		    e);
+	} finally {
+	    if (locBW != null) {
+		try {
+		    locBW.close();
+		} catch (IOException e) {
+		    LogEventManager.fireLog(LogType.ERROR,
+			    MessageManager.getMessage("FileProcessRefactorContext_BW_NotClosed"), e);
+		}
+	    }
+	}
+    }
+
+    @Override
+    public boolean checkMaxNameLength() {
+
+	final boolean[] locValid = new boolean[] { true };
+
+	this.contextMap.forEach((objectIdent, iContext) -> {
+	    ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
+
+	    if (!locCheck.isValid()) {
+		LogEventManager.fireLog(LogType.ERROR,
+			MessageManager.getMessageFormat("check.maxNameLength", iContext.getObject(),
+				iContext.getReplacement(), locCheck.getMaxNameLength(),
+				locCheck.getActualNameLength()));
+		locValid[0] = false;
+	    }
+	});
+
+	return locValid[0];
     }
 
 }

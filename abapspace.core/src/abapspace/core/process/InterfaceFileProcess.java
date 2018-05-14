@@ -27,8 +27,9 @@ import abapspace.core.exception.FileProcessException;
 
 public interface InterfaceFileProcess {
 
-	public void collectContext() throws FileProcessException ;
-	
-	public void RefactorContext();
+    public void collectContext() throws FileProcessException;
 
+    public void refactorContext() throws FileProcessException;
+
+    public boolean checkMaxNameLength();
 }
