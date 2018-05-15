@@ -31,11 +31,15 @@ public class ContextFile extends File implements InterfaceFileProcess {
 
     private ContextManager contextManager;
     private Map<String, InterfaceContext> contextMap;
+    private InterfaceContext iContext;
+    private String object;
 
     public ContextFile(String pathname, ContextManager contextManager) {
 	super(pathname);
 	this.contextManager = contextManager;
 	this.contextMap = new HashMap<String, InterfaceContext>();
+	this.iContext = null;
+	this.object = new String();
     }
 
     @Override
@@ -44,14 +48,15 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	LogEventManager.fireLog(LogType.INFO,
 		MessageManager.getMessage("collect.context.file") + this.getAbsolutePath());
 
-	// file name
-	// TODO file name collect
-
-	// file content
 	try {
+
+	    // file name
+	    this.processFileNameSearch(this.getName(), this.contextManager.getContextList());
+
+	    // file content
 	    StringBuffer locSB = this.getContextBuffer();
 
-	    this.contextMap = processFileSearch(locSB.toString(), this.contextMap,
+	    this.contextMap = processFileContextSearch(locSB.toString(), this.contextMap,
 		    this.contextManager.getContextList());
 	} catch (CloneNotSupportedException e) {
 	    throw new FileProcessException(
@@ -69,6 +74,7 @@ public class ContextFile extends File implements InterfaceFileProcess {
 		MessageFormat.format(MessageManager.getMessage("refactor.file.source"), this.getAbsolutePath()));
 
 	try {
+	    // refactor context
 	    StringBuffer locSB = this.getContextBuffer();
 	    String locContext = locSB.toString();
 
@@ -83,8 +89,17 @@ public class ContextFile extends File implements InterfaceFileProcess {
 		locContext = locContext.replaceAll(locV.getValue().getObject(), locV.getValue().getReplacement());
 	    }
 
+	    // refactor file name
+	    String locFileNameNew = new String();
+	    if (this.object != null && this.iContext != null) {
+		locFileNameNew = this.getName().replaceAll(this.iContext.getObject(), this.iContext.getReplacement());
+	    } else {
+		locFileNameNew = this.getName();
+	    }
+
+	    // save target file
 	    this.saveTargetFile(this.contextManager.getPreset().getFileSourceDir(), this,
-		    this.contextManager.getPreset().getFileTargetDir(), locContext);
+		    this.contextManager.getPreset().getFileTargetDir(), locFileNameNew, locContext);
 
 	} catch (IOException e) {
 	    throw new FileProcessException(MessageManager.getMessageFormat(
@@ -100,7 +115,35 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	}
     }
 
-    private Map<String, InterfaceContext> processFileSearch(String fileContextString,
+    private void processFileNameSearch(String fileNameString, List<InterfaceContext> contextList)
+	    throws CloneNotSupportedException {
+
+	for (InterfaceContext iContext : contextList) {
+
+	    for (Matcher m = Pattern.compile(iContext.getRegex(), Pattern.CASE_INSENSITIVE).matcher(fileNameString); m
+		    .find();) {
+
+		String locGroup1 = m.group(1); // group 1: namespace + object ID
+		String locGroup2 = m.group(2); // group 2: object name
+		String locObject = locGroup1 + locGroup2;
+
+		InterfaceContext locIContext = iContext.clone();
+
+		LogEventManager.fireLog(LogType.INFO, MessageManager.getMessageFormat("collect.context.object.fileName",
+			locObject, m.start(), m.end()));
+
+		locIContext.setObject(new String[] { locGroup1, locGroup2 });
+
+		this.object = locObject;
+		this.iContext = locIContext;
+
+		return;
+	    }
+
+	}
+    }
+
+    private Map<String, InterfaceContext> processFileContextSearch(String fileContextString,
 	    Map<String, InterfaceContext> iContextMap, List<InterfaceContext> contextList)
 	    throws CloneNotSupportedException {
 
@@ -161,14 +204,16 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	return locSB;
     }
 
-    private void saveTargetFile(File sourceDir, File sourceFile, File targetDir, String context)
+    private void saveTargetFile(File sourceDir, File sourceFile, File targetDir, String fileNameNew, String context)
 	    throws TargetDirectoryNotCreatedException, TargetFileContentNotWrittenException {
 
 	BufferedWriter locBW = null;
 	File locTargetFile = null;
-	String locTargetPath = sourceFile.getAbsolutePath();
+	String locTargetPath = sourceFile.getParent();
 
-	locTargetPath = locTargetPath.replaceAll(sourceDir.getAbsolutePath(), targetDir.getAbsolutePath());
+	locTargetPath = locTargetPath + fileNameNew;
+
+	locTargetPath = locTargetPath.replaceAll(sourceDir.getPath(), targetDir.getPath());
 
 	locTargetFile = new File(locTargetPath);
 
@@ -206,7 +251,7 @@ public class ContextFile extends File implements InterfaceFileProcess {
 
 	final boolean[] locValid = new boolean[] { true };
 
-	this.contextMap.forEach((objectIdent, iContext) -> {
+	this.getContextMap().forEach((objectIdent, iContext) -> {
 	    ContextCheckMaxNameLength locCheck = iContext.checkMaxNameLengthForReplacement();
 
 	    if (!locCheck.isValid()) {
@@ -223,16 +268,31 @@ public class ContextFile extends File implements InterfaceFileProcess {
 
     @Override
     public Map<String, InterfaceContext> getContextMap() {
-	return this.contextMap;
+
+	Map<String, InterfaceContext> locCM = new HashMap<String, InterfaceContext>();
+
+	locCM.putAll(this.contextMap);
+
+	if (this.object != null && this.iContext != null && !locCM.containsKey(this.object)) {
+	    locCM.put(this.object, this.iContext);
+	}
+
+	return locCM;
     }
 
     @Override
     public void setContextMap(Map<String, InterfaceContext> contextMap) {
 
 	contextMap.forEach((objectIdent, iContext) -> {
+
 	    if (this.contextMap.containsKey(objectIdent)) {
 		this.contextMap.get(objectIdent).setReplacement(iContext.getReplacement());
 	    }
+
+	    if (this.object.equals(objectIdent)) {
+		this.iContext.setReplacement(iContext.getReplacement());
+	    }
+
 	});
 
     }
