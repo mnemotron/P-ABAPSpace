@@ -16,7 +16,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import abapspace.core.exception.FileProcessException;
-import abapspace.core.exception.SourceDirectoryNotFoundException;
 import abapspace.core.exception.TargetDirectoryNotCreatedException;
 import abapspace.core.exception.TargetDirectoryNotFoundException;
 import abapspace.core.exception.TargetFileContentNotWrittenException;
@@ -67,8 +66,7 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	}
     }
 
-    @Override
-    public void refactorContext() throws FileProcessException {
+    public void refactorContext(String parentDirPath) throws FileProcessException {
 
 	LogEventManager.fireLog(LogType.INFO,
 		MessageFormat.format(MessageManager.getMessage("refactor.file.source"), this.getAbsolutePath()));
@@ -90,16 +88,13 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	    }
 
 	    // refactor file name
-	    String locFileNameNew = new String();
-	    if (this.object != null && this.iContext != null) {
-		locFileNameNew = this.getName().replaceAll(this.iContext.getObject(), this.iContext.getReplacement());
-	    } else {
-		locFileNameNew = this.getName();
-	    }
+	    String locFileNameNew = this.refactorFileName();
+
+	    String locTargetPath = this.contextManager.getPreset().getFileTargetDir().getAbsolutePath() + File.separator
+		    + parentDirPath + File.separator + locFileNameNew;
 
 	    // save target file
-	    this.saveTargetFile(this.contextManager.getPreset().getFileSourceDir(), this,
-		    this.contextManager.getPreset().getFileTargetDir(), locFileNameNew, locContext);
+	    this.saveTargetFile(locTargetPath, locContext);
 
 	} catch (IOException e) {
 	    throw new FileProcessException(MessageManager.getMessageFormat(
@@ -108,11 +103,14 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	    throw new FileProcessException(e.getMessage(), e);
 	} catch (TargetFileContentNotWrittenException e) {
 	    throw new FileProcessException(e.getMessage(), e);
-	} catch (SourceDirectoryNotFoundException e) {
-	    throw new FileProcessException(e.getMessage(), e);
 	} catch (TargetDirectoryNotFoundException e) {
 	    throw new FileProcessException(e.getMessage(), e);
 	}
+    }
+
+    @Override
+    public void refactorContext() throws FileProcessException {
+	this.refactorContext(new String());
     }
 
     private void processFileNameSearch(String fileNameString, List<InterfaceContext> contextList)
@@ -204,18 +202,12 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	return locSB;
     }
 
-    private void saveTargetFile(File sourceDir, File sourceFile, File targetDir, String fileNameNew, String context)
+    private void saveTargetFile(String targetPath, String context)
 	    throws TargetDirectoryNotCreatedException, TargetFileContentNotWrittenException {
 
 	BufferedWriter locBW = null;
-	File locTargetFile = null;
-	String locTargetPath = sourceFile.getParent();
 
-	locTargetPath = locTargetPath + fileNameNew;
-
-	locTargetPath = locTargetPath.replaceAll(sourceDir.getPath(), targetDir.getPath());
-
-	locTargetFile = new File(locTargetPath);
+	File locTargetFile = new File(targetPath);
 
 	LogEventManager.fireLog(LogType.INFO,
 		MessageManager.getMessageFormat("refactor.file.target", locTargetFile.getAbsolutePath()));
@@ -244,6 +236,20 @@ public class ContextFile extends File implements InterfaceFileProcess {
 		}
 	    }
 	}
+    }
+
+    private String refactorFileName() {
+	String locResult = new String();
+
+	if (this.object != null && this.iContext != null) {
+	    locResult = this.getName().replaceAll(this.iContext.getObject(), this.iContext.getReplacement());
+	    locResult = locResult.replace(this.contextManager.getPreset().getFileStructure().getNamespaceReplacement(),
+		    this.contextManager.getPreset().getFileStructure().getNamespacePlaceholder());
+	} else {
+	    locResult = this.getName();
+	}
+
+	return locResult;
     }
 
     @Override
@@ -283,14 +289,17 @@ public class ContextFile extends File implements InterfaceFileProcess {
     @Override
     public void setContextMap(Map<String, InterfaceContext> contextMap) {
 
-	contextMap.forEach((objectIdent, iContext) -> {
+	// file name
+	if (contextMap.containsKey(this.object)) {
+	    InterfaceContext locIC = contextMap.get(this.object);
+	    this.iContext.setReplacement(locIC.getReplacement());
+	}
 
-	    if (this.contextMap.containsKey(objectIdent)) {
-		this.contextMap.get(objectIdent).setReplacement(iContext.getReplacement());
-	    }
+	// file context
+	this.contextMap.forEach((objectIdent, iContext) -> {
 
-	    if (this.object.equals(objectIdent)) {
-		this.iContext.setReplacement(iContext.getReplacement());
+	    if (contextMap.containsKey(objectIdent)) {
+		iContext.setReplacement(contextMap.get(objectIdent).getReplacement());
 	    }
 
 	});

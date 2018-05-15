@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://www.abapspace.com/Preset"
-	xmlns:tns="http://www.abapspace.com/Preset"
+	targetNamespace="http://www.abapspace.com/Preset" xmlns:tns="http://www.abapspace.com/Preset"
 	elementFormDefault="qualified">
 
 	<xsd:element name="objectNameIdent">
@@ -30,10 +29,8 @@
 
 	<xsd:complexType name="objectTypeGen" mixed="true">
 		<xsd:sequence>
-			<xsd:element ref="tns:preIdent" minOccurs="0"
-				maxOccurs="1"></xsd:element>
-			<xsd:element name="objectIdent" minOccurs="1"
-				maxOccurs="1">
+			<xsd:element ref="tns:preIdent" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element name="objectIdent" minOccurs="1" maxOccurs="1">
 				<xsd:simpleType>
 					<xsd:restriction base="xsd:normalizedString">
 						<xsd:minLength value="1" />
@@ -42,8 +39,7 @@
 			</xsd:element>
 			<xsd:element ref="tns:objectNameIdent" minOccurs="1"
 				maxOccurs="1"></xsd:element>
-			<xsd:element ref="tns:postIdent" minOccurs="0"
-				maxOccurs="1"></xsd:element>
+			<xsd:element ref="tns:postIdent" minOccurs="0" maxOccurs="1"></xsd:element>
 			<xsd:element name="nameMaxLength" minOccurs="1"
 				maxOccurs="1">
 				<xsd:simpleType>
@@ -58,9 +54,7 @@
 	<xsd:element name="preset">
 		<xsd:complexType>
 			<xsd:sequence>
-
-				<xsd:element name="description" minOccurs="1"
-					maxOccurs="1">
+				<xsd:element name="description" minOccurs="1" maxOccurs="1">
 					<xsd:simpleType>
 						<xsd:restriction base="xsd:normalizedString">
 							<xsd:minLength value="1" />
@@ -68,17 +62,29 @@
 						</xsd:restriction>
 					</xsd:simpleType>
 				</xsd:element>
-
-				<xsd:element name="refactorSourceDir"
-					type="xsd:normalizedString" minOccurs="1" maxOccurs="1"></xsd:element>
-				<xsd:element name="refactorTargetDir"
-					type="xsd:normalizedString" minOccurs="1" maxOccurs="1"></xsd:element>
-				<xsd:element name="checkNameMaxLength"
-					type="xsd:boolean" minOccurs="1" maxOccurs="1"></xsd:element>
-				<xsd:element name="namespaceNew"
-					type="xsd:normalizedString" minOccurs="1" maxOccurs="1"></xsd:element>
-				<xsd:element name="supplement"
-					type="xsd:normalizedString" minOccurs="0" maxOccurs="1"></xsd:element>
+				<xsd:element name="refactorSourceDir" type="xsd:normalizedString"
+					minOccurs="1" maxOccurs="1"></xsd:element>
+				<xsd:element name="refactorTargetDir" type="xsd:normalizedString"
+					minOccurs="1" maxOccurs="1"></xsd:element>
+				<xsd:element name="fileStructure" minOccurs="1"
+					maxOccurs="1">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="update" type="xsd:boolean"
+								minOccurs="1" maxOccurs="1"></xsd:element>
+							<xsd:element name="namespacePlaceholder" type="xsd:normalizedString"
+								minOccurs="1" maxOccurs="1"></xsd:element>
+							<xsd:element name="namespaceReplacement" type="xsd:normalizedString"
+								minOccurs="1" maxOccurs="1"></xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="checkNameMaxLength" type="xsd:boolean"
+					minOccurs="1" maxOccurs="1"></xsd:element>
+				<xsd:element name="namespaceNew" type="xsd:normalizedString"
+					minOccurs="1" maxOccurs="1"></xsd:element>
+				<xsd:element name="supplement" type="xsd:normalizedString"
+					minOccurs="0" maxOccurs="1"></xsd:element>
 				<xsd:element name="namespaceOldList" minOccurs="1"
 					maxOccurs="1">
 					<xsd:complexType>
@@ -87,10 +93,10 @@
 								maxOccurs="unbounded">
 								<xsd:complexType>
 									<xsd:sequence>
-										<xsd:element name="objectPolicy"
-											type="xsd:boolean" minOccurs="0" maxOccurs="1" />
-										<xsd:element name="namespaceOld"
-											type="xsd:normalizedString" minOccurs="1" maxOccurs="1" />
+										<xsd:element name="objectPolicy" type="xsd:boolean"
+											minOccurs="0" maxOccurs="1" />
+										<xsd:element name="namespaceOld" type="xsd:normalizedString"
+											minOccurs="1" maxOccurs="1" />
 									</xsd:sequence>
 									<!-- <xsd:simpleContent> -->
 									<!-- <xsd:extension base="xsd:normalizedString"> -->
@@ -126,16 +132,16 @@
 								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
 							<xsd:element name="objectInterface" minOccurs="0"
 								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
-							<xsd:element name="objectExceptionClass"
-								minOccurs="0" maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectExceptionClass" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
 							<xsd:element name="objectProgram" minOccurs="0"
 								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
 							<xsd:element name="objectInclude" minOccurs="0"
 								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
 							<xsd:element name="objectFunctionGroup" minOccurs="0"
 								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
-							<xsd:element name="objectFunctionModule"
-								minOccurs="0" maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
+							<xsd:element name="objectFunctionModule" minOccurs="0"
+								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
 							<xsd:element name="objectDatabaseTable" minOccurs="0"
 								maxOccurs="1" type="tns:objectTypeGen"></xsd:element>
 							<xsd:element name="objectDatabaseView" minOccurs="0"

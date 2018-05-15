@@ -27,52 +27,63 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class ObjectPolicy {
 
-	private ObjectPackage objectPackage;
-	private ObjectClass objectClass;
-	private ObjectInterface objectInterface;
-	private ObjectExceptionClass objectExceptionClass;
+    private ObjectPackage objectPackage;
+    private ObjectClass objectClass;
+    private ObjectInterface objectInterface;
+    private ObjectExceptionClass objectExceptionClass;
+    private ObjectDatabaseTable objectDatabaseTable;
 
-	public ObjectPolicy() {
-		this.objectPackage = new ObjectPackage();
-		this.objectClass = new ObjectClass();
-		this.objectInterface = new ObjectInterface();
-		this.objectExceptionClass = new ObjectExceptionClass();
-	}
+    public ObjectPolicy() {
+	this.objectPackage = new ObjectPackage();
+	this.objectClass = new ObjectClass();
+	this.objectInterface = new ObjectInterface();
+	this.objectExceptionClass = new ObjectExceptionClass();
+	this.objectDatabaseTable = new ObjectDatabaseTable();
+    }
 
-	public ObjectPackage getObjectPackage() {
-		return objectPackage;
-	}
+    public ObjectPackage getObjectPackage() {
+	return objectPackage;
+    }
 
-	@XmlElement(namespace = "http://www.abapspace.com/Preset")
-	public void setObjectPackage(ObjectPackage objectPackage) {
-		this.objectPackage = objectPackage;
-	}
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectPackage(ObjectPackage objectPackage) {
+	this.objectPackage = objectPackage;
+    }
 
-	public ObjectClass getObjectClass() {
-		return objectClass;
-	}
+    public ObjectClass getObjectClass() {
+	return objectClass;
+    }
 
-	@XmlElement(namespace = "http://www.abapspace.com/Preset")
-	public void setObjectClass(ObjectClass objectClass) {
-		this.objectClass = objectClass;
-	}
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectClass(ObjectClass objectClass) {
+	this.objectClass = objectClass;
+    }
 
-	public ObjectInterface getObjectInterface() {
-		return objectInterface;
-	}
+    public ObjectInterface getObjectInterface() {
+	return objectInterface;
+    }
 
-	@XmlElement(namespace = "http://www.abapspace.com/Preset")
-	public void setObjectInterface(ObjectInterface objectInterface) {
-		this.objectInterface = objectInterface;
-	}
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectInterface(ObjectInterface objectInterface) {
+	this.objectInterface = objectInterface;
+    }
 
-	public ObjectExceptionClass getObjectExceptionClass() {
-		return objectExceptionClass;
-	}
+    public ObjectExceptionClass getObjectExceptionClass() {
+	return objectExceptionClass;
+    }
 
-	@XmlElement(namespace = "http://www.abapspace.com/Preset")
-	public void setObjectExceptionClass(ObjectExceptionClass objectExceptionClass) {
-		this.objectExceptionClass = objectExceptionClass;
-	}
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectExceptionClass(ObjectExceptionClass objectExceptionClass) {
+	this.objectExceptionClass = objectExceptionClass;
+    }
+
+    public ObjectDatabaseTable getObjectDatabaseTable() {
+	return objectDatabaseTable;
+    }
+
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectDatabaseTable(ObjectDatabaseTable objectDatabaseTable) {
+	this.objectDatabaseTable = objectDatabaseTable;
+    }
 
 }

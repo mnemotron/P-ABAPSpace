@@ -21,24 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package abapspace.core.context;
+package abapspace.core.preset.entity;
 
-public interface InterfaceContext {
-	
-    	public String getRegex();
-    
-	public String getRegex(boolean preIdent, boolean postIdent);
-	
-	public void setObject(String[] object);
-	
-	public String getObject();
-	
-	public String getReplacement();
-	
-	public void setReplacement(String replacement);
-	
-	public ContextCheckMaxNameLength checkMaxNameLengthForReplacement();
-	
-	public InterfaceContext clone() throws CloneNotSupportedException;
-	
+public class ObjectDatabaseTable extends ObjectGen {
+
+	public ObjectDatabaseTable()
+	{
+		
+	}
+
 }

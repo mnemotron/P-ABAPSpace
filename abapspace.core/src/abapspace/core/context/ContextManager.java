@@ -16,7 +16,7 @@ public class ContextManager {
 
     public ContextManager(Preset preset, String contextRootPath) {
 	this.preset = preset;
-	this.contextRoot = new ContextDirectory(contextRootPath, this);
+	this.contextRoot = new ContextDirectory(true, contextRootPath, this);
 	this.contextList = buildContextList();
     }
 
@@ -115,6 +115,20 @@ public class ContextManager {
 	    locContext.setSupplement(this.preset.getSupplement());
 	    locContext.setPostIdent(this.preset.getObjectPolicy().getObjectExceptionClass().getPostIdent());
 	    locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectExceptionClass().getNameMaxLength());
+	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
+	    locContext.setNamespaceOld(namespaceOld);
+	    locContextList.add(locContext);
+	}
+
+	// object: database table
+	if (this.preset.getObjectPolicy().getObjectDatabaseTable() != null) {
+	    Context locContext = new Context();
+	    locContext.setPreIdent(this.preset.getObjectPolicy().getObjectDatabaseTable().getPreIdent());
+	    locContext.setObjectID(this.preset.getObjectPolicy().getObjectDatabaseTable().getObjectIdent());
+	    locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectDatabaseTable().getObjectNameIdent());
+	    locContext.setSupplement(this.preset.getSupplement());
+	    locContext.setPostIdent(this.preset.getObjectPolicy().getObjectDatabaseTable().getPostIdent());
+	    locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectDatabaseTable().getNameMaxLength());
 	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
 	    locContext.setNamespaceOld(namespaceOld);
 	    locContextList.add(locContext);

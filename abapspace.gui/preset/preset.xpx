@@ -5,6 +5,11 @@
 	<tns:description>Test</tns:description>
 	<tns:refactorSourceDir>source/</tns:refactorSourceDir>
 	<tns:refactorTargetDir>target/</tns:refactorTargetDir>
+	<tns:fileStructure>
+		<tns:update>true</tns:update>
+		<tns:namespacePlaceholder>#</tns:namespacePlaceholder>
+		<tns:namespaceReplacement>/</tns:namespaceReplacement>
+	</tns:fileStructure>
 	<tns:checkNameMaxLength>true</tns:checkNameMaxLength>
 	<tns:namespaceNew>/xxx/</tns:namespaceNew>
 	<tns:supplement>_xyz_x0001_</tns:supplement>
