@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -338,21 +339,46 @@ public class ContextFile extends File implements InterfaceFileProcess {
     @Override
     public void setContextMap(Map<String, InterfaceContext> contextMap) {
 
+	List<String> locDelObject = new ArrayList<String>();
+
 	// file name
 	if (contextMap.containsKey(this.object)) {
 	    InterfaceContext locIC = contextMap.get(this.object);
-	    this.iContext.setReplacement(locIC.getReplacement());
+
+	    if (!locIC.isIgnore()) {
+		this.iContext.setReplacement(locIC.getReplacement());
+	    } else {
+		LogEventManager.fireLog(LogType.INFO,
+			MessageManager.getMessageFormat("refactor.object.ignore", this.object));
+		this.removeFileNameObject();
+	    }
 	}
 
 	// file context
 	this.contextMap.forEach((objectIdent, iContext) -> {
 
 	    if (contextMap.containsKey(objectIdent)) {
-		iContext.setReplacement(contextMap.get(objectIdent).getReplacement());
+		InterfaceContext locIC = contextMap.get(objectIdent);
+		if (!locIC.isIgnore()) {
+		    iContext.setReplacement(contextMap.get(objectIdent).getReplacement());
+		} else {
+		    LogEventManager.fireLog(LogType.INFO,
+			    MessageManager.getMessageFormat("refactor.object.ignore", objectIdent));
+		    locDelObject.add(objectIdent);
+		}
 	    }
 
 	});
 
+	for (String object : locDelObject) {
+	    this.contextMap.remove(object);
+	}
+
+    }
+
+    private void removeFileNameObject() {
+	this.iContext = null;
+	this.object = new String();
     }
 
 }

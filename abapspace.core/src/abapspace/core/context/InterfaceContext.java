@@ -41,4 +41,8 @@ public interface InterfaceContext {
 	
 	public InterfaceContext clone() throws CloneNotSupportedException;
 	
+	public void setIgnore(boolean ignore);
+	
+	public boolean isIgnore();
+	
 }

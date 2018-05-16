@@ -66,7 +66,7 @@ public class GUIMain {
 				guicmain.stopGUI();
 			}
 		});
-		this.frameMain.setBounds(10, 10, 700, 652);
+		this.frameMain.setBounds(10, 10, 700, 649);
 		this.frameMain.setExtendedState(Frame.NORMAL);
 		this.frameMain.setResizable(false);
 		this.frameMain.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

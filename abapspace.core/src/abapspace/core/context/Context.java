@@ -35,6 +35,7 @@ public class Context implements Cloneable, InterfaceContext {
     private String supplement;
     private Integer nameMaxLength;
     private String replacement;
+    private boolean ignore;
 
     public Context() {
 	this.namespaceOld = new String();
@@ -47,6 +48,7 @@ public class Context implements Cloneable, InterfaceContext {
 	this.object = new String[] {};
 	this.nameMaxLength = new Integer(0);
 	this.replacement = new String();
+	this.ignore = false;
     }
 
     @Override
@@ -144,6 +146,14 @@ public class Context implements Cloneable, InterfaceContext {
 
     public void setPostIdent(String postIdent) {
 	this.postIdent = postIdent;
+    }
+
+    public boolean isIgnore() {
+	return ignore;
+    }
+
+    public void setIgnore(boolean ignore) {
+	this.ignore = ignore;
     }
 
     private boolean isStringUpperCase(String string) {

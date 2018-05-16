@@ -218,6 +218,9 @@ public class GUIMMain {
 
 	    for (int i = 0, li = data.length; i < li; i++) { // row
 		if (objectIdent.equals(data[i][TableModelEdit.COLUMN_INDEX_OBJECT])) {
+
+		    boolean locIgnore = (boolean) data[i][TableModelEdit.COLUMN_INDEX_IGNORE];
+		    iContext.setIgnore(locIgnore);
 		    iContext.setReplacement((String) data[i][TableModelEdit.COLUMN_INDEX_REPLACEMENT]);
 		}
 	    }

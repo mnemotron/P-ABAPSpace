@@ -147,7 +147,14 @@ public class ContextDirectory extends File implements InterfaceFileProcess {
 	// directory name
 	if (contextMap.containsKey(this.object)) {
 	    InterfaceContext locIC = contextMap.get(this.object);
-	    this.iContext.setReplacement(locIC.getReplacement());
+
+	    if (!locIC.isIgnore()) {
+		this.iContext.setReplacement(locIC.getReplacement());
+	    } else {
+		LogEventManager.fireLog(LogType.INFO,
+			MessageManager.getMessageFormat("refactor.object.ignore", this.object));
+		this.removeDirNameObject();
+	    }
 	}
 
 	// directory children
@@ -161,6 +168,11 @@ public class ContextDirectory extends File implements InterfaceFileProcess {
 		locCF.setContextMap(contextMap);
 	    }
 	}
+    }
+
+    private void removeDirNameObject() {
+	this.iContext = null;
+	this.object = new String();
     }
 
     private String refactorDirName() {

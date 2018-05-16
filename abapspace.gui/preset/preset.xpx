@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.abapspace.com/Preset Preset.xsd">
 	<tns:description>Test</tns:description>
-	<tns:refactorSourceDir>source1/</tns:refactorSourceDir>
+	<tns:refactorSourceDir>source/</tns:refactorSourceDir>
 	<tns:refactorTargetDir>target/</tns:refactorTargetDir>
 	<tns:fileStructure>
 		<tns:update>true</tns:update>
@@ -19,7 +19,7 @@
 			<tns:namespaceOld>/vdp/</tns:namespaceOld>
 		</tns:namespaceOld>
 		<tns:namespaceOld>
-			<tns:objectPolicy>false</tns:objectPolicy>
+			<tns:objectPolicy>true</tns:objectPolicy>
 			<tns:namespaceOld>z</tns:namespaceOld>
 		</tns:namespaceOld>
 		<tns:namespaceOld>

@@ -60,16 +60,6 @@ public class GUICEdit {
 	public Object[][] getData() {
 		return this.guimedit.getData();
 	}
-	
-	public void toUpperCase()
-	{
-		
-	}
-	
-	public void toLowerCase()
-	{
-		
-	}
 
 	private void stopGUI() {
 		this.guiedit.setVisible(false);
