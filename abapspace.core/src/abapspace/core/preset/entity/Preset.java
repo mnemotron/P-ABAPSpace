@@ -48,6 +48,7 @@ public class Preset {
     private List<NamespaceOld> namespaceOldList;
     private ObjectPolicyGeneral objectPolicyGeneral;
     private ObjectPolicy objectPolicy;
+    private List<Keyword> keywordsExclude;
 
     public Preset() {
 	this.description = new String();
@@ -60,6 +61,7 @@ public class Preset {
 	this.checkNameMaxLength = false;
 	this.objectPolicyGeneral = new ObjectPolicyGeneral();
 	this.objectPolicy = new ObjectPolicy();
+	this.keywordsExclude = new ArrayList<Keyword>();
     }
 
     public String getDescription() {
@@ -151,6 +153,16 @@ public class Preset {
     @XmlElement(namespace = "http://www.abapspace.com/Preset")
     public void setNamespaceNew(String namespaceNew) {
 	this.namespaceNew = namespaceNew;
+    }
+
+    public List<Keyword> getKeywordsExclude() {
+	return keywordsExclude;
+    }
+
+    @XmlElementWrapper(namespace = "http://www.abapspace.com/Preset", name = "keywordsExclude")
+    @XmlElement(namespace = "http://www.abapspace.com/Preset", name = "keyword")
+    public void setKeywordsExclude(List<Keyword> keywordsExclude) {
+	this.keywordsExclude = keywordsExclude;
     }
 
     public File getFileSourceDir() throws SourceDirectoryNotFoundException {

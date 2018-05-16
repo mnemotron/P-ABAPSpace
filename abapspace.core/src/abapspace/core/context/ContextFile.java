@@ -22,6 +22,7 @@ import abapspace.core.exception.TargetFileContentNotWrittenException;
 import abapspace.core.log.LogEventManager;
 import abapspace.core.log.LogType;
 import abapspace.core.messages.MessageManager;
+import abapspace.core.preset.entity.Keyword;
 import abapspace.core.process.InterfaceFileProcess;
 
 public class ContextFile extends File implements InterfaceFileProcess {
@@ -50,7 +51,8 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	try {
 
 	    // file name
-	    this.processFileNameSearch(this.getName(), this.contextManager.getContextList());
+	    String locName = this.removeNamespacePlaceholder(this.getName());
+	    this.processFileNameSearch(locName, this.contextManager.getContextList());
 
 	    // file content
 	    StringBuffer locSB = this.getContextBuffer();
@@ -113,13 +115,31 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	this.refactorContext(new String());
     }
 
+    private String replaceNamespacePlaceholder(String fileName) {
+	String locResult = fileName;
+
+	locResult = locResult.replace(this.contextManager.getPreset().getFileStructure().getNamespaceReplacement(),
+		this.contextManager.getPreset().getFileStructure().getNamespacePlaceholder());
+
+	return locResult;
+    }
+
+    private String removeNamespacePlaceholder(String fileName) {
+	String locResult = fileName;
+
+	locResult = locResult.replace(this.contextManager.getPreset().getFileStructure().getNamespacePlaceholder(),
+		this.contextManager.getPreset().getFileStructure().getNamespaceReplacement());
+
+	return locResult;
+    }
+
     private void processFileNameSearch(String fileNameString, List<InterfaceContext> contextList)
 	    throws CloneNotSupportedException {
 
 	for (InterfaceContext iContext : contextList) {
 
-	    for (Matcher m = Pattern.compile(iContext.getRegex(), Pattern.CASE_INSENSITIVE).matcher(fileNameString); m
-		    .find();) {
+	    for (Matcher m = Pattern.compile(iContext.getRegex(false, false), Pattern.CASE_INSENSITIVE)
+		    .matcher(fileNameString); m.find();) {
 
 		String locGroup1 = m.group(1); // group 1: namespace + object ID
 		String locGroup2 = m.group(2); // group 2: object name
@@ -154,10 +174,14 @@ public class ContextFile extends File implements InterfaceFileProcess {
 		String locGroup2 = m.group(2); // group 2: object name
 		String locObject = locGroup1 + locGroup2;
 
-		InterfaceContext locIContext = iContext.clone();
+		if (this.excludeKeyword(locObject)) {
+		    continue;
+		}
 
 		LogEventManager.fireLog(LogType.INFO,
 			MessageManager.getMessageFormat("collect.context.object", locObject, m.start(), m.end()));
+
+		InterfaceContext locIContext = iContext.clone();
 
 		if (iContextMap.containsKey(locObject)) {
 		    continue;
@@ -238,15 +262,40 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	}
     }
 
+    private boolean excludeKeyword(String object) {
+	boolean locResult = false;
+	List<Keyword> locKeywordList = this.contextManager.getPreset().getKeywordsExclude();
+
+	for (Keyword keyword : locKeywordList) {
+	    if (keyword.getKeyword().toLowerCase().equals(object.toLowerCase())) {
+		locResult = true;
+		break;
+	    }
+	}
+
+	return locResult;
+    }
+
     private String refactorFileName() {
-	String locResult = new String();
+
+	String locResult = this.getName();
+
+	if (this.isFileNameObject()) {
+	    locResult = this.removeNamespacePlaceholder(locResult);
+	    locResult = locResult.replaceAll(this.iContext.getObject(), this.iContext.getReplacement());
+	    locResult = this.replaceNamespacePlaceholder(locResult);
+	}
+
+	return locResult;
+    }
+
+    private boolean isFileNameObject() {
+	boolean locResult = false;
 
 	if (this.object != null && this.iContext != null) {
-	    locResult = this.getName().replaceAll(this.iContext.getObject(), this.iContext.getReplacement());
-	    locResult = locResult.replace(this.contextManager.getPreset().getFileStructure().getNamespaceReplacement(),
-		    this.contextManager.getPreset().getFileStructure().getNamespacePlaceholder());
+	    locResult = true;
 	} else {
-	    locResult = this.getName();
+	    locResult = false;
 	}
 
 	return locResult;

@@ -39,7 +39,7 @@ public class ContextDirectory extends File implements InterfaceFileProcess {
 
 	// directory name
 	try {
-	    String locName = this.replaceNamespacePlaceholder(this.getName());
+	    String locName = this.removeNamespacePlaceholder(this.getName());
 	    this.processDirNameSearch(locName, this.contextManager.getContextList());
 	} catch (CloneNotSupportedException e) {
 	    throw new FileProcessException(
@@ -92,8 +92,7 @@ public class ContextDirectory extends File implements InterfaceFileProcess {
     @Override
     public boolean checkMaxNameLength() {
 	boolean locValid = true;
-
-	// directory name
+	// TODO directory name
 
 	// directory children
 	for (File child : childList) {
@@ -165,19 +164,27 @@ public class ContextDirectory extends File implements InterfaceFileProcess {
     }
 
     private String refactorDirName() {
-	String locResult = new String();
+	String locResult = this.getName();
 
 	if (this.isDirNameObject()) {
-	    locResult = this.getName().replaceAll(this.iContext.getObject(), this.iContext.getReplacement());
+	    locResult = this.removeNamespacePlaceholder(locResult);
+	    locResult = locResult.replaceAll(this.iContext.getObject(), this.iContext.getReplacement());
 	    locResult = this.replaceNamespacePlaceholder(locResult);
-	} else {
-	    locResult = this.getName();
 	}
 
 	return locResult;
     }
 
     private String replaceNamespacePlaceholder(String dirName) {
+	String locResult = dirName;
+
+	locResult = locResult.replace(this.contextManager.getPreset().getFileStructure().getNamespaceReplacement(),
+		this.contextManager.getPreset().getFileStructure().getNamespacePlaceholder());
+
+	return locResult;
+    }
+
+    private String removeNamespacePlaceholder(String dirName) {
 	String locResult = dirName;
 
 	locResult = locResult.replace(this.contextManager.getPreset().getFileStructure().getNamespacePlaceholder(),
