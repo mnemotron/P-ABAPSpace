@@ -12,7 +12,7 @@ ABAP Namespace Refactoring
 + <b>CHECKS</b><br>
   + the maximum object name length can be checked (if the extended object naming policy is used)
   
-+ <b>OBJECTS</b><br>
++ <b>EXTENDED OBJECT POLICY</b><br>
   + classes, interfaces
   + more to come ....
   
