@@ -11,7 +11,7 @@ CLASS /xxx/cl_abapgit_object_clas DEFINITION PUBLIC INHERITING FROM /xxx/cl_abap
       deserialize_abap REDEFINITION.
 
 ENDCLASS.
-
+ 
 CLASS /xxx/cl_abapgit_object_clas IMPLEMENTATION.
 
   METHOD constructor.
