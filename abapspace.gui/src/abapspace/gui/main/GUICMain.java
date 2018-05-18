@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.PresetDirNotFoundException;
+import abapspace.core.exception.PresetSchemaException;
 import abapspace.core.exception.SourceDirectoryNotFoundException;
 import abapspace.core.exception.TargetDirectoryNotFoundException;
 import abapspace.core.preset.entity.Preset;
@@ -211,6 +212,9 @@ public class GUICMain {
 
 		} catch (PresetDirNotFoundException e) {
 			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.presetDir"),
+					JOptionPane.ERROR_MESSAGE);
+		} catch (PresetSchemaException e) {
+			this.guimain.showMessage(e.getMessage(), GUIMessageManager.getMessage("dialog.title.presetSchema"),
 					JOptionPane.ERROR_MESSAGE);
 		}
 

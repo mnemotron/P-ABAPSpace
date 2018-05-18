@@ -43,6 +43,7 @@ import javax.xml.validation.Validator;
 import org.xml.sax.SAXException;
 
 import abapspace.core.exception.PresetDirNotFoundException;
+import abapspace.core.exception.PresetSchemaException;
 import abapspace.core.log.LogEventManager;
 import abapspace.core.log.LogType;
 import abapspace.core.messages.MessageManager;
@@ -54,14 +55,14 @@ public class PresetManager {
 	private static String PRESET_XML_SCHEMA_PATH = "/abapspace/core/preset/entity/Preset.xsd";
 
 	private File presetDir;
-	private InputStream presetSchemaFile;
 	private List<Preset> presetList;
+	private Schema presetSchema;
 
-	public static PresetManager getInstance(String presetDir) throws PresetDirNotFoundException {
+	public static PresetManager getInstance(String presetDir) throws PresetDirNotFoundException, PresetSchemaException {
 
-		InputStream locPresetSchemaFile = PresetManager.getInstanceXMLSchemaFile();
+		Schema locPresetSchema = PresetManager.getInstanceXMLSchemaFile();
 		File locPresetDir = PresetManager.getInstanceXMLDir(presetDir);
-		PresetManager locPresetManager = new PresetManager(locPresetDir, locPresetSchemaFile);
+		PresetManager locPresetManager = new PresetManager(locPresetDir, locPresetSchema);
 
 		return locPresetManager;
 	}
@@ -78,15 +79,25 @@ public class PresetManager {
 		return locPresetDir;
 	}
 
-	private static InputStream getInstanceXMLSchemaFile() {
+	private static Schema getInstanceXMLSchemaFile() throws PresetSchemaException {
+
 		InputStream locPresetSchemaFile = PresetManager.class.getResourceAsStream(PRESET_XML_SCHEMA_PATH);
-		return locPresetSchemaFile;
+		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		Schema locSchema = null;
+
+		try {
+			locSchema = factory.newSchema(new StreamSource(locPresetSchemaFile));
+		} catch (SAXException e) {
+			throw new PresetSchemaException(MessageManager.getMessage("exception.presetSchema" + PRESET_XML_SCHEMA_PATH), e);
+		}
+
+		return locSchema;
 	}
 
-	private PresetManager(File presetDir, InputStream presetSchemaFile) {
+	private PresetManager(File presetDir, Schema presetSchema) {
 		this.presetDir = presetDir;
 		this.presetList = new ArrayList<Preset>();
-		this.presetSchemaFile = presetSchemaFile;
+		this.presetSchema = presetSchema;
 		this.importPresetList();
 	}
 
@@ -141,9 +152,7 @@ public class PresetManager {
 		boolean locValid = false;
 
 		try {
-			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Schema schema = factory.newSchema(new StreamSource(this.presetSchemaFile));
-			Validator validator = schema.newValidator();
+			Validator validator = this.presetSchema.newValidator();
 			validator.validate(new StreamSource(presetFile));
 			locValid = true;
 		} catch (SAXException | IOException e) {

@@ -31,12 +31,14 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.xml.sax.SAXException;
 
 import abapspace.core.Refector;
 import abapspace.core.context.InterfaceContext;
 import abapspace.core.context.ContextCheckMaxNameLength;
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.PresetDirNotFoundException;
+import abapspace.core.exception.PresetSchemaException;
 import abapspace.core.exception.SourceDirectoryNotFoundException;
 import abapspace.core.exception.TargetDirectoryNotFoundException;
 import abapspace.core.log.LogEvent;
@@ -48,211 +50,211 @@ import abapspace.gui.edit.TableModelEdit;
 
 public class GUIMMain {
 
-    private static final String PRESET_DIR_DEFAULT = "preset";
+	private static final String PRESET_DIR_DEFAULT = "preset";
 
-    private Logger log;
-    private PresetManager presetManager;
-    private Preset preset;
-    private Refector refector;
+	private Logger log;
+	private PresetManager presetManager;
+	private Preset preset;
+	private Refector refector;
 
-    public GUIMMain() {
-	this.presetManager = null;
-	this.log = LogManager.getLogger();
-	this.initLogEventManager();
-	this.refector = new Refector();
-	this.preset = new Preset();
-    }
-
-    public void setPresetManager(String presetDir) throws PresetDirNotFoundException {
-	this.presetManager = PresetManager.getInstance(presetDir);
-
-	this.preset = new Preset();
-    }
-
-    public void setPresetManagerDefault() throws PresetDirNotFoundException {
-	this.setPresetManager(GUIMMain.PRESET_DIR_DEFAULT);
-
-	this.preset = new Preset();
-    }
-
-    public String getPresetDir() {
-
-	String locPresetDir = new String();
-
-	if (this.presetManager != null) {
-	    locPresetDir = this.presetManager.getPresetDir().getAbsolutePath();
+	public GUIMMain() {
+		this.presetManager = null;
+		this.log = LogManager.getLogger();
+		this.initLogEventManager();
+		this.refector = new Refector();
+		this.preset = new Preset();
 	}
 
-	return locPresetDir;
-    }
+	public void setPresetManager(String presetDir) throws PresetDirNotFoundException, PresetSchemaException{
+		this.presetManager = PresetManager.getInstance(presetDir);
 
-    public List<Preset> getPresetList() {
-	List<Preset> locPresetList = new ArrayList<Preset>();
-
-	if (this.presetManager != null) {
-	    locPresetList = this.presetManager.getPresetList();
+		this.preset = new Preset();
 	}
 
-	return locPresetList;
-    }
+	public void setPresetManagerDefault() throws PresetDirNotFoundException, PresetSchemaException{
+		this.setPresetManager(GUIMMain.PRESET_DIR_DEFAULT);
 
-    public boolean isPresetListEmpty() {
-	if (this.presetManager != null) {
-	    return this.presetManager.getPresetList().isEmpty();
-	} else {
-	    return true;
-	}
-    }
-
-    public Preset getPreset() {
-	return preset;
-    }
-
-    public void setPreset(Preset preset) {
-	this.preset = preset;
-    }
-
-    public String getSourceDir() throws SourceDirectoryNotFoundException {
-	File locFile = this.getPreset().getFileSourceDir();
-
-	if (locFile != null) {
-	    return locFile.getAbsolutePath();
-	} else {
-	    return new String();
-	}
-    }
-
-    public String getTargetDir() throws TargetDirectoryNotFoundException {
-	File locFile = this.getPreset().getFileTargetDir();
-
-	if (locFile != null) {
-	    return locFile.getAbsolutePath();
-	} else {
-	    return new String();
-	}
-    }
-
-    public boolean startPreRefactor()
-	    throws FileProcessException, SourceDirectoryNotFoundException, TargetDirectoryNotFoundException {
-	boolean locValid = true;
-
-	this.refector = new Refector(this.getPreset());
-
-	this.refector.collectContext();
-
-	locValid = this.refector.checkMaxNameLength();
-
-	if (locValid) {
-	    this.startRefactor();
+		this.preset = new Preset();
 	}
 
-	return locValid;
-    }
+	public String getPresetDir() {
 
-    public void setSourceDir(String sourceDir) {
-	this.preset.setRefactorSourceDir(sourceDir);
-    }
+		String locPresetDir = new String();
 
-    public void setTargetDir(String targetDir) {
-	this.preset.setRefactorTargetDir(targetDir);
-    }
-
-    public void startRefactor()
-	    throws FileProcessException, SourceDirectoryNotFoundException, TargetDirectoryNotFoundException {
-	this.refector.refactorContext();
-    }
-
-    public Object[][] getEditData() {
-	Map<String, InterfaceContext> locEditMap = new HashMap<String, InterfaceContext>();
-	Map<String, InterfaceContext> locContextMap = this.refector.getContextMap();
-
-	locContextMap.forEach((objectIdent, iContext) -> {
-	    if (!locEditMap.containsKey(iContext.getObject())) {
-		locEditMap.put(iContext.getObject(), iContext);
-	    }
-	});
-
-	Object[][] locObjectArray = new Object[locEditMap.size()][5]; // 1 row,
-								      // 2 col
-
-	int locRow[] = { 0 };
-
-	locEditMap.forEach((objectID, iContext) -> {
-
-	    ContextCheckMaxNameLength locMaxNameLength = iContext.checkMaxNameLengthForReplacement();
-
-	    for (int j = 0, lj = locObjectArray[locRow[0]].length; j < lj; j++) {
-
-		switch (j) {
-		case TableModelEdit.COLUMN_INDEX_IGNORE:
-		    locObjectArray[locRow[0]][j] = false;
-		    break;
-		case TableModelEdit.COLUMN_INDEX_OBJECT: // found object
-		    locObjectArray[locRow[0]][j] = iContext.getObject();
-		    break;
-		case TableModelEdit.COLUMN_INDEX_REPLACEMENT: // replacement
-		    locObjectArray[locRow[0]][j] = iContext.getReplacement();
-		    break;
-		case TableModelEdit.COLUMN_INDEX_MAX_LENGTH: // maximum length
-		    locObjectArray[locRow[0]][j] = locMaxNameLength.getMaxNameLength();
-		    break;
-		case TableModelEdit.COLUMN_INDEX_LENGTH: // length
-		    locObjectArray[locRow[0]][j] = locMaxNameLength.getActualNameLength();
-		    break;
+		if (this.presetManager != null) {
+			locPresetDir = this.presetManager.getPresetDir().getAbsolutePath();
 		}
 
-	    }
+		return locPresetDir;
+	}
 
-	    locRow[0]++;
+	public List<Preset> getPresetList() {
+		List<Preset> locPresetList = new ArrayList<Preset>();
 
-	});
-
-	return locObjectArray;
-    }
-
-    public void setEditData(Object[][] data) {
-
-	Map<String, InterfaceContext> locContextMap = this.refector.getContextMap();
-
-	locContextMap.forEach((objectIdent, iContext) -> {
-
-	    for (int i = 0, li = data.length; i < li; i++) { // row
-		if (objectIdent.equals(data[i][TableModelEdit.COLUMN_INDEX_OBJECT])) {
-
-		    boolean locIgnore = (boolean) data[i][TableModelEdit.COLUMN_INDEX_IGNORE];
-		    iContext.setIgnore(locIgnore);
-		    iContext.setReplacement((String) data[i][TableModelEdit.COLUMN_INDEX_REPLACEMENT]);
+		if (this.presetManager != null) {
+			locPresetList = this.presetManager.getPresetList();
 		}
-	    }
 
-	});
+		return locPresetList;
+	}
 
-	this.refector.setContextMap(locContextMap);
-    }
-
-    private void initLogEventManager() {
-	LogEventManager locLogEventManager = LogEventManager.getInstance();
-	locLogEventManager.addLogListener(new LogListener() {
-
-	    @Override
-	    public void log(LogEvent event) {
-
-		switch (event.getLogType()) {
-		case ERROR:
-		    log.error(event.getMessage(), event.getException());
-		    break;
-		case INFO:
-		    log.info(event.getMessage(), event.getException());
-		    break;
-		case WARNING:
-		    log.warn(event.getMessage(), event.getException());
-		    break;
-		default:
-		    log.info(event.getMessage(), event.getException());
-		    break;
+	public boolean isPresetListEmpty() {
+		if (this.presetManager != null) {
+			return this.presetManager.getPresetList().isEmpty();
+		} else {
+			return true;
 		}
-	    }
-	});
-    }
+	}
+
+	public Preset getPreset() {
+		return preset;
+	}
+
+	public void setPreset(Preset preset) {
+		this.preset = preset;
+	}
+
+	public String getSourceDir() throws SourceDirectoryNotFoundException {
+		File locFile = this.getPreset().getFileSourceDir();
+
+		if (locFile != null) {
+			return locFile.getAbsolutePath();
+		} else {
+			return new String();
+		}
+	}
+
+	public String getTargetDir() throws TargetDirectoryNotFoundException {
+		File locFile = this.getPreset().getFileTargetDir();
+
+		if (locFile != null) {
+			return locFile.getAbsolutePath();
+		} else {
+			return new String();
+		}
+	}
+
+	public boolean startPreRefactor()
+			throws FileProcessException, SourceDirectoryNotFoundException, TargetDirectoryNotFoundException {
+		boolean locValid = true;
+
+		this.refector = new Refector(this.getPreset());
+
+		this.refector.collectContext();
+
+		locValid = this.refector.checkMaxNameLength();
+
+		if (locValid) {
+			this.startRefactor();
+		}
+
+		return locValid;
+	}
+
+	public void setSourceDir(String sourceDir) {
+		this.preset.setRefactorSourceDir(sourceDir);
+	}
+
+	public void setTargetDir(String targetDir) {
+		this.preset.setRefactorTargetDir(targetDir);
+	}
+
+	public void startRefactor()
+			throws FileProcessException, SourceDirectoryNotFoundException, TargetDirectoryNotFoundException {
+		this.refector.refactorContext();
+	}
+
+	public Object[][] getEditData() {
+		Map<String, InterfaceContext> locEditMap = new HashMap<String, InterfaceContext>();
+		Map<String, InterfaceContext> locContextMap = this.refector.getContextMap();
+
+		locContextMap.forEach((objectIdent, iContext) -> {
+			if (!locEditMap.containsKey(iContext.getObject())) {
+				locEditMap.put(iContext.getObject(), iContext);
+			}
+		});
+
+		Object[][] locObjectArray = new Object[locEditMap.size()][5]; // 1 row,
+		// 2 col
+
+		int locRow[] = { 0 };
+
+		locEditMap.forEach((objectID, iContext) -> {
+
+			ContextCheckMaxNameLength locMaxNameLength = iContext.checkMaxNameLengthForReplacement();
+
+			for (int j = 0, lj = locObjectArray[locRow[0]].length; j < lj; j++) {
+
+				switch (j) {
+				case TableModelEdit.COLUMN_INDEX_IGNORE:
+					locObjectArray[locRow[0]][j] = false;
+					break;
+				case TableModelEdit.COLUMN_INDEX_OBJECT: // found object
+					locObjectArray[locRow[0]][j] = iContext.getObject();
+					break;
+				case TableModelEdit.COLUMN_INDEX_REPLACEMENT: // replacement
+					locObjectArray[locRow[0]][j] = iContext.getReplacement();
+					break;
+				case TableModelEdit.COLUMN_INDEX_MAX_LENGTH: // maximum length
+					locObjectArray[locRow[0]][j] = locMaxNameLength.getMaxNameLength();
+					break;
+				case TableModelEdit.COLUMN_INDEX_LENGTH: // length
+					locObjectArray[locRow[0]][j] = locMaxNameLength.getActualNameLength();
+					break;
+				}
+
+			}
+
+			locRow[0]++;
+
+		});
+
+		return locObjectArray;
+	}
+
+	public void setEditData(Object[][] data) {
+
+		Map<String, InterfaceContext> locContextMap = this.refector.getContextMap();
+
+		locContextMap.forEach((objectIdent, iContext) -> {
+
+			for (int i = 0, li = data.length; i < li; i++) { // row
+				if (objectIdent.equals(data[i][TableModelEdit.COLUMN_INDEX_OBJECT])) {
+
+					boolean locIgnore = (boolean) data[i][TableModelEdit.COLUMN_INDEX_IGNORE];
+					iContext.setIgnore(locIgnore);
+					iContext.setReplacement((String) data[i][TableModelEdit.COLUMN_INDEX_REPLACEMENT]);
+				}
+			}
+
+		});
+
+		this.refector.setContextMap(locContextMap);
+	}
+
+	private void initLogEventManager() {
+		LogEventManager locLogEventManager = LogEventManager.getInstance();
+		locLogEventManager.addLogListener(new LogListener() {
+
+			@Override
+			public void log(LogEvent event) {
+
+				switch (event.getLogType()) {
+				case ERROR:
+					log.error(event.getMessage(), event.getException());
+					break;
+				case INFO:
+					log.info(event.getMessage(), event.getException());
+					break;
+				case WARNING:
+					log.warn(event.getMessage(), event.getException());
+					break;
+				default:
+					log.info(event.getMessage(), event.getException());
+					break;
+				}
+			}
+		});
+	}
 
 }

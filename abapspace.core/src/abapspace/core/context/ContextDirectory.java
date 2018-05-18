@@ -61,12 +61,14 @@ public class ContextDirectory extends File implements InterfaceFileProcess {
 		File[] locFileList = this.listFiles();
 
 		// directory name
-		try {
-			String locName = this.removeNamespacePlaceholder(this.getName());
-			this.processDirNameSearch(locName, this.contextManager.getContextList());
-		} catch (CloneNotSupportedException e) {
-			throw new FileProcessException(
-					MessageManager.getMessage("exception.fileProcessCollectContext.cloneNotSupported"), e);
+		if (this.contextManager.getPreset().getFileStructure().isUpdate()) {
+			try {
+				String locName = this.removeNamespacePlaceholder(this.getName());
+				this.processDirNameSearch(locName, this.contextManager.getContextList());
+			} catch (CloneNotSupportedException e) {
+				throw new FileProcessException(
+						MessageManager.getMessage("exception.fileProcessCollectContext.cloneNotSupported"), e);
+			}
 		}
 
 		// directory children

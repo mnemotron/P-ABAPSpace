@@ -52,8 +52,10 @@ public class ContextFile extends File implements InterfaceFileProcess {
 		try {
 
 			// file name
-			String locName = this.removeNamespacePlaceholder(this.getName());
-			this.processFileNameSearch(locName, this.contextManager.getContextList());
+			if (this.contextManager.getPreset().getFileStructure().isUpdate()) {
+				String locName = this.removeNamespacePlaceholder(this.getName());
+				this.processFileNameSearch(locName, this.contextManager.getContextList());
+			}
 
 			// file content
 			StringBuffer locSB = this.getContextBuffer();
