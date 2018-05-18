@@ -2,21 +2,21 @@
 <tns:preset xmlns:tns="http://www.abapspace.com/Preset"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.abapspace.com/Preset Preset.xsd">
-	<tns:description>T001 | Policy General | File Content | Z to /XXX/</tns:description>
-	<tns:refactorSourceDir>T001.policyGen.fileContent.ZTo#XXX#/source/</tns:refactorSourceDir>
-	<tns:refactorTargetDir>T001.policyGen.fileContent.ZTo#XXX#/target/</tns:refactorTargetDir>
+	<tns:description>T002 | Policy General | File Content | /XXX/ to Z</tns:description>
+	<tns:refactorSourceDir>T002.policyGen.fileContent.#XXX#ToZ/source/</tns:refactorSourceDir>
+	<tns:refactorTargetDir>T002.policyGen.fileContent.#XXX#ToZ/target/</tns:refactorTargetDir>
 	<tns:fileStructure>
 		<tns:update>false</tns:update>
 		<tns:namespacePlaceholder>#</tns:namespacePlaceholder>
 		<tns:namespaceReplacement>/</tns:namespaceReplacement>
 	</tns:fileStructure>
 	<tns:checkNameMaxLength>true</tns:checkNameMaxLength>
-	<tns:namespaceNew>/XXX/</tns:namespaceNew>
+	<tns:namespaceNew>Z</tns:namespaceNew>
 	<tns:supplement></tns:supplement>
 	<tns:namespaceOldList>
 		<tns:namespaceOld>
 			<tns:objectPolicy>false</tns:objectPolicy>
-			<tns:namespaceOld>Z</tns:namespaceOld>
+			<tns:namespaceOld>/XXX/</tns:namespaceOld>
 		</tns:namespaceOld>
 	</tns:namespaceOldList>
 	<tns:objectPolicyGeneral>
