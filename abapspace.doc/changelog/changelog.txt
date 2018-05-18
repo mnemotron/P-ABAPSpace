@@ -6,7 +6,16 @@ ABAPSpace - Change Log
 - Removed
 * Fixed
 
-[1.0.0] | 2018-01-05
+[1.0.0.RC2] | 2018-05-18
++ Core: ABAP keywords can be excluded
++ Core: extended object policy: exception class (CX), database table (TA), package (PA)
++ Core: file name and directory name refactoring (for deep package structure)
++ GUI #5: Found objects can be set to ignore or update
++ GUI #5: New object name can be converted to uppercase/lowercase before the update is made
+* Issue #3 (Tool does not rename folder and file names)
+* Issue #4 (Case sensitivity is not respected)
+
+[1.0.0.RC1] | 2018-01-05
 + ABAPSpace namespace refactoring tool
 + general: refactor namespaces
 + specific: refactor namespace based on a extended object naming policy for classes, interfaces
