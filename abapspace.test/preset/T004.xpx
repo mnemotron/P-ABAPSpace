@@ -2,9 +2,9 @@
 <tns:preset xmlns:tns="http://www.abapspace.com/Preset"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.abapspace.com/Preset Preset.xsd">
-	<tns:description>T004 | Policy General | File/Dir Name Content | /XXX/ to Z</tns:description>
-	<tns:refactorSourceDir>T004.policyGen.fileDirNameContent.#XXX#ToZ/source/</tns:refactorSourceDir>
-	<tns:refactorTargetDir>T004.policyGen.fileDirNameContent.#XXX#ToZ/target/</tns:refactorTargetDir>
+	<tns:description>T004 | Policy General | File Name Content | /XXX/ to Z</tns:description>
+	<tns:refactorSourceDir>T004.policyGen.fileNameContent.#XXX#ToZ/source/</tns:refactorSourceDir>
+	<tns:refactorTargetDir>T004.policyGen.fileNameContent.#XXX#ToZ/target/</tns:refactorTargetDir>
 	<tns:fileStructure>
 		<tns:update>true</tns:update>
 		<tns:namespacePlaceholder>#</tns:namespacePlaceholder>
