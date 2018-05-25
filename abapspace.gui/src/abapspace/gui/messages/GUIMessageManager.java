@@ -28,33 +28,44 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import abapspace.core.locale.LocaleManager;
+import abapspace.core.log.LogEventManager;
+import abapspace.core.log.LogType;
+import abapspace.core.messages.MessageManager;
 
 public class GUIMessageManager {
 
-    private static final String PROPERTY_RESOURCE_BUNDLE_MESSAGES = "abapspace.gui.messages.messages";
+	private static final String PROPERTY_RESOURCE_BUNDLE_MESSAGES = "abapspace.gui.messages.messages";
 
-    private static ResourceBundle messages;
+	private static ResourceBundle messages;
 
-    public static ResourceBundle getMessages() throws MissingResourceException {
-	if (GUIMessageManager.messages == null) {
-	    LocaleManager locManager = LocaleManager.getInstance();
-	    GUIMessageManager.messages = ResourceBundle.getBundle(PROPERTY_RESOURCE_BUNDLE_MESSAGES,
-		    locManager.getLocale());
+	public static ResourceBundle getMessages() throws MissingResourceException {
+		if (GUIMessageManager.messages == null) {
+			LocaleManager locManager = LocaleManager.getInstance();
+			GUIMessageManager.messages = ResourceBundle.getBundle(PROPERTY_RESOURCE_BUNDLE_MESSAGES,
+					locManager.getLocale());
+		}
+
+		return GUIMessageManager.messages;
 	}
 
-	return GUIMessageManager.messages;
-    }
+	public static String getMessage(String key) {
 
-    public static String getMessage(String key) {
-	ResourceBundle locRB = GUIMessageManager.getMessages();
-	return locRB.getString(key);
-    }
+		String locMessage = new String();
 
-    public static String getMessageFormat(String key, Object ...arguments) {
-	String locMessage = GUIMessageManager.getMessage(key);
+		try {
+			ResourceBundle locRB = GUIMessageManager.getMessages();
+			locMessage = locRB.getString(key);
+		} catch (MissingResourceException e) {
+		}
 
-	locMessage = MessageFormat.format(locMessage, arguments);
+		return locMessage;
+	}
 
-	return locMessage;
-    }
+	public static String getMessageFormat(String key, Object... arguments) {
+		String locMessage = GUIMessageManager.getMessage(key);
+
+		locMessage = MessageFormat.format(locMessage, arguments);
+
+		return locMessage;
+	}
 }

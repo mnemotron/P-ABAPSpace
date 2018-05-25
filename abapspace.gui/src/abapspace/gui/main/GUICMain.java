@@ -110,8 +110,16 @@ public class GUICMain {
 		}
 
 		this.setSourceDirToTxf();
-
 		this.setTargetDirToTxf();
+		this.setTabOptions();
+	}
+
+	private void setTabOptions() {
+		this.guimain.getPanelMain().getCbxEditObject().setSelected(this.guimmain.getPreset().isEditObject());
+	}
+
+	public void setPresetEditObject(boolean editObject) {
+		this.guimmain.setPresetEditObject(editObject);
 	}
 
 	public void setTargetDirToTxf() {

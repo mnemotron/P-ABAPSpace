@@ -41,6 +41,8 @@ import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JTabbedPane;
+import javax.swing.JCheckBox;
 
 public class PanelMain extends JPanel {
 
@@ -60,6 +62,10 @@ public class PanelMain extends JPanel {
 	private JTextField txtTargetDir;
 	private JButton btnTargetDir;
 	private GUICMain guicmain;
+	private JTabbedPane tabPanePresetOptions;
+	private JPanel panelOptions;
+	private JPanel panelNamespace;
+	private JCheckBox cbxEditObject;
 
 	public PanelMain(GUICMain guicmain) {
 
@@ -73,15 +79,21 @@ public class PanelMain extends JPanel {
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout
 				.createSequentialGroup().addContainerGap()
 				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(getPanelST(), GroupLayout.DEFAULT_SIZE, 870, Short.MAX_VALUE).addComponent(
-								getPanelPreset(), Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(getPanelST(), GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+										.addComponent(getPanelPreset(), Alignment.TRAILING, GroupLayout.DEFAULT_SIZE,
+												426, Short.MAX_VALUE))
+								.addContainerGap())
+						.addGroup(groupLayout.createSequentialGroup()
+								.addComponent(getTabPanePresetOptions(), GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+								.addGap(15)))));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addContainerGap()
+				.addComponent(getPanelPreset(), GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE).addGap(7)
+				.addComponent(getPanelST(), GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE).addGap(10)
+				.addComponent(getTabPanePresetOptions(), GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
 				.addContainerGap()));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-						.addComponent(getPanelPreset(), GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)
-						.addGap(7)
-						.addComponent(getPanelST(), GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(25, Short.MAX_VALUE)));
 		setLayout(groupLayout);
 	}
 
@@ -279,5 +291,51 @@ public class PanelMain extends JPanel {
 			});
 		}
 		return btnTargetDir;
+	}
+
+	private JTabbedPane getTabPanePresetOptions() {
+		if (tabPanePresetOptions == null) {
+			tabPanePresetOptions = new JTabbedPane(JTabbedPane.TOP);
+			tabPanePresetOptions.setBorder(null);
+			tabPanePresetOptions.addTab(GUIMessageManager.getMessage("tab.title.options"), null, getPanelOptions(),
+					null);
+			tabPanePresetOptions.addTab(GUIMessageManager.getMessage("tab.title.namespace"), null, getPanelNamespace(),
+					null);
+		}
+		return tabPanePresetOptions;
+	}
+
+	private JPanel getPanelOptions() {
+		if (panelOptions == null) {
+			panelOptions = new JPanel();
+			GroupLayout gl_panelOptions = new GroupLayout(panelOptions);
+			gl_panelOptions.setHorizontalGroup(gl_panelOptions.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panelOptions.createSequentialGroup().addGap(20).addComponent(getCbxEditObject())
+							.addContainerGap(311, Short.MAX_VALUE)));
+			gl_panelOptions.setVerticalGroup(gl_panelOptions.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panelOptions.createSequentialGroup().addGap(18).addComponent(getCbxEditObject())
+							.addContainerGap(121, Short.MAX_VALUE)));
+			panelOptions.setLayout(gl_panelOptions);
+		}
+		return panelOptions;
+	}
+
+	private JPanel getPanelNamespace() {
+		if (panelNamespace == null) {
+			panelNamespace = new JPanel();
+		}
+		return panelNamespace;
+	}
+
+	public JCheckBox getCbxEditObject() {
+		if (cbxEditObject == null) {
+			cbxEditObject = new JCheckBox(GUIMessageManager.getMessage("cbx.title.editObject"));
+			cbxEditObject.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					guicmain.setPresetEditObject(((JCheckBox) e.getSource()).isSelected());
+				}
+			});
+		}
+		return cbxEditObject;
 	}
 }

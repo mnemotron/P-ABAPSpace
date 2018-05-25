@@ -28,54 +28,61 @@ import java.util.List;
 
 public class LogEventManager {
 
-    private static LogEventManager logEventManager;
+	private static LogEventManager logEventManager;
 
-    private List<LogListener> logEventListeners;
+	private List<LogListener> logEventListeners;
 
-    public synchronized static LogEventManager getInstance() {
-	if (LogEventManager.logEventManager == null) {
-	    LogEventManager.logEventManager = new LogEventManager();
+	public synchronized static LogEventManager getInstance() {
+		if (LogEventManager.logEventManager == null) {
+			LogEventManager.logEventManager = new LogEventManager();
+		}
+
+		return LogEventManager.logEventManager;
 	}
 
-	return LogEventManager.logEventManager;
-    }
+	public static synchronized void fireLog(LogType logType, String message, Throwable exception) {
 
-    public static synchronized void fireLog(LogType logType, String message, Throwable exception) {
+		LogEventManager locLogEventManager = LogEventManager.getInstance();
 
-	LogEventManager locLogEventManager = LogEventManager.getInstance();
+		LogEvent locLogEvent = new LogEvent(locLogEventManager, logType, message, exception);
 
-	LogEvent locLogEvent = new LogEvent(locLogEventManager, logType, message, exception);
-
-	locLogEventManager.fireLogEvent(locLogEvent);
-    }
-    
-    public static synchronized void fireLog(LogType logType, String message) {
-
-	LogEventManager locLogEventManager = LogEventManager.getInstance();
-
-	LogEvent locLogEvent = new LogEvent(locLogEventManager, logType, message, null);
-
-	locLogEventManager.fireLogEvent(locLogEvent);
-    }
-    
-    private LogEventManager()
-    {
-	this.logEventListeners = new ArrayList<LogListener>();
-    }
-
-    public synchronized void addLogListener(LogListener logListener) {
-	logEventListeners.add(logListener);
-    }
-
-    public synchronized void removeLogListener(LogListener logListener) {
-	logEventListeners.remove(logListener);
-    }
-
-    private synchronized void fireLogEvent(LogEvent logEvent) {
-	for (LogListener logListener : logEventListeners) {
-	    logListener.log(logEvent);
+		locLogEventManager.fireLogEvent(locLogEvent);
 	}
 
-    }
+	public static synchronized void fireLog(LogType logType, Throwable exception) {
+		LogEventManager locLogEventManager = LogEventManager.getInstance();
+
+		LogEvent locLogEvent = new LogEvent(locLogEventManager, logType, new String(), null);
+
+		locLogEventManager.fireLogEvent(locLogEvent);
+	}
+
+	public static synchronized void fireLog(LogType logType, String message) {
+
+		LogEventManager locLogEventManager = LogEventManager.getInstance();
+
+		LogEvent locLogEvent = new LogEvent(locLogEventManager, logType, message, null);
+
+		locLogEventManager.fireLogEvent(locLogEvent);
+	}
+
+	private LogEventManager() {
+		this.logEventListeners = new ArrayList<LogListener>();
+	}
+
+	public synchronized void addLogListener(LogListener logListener) {
+		logEventListeners.add(logListener);
+	}
+
+	public synchronized void removeLogListener(LogListener logListener) {
+		logEventListeners.remove(logListener);
+	}
+
+	private synchronized void fireLogEvent(LogEvent logEvent) {
+		for (LogListener logListener : logEventListeners) {
+			logListener.log(logEvent);
+		}
+
+	}
 
 }

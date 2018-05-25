@@ -212,6 +212,11 @@ public class GUIMMain {
 
 		return locObjectArray;
 	}
+	
+	public void setPresetEditObject(boolean editObject)
+	{
+		this.preset.setEditObject(editObject);
+	}
 
 	public void setEditData(Object[][] data) {
 

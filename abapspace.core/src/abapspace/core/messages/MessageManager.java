@@ -28,6 +28,8 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import abapspace.core.locale.LocaleManager;
+import abapspace.core.log.LogEventManager;
+import abapspace.core.log.LogType;
 
 public class MessageManager {
 
@@ -46,8 +48,18 @@ public class MessageManager {
 	}
 
 	public static String getMessage(String key) {
-		ResourceBundle locRB = MessageManager.getMessages();
-		return locRB.getString(key);
+
+		String locMessage = new String();
+
+		try {
+			ResourceBundle locRB = MessageManager.getMessages();
+			locMessage = locRB.getString(key);
+
+		} catch (MissingResourceException e) {
+			LogEventManager.fireLog(LogType.ERROR, e);
+		}
+
+		return locMessage;
 	}
 
 	public static String getMessageFormat(String key, Object... arguments) {
