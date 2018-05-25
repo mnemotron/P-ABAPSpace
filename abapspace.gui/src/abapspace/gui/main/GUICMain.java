@@ -138,9 +138,9 @@ public class GUICMain {
 
 	public void startPreRefactor() {
 		try {
-			boolean locValid = this.guimmain.startPreRefactor();
+			boolean locEditObjectName = this.guimmain.startPreRefactor();
 
-			if (!locValid) {
+			if (locEditObjectName) {
 				this.showEdit(this.guimmain.getEditData());
 			}
 

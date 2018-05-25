@@ -31,7 +31,6 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.xml.sax.SAXException;
 
 import abapspace.core.Refector;
 import abapspace.core.context.InterfaceContext;
@@ -65,13 +64,13 @@ public class GUIMMain {
 		this.preset = new Preset();
 	}
 
-	public void setPresetManager(String presetDir) throws PresetDirNotFoundException, PresetSchemaException{
+	public void setPresetManager(String presetDir) throws PresetDirNotFoundException, PresetSchemaException {
 		this.presetManager = PresetManager.getInstance(presetDir);
 
 		this.preset = new Preset();
 	}
 
-	public void setPresetManagerDefault() throws PresetDirNotFoundException, PresetSchemaException{
+	public void setPresetManagerDefault() throws PresetDirNotFoundException, PresetSchemaException {
 		this.setPresetManager(GUIMMain.PRESET_DIR_DEFAULT);
 
 		this.preset = new Preset();
@@ -136,19 +135,21 @@ public class GUIMMain {
 
 	public boolean startPreRefactor()
 			throws FileProcessException, SourceDirectoryNotFoundException, TargetDirectoryNotFoundException {
-		boolean locValid = true;
+		boolean locEditObjectName = false;
 
 		this.refector = new Refector(this.getPreset());
 
 		this.refector.collectContext();
 
-		locValid = this.refector.checkMaxNameLength();
+		this.refector.checkMaxNameLength();
+		
+		locEditObjectName = this.getPreset().isEditObject();
 
-		if (locValid) {
+		if (!locEditObjectName) {
 			this.startRefactor();
 		}
 
-		return locValid;
+		return locEditObjectName;
 	}
 
 	public void setSourceDir(String sourceDir) {

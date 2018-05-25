@@ -10,7 +10,7 @@
 		<tns:namespacePlaceholder>#</tns:namespacePlaceholder>
 		<tns:namespaceReplacement>/</tns:namespaceReplacement>
 	</tns:fileStructure>
-	<tns:checkNameMaxLength>true</tns:checkNameMaxLength>
+	<tns:editObject>true</tns:editObject>
 	<tns:namespaceNew>/xxx/</tns:namespaceNew>
 	<tns:supplement>_xyz_x0001_</tns:supplement>
 	<tns:namespaceOldList>
