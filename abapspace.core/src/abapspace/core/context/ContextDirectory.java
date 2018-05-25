@@ -24,6 +24,7 @@
 package abapspace.core.context;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,14 +33,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import abapspace.core.exception.FileProcessException;
+import abapspace.core.exception.SourceDirectoryNotFoundException;
+import abapspace.core.exception.UnzipException;
 import abapspace.core.log.LogEventManager;
 import abapspace.core.log.LogType;
 import abapspace.core.messages.MessageManager;
 import abapspace.core.process.InterfaceFileProcess;
+import abapspace.core.zip.ZipManager;
 
 public class ContextDirectory extends File implements InterfaceFileProcess {
 
 	private static final long serialVersionUID = -3077572976733503870L;
+	private static final String FILE_SUFFIX_ZIP = ".zip";
+	private static final String ZIP_DIR_PREFIX = "#zip#";
 
 	private boolean root;
 	private ContextManager contextManager;
@@ -58,7 +64,30 @@ public class ContextDirectory extends File implements InterfaceFileProcess {
 
 	@Override
 	public void collectContext() throws FileProcessException {
-		File[] locFileList = this.listFiles();
+
+		try {
+			this.unpackArchives();
+		} catch (UnzipException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SourceDirectoryNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		File[] locFileList = this.listFiles(new FileFilter() {
+
+			@Override
+			public boolean accept(File pathname) {
+				boolean locAccept = true;
+
+				if (pathname.isFile()) {
+					locAccept = !pathname.getName().toLowerCase().endsWith(FILE_SUFFIX_ZIP);
+				}
+
+				return locAccept;
+			}
+		});
 
 		// directory name
 		if (this.contextManager.getPreset().getFileStructure().isUpdate()) {
@@ -283,6 +312,33 @@ public class ContextDirectory extends File implements InterfaceFileProcess {
 			}
 
 		}
+	}
+
+	private void unpackArchives() throws UnzipException, SourceDirectoryNotFoundException {
+
+		File[] locZipFiles = this.listFiles(new FileFilter() {
+
+			@Override
+			public boolean accept(File pathname) {
+				boolean locAccept = false;
+
+				if (pathname.isFile()) {
+					locAccept = pathname.getName().toLowerCase().endsWith(FILE_SUFFIX_ZIP);
+				}
+
+				return locAccept;
+			}
+		});
+
+		for (File file : locZipFiles) {
+
+			File locFileZipSourceDir = new File(this.contextManager.getPreset().getFileSourceDir() + File.separator
+					+ ZIP_DIR_PREFIX + file.getName());
+			locFileZipSourceDir.mkdir();
+
+			ZipManager.unZip(file, locFileZipSourceDir);
+		}
+
 	}
 
 }

@@ -9,60 +9,70 @@ import java.nio.file.Files;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import abapspace.core.exception.UnzipException;
+import abapspace.core.log.LogEventManager;
+import abapspace.core.log.LogType;
+import abapspace.core.messages.MessageManager;
+
 public class ZipManager {
 
-    public static void unZip(File zipFile, File targetDir) {
+	public static void unZip(File zipFile, File targetDir) throws UnzipException {
 
-	byte[] buffer = new byte[1024];
-	ZipInputStream locZipIS = null;
+		byte[] buffer = new byte[1024];
+		ZipInputStream locZipIS = null;
+		File locNewFile = null;
+		
+		LogEventManager.fireLog(LogType.INFO,
+				MessageManager.getMessage("unzip.file") + zipFile.getAbsoluteFile());
 
-	try {
-	    locZipIS = new ZipInputStream(new FileInputStream(zipFile));
-
-	    ZipEntry locZE = locZipIS.getNextEntry();
-
-	    while (locZE != null) {
-
-		String locFileName = locZE.getName();
-		File locNewFile = new File(targetDir + File.separator + locFileName);
-
-		// TODO Auto-generated catch block
-		// LogEventManager.fireLog(LogType.INFO, File Unzip:
-		// locNewFile.getAbsoluteFile());
-
-		// create all non exists directories
-		Files.createDirectories(locNewFile.toPath().getParent());
-
-		FileOutputStream fos = new FileOutputStream(locNewFile);
-
-		int len;
-		while ((len = locZipIS.read(buffer)) > 0) {
-		    fos.write(buffer, 0, len);
-		}
-
-		fos.close();
-		locZE = locZipIS.getNextEntry();
-	    }
-	} catch (FileNotFoundException e) {
-	    // TODO Auto-generated catch block
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	} finally {
-
-	    if (locZipIS != null) {
 		try {
-		    locZipIS.closeEntry();
-		    locZipIS.close();
+			locZipIS = new ZipInputStream(new FileInputStream(zipFile));
+
+			ZipEntry locZE = locZipIS.getNextEntry();
+
+			while (locZE != null) {
+
+				String locFileName = locZE.getName();
+
+				locNewFile = new File(targetDir + File.separator + locFileName);
+
+				// create all non-existent directories
+				Files.createDirectories(locNewFile.toPath().getParent());
+
+				FileOutputStream locFOS = new FileOutputStream(locNewFile);
+
+				int len;
+				while ((len = locZipIS.read(buffer)) > 0) {
+					locFOS.write(buffer, 0, len);
+				}
+
+				locFOS.close();
+
+				LogEventManager.fireLog(LogType.INFO,
+						MessageManager.getMessage("unzip.file.child") + locNewFile.getAbsoluteFile());
+
+				locZE = locZipIS.getNextEntry();
+			}
+		} catch (FileNotFoundException e) {
+			throw new UnzipException(MessageManager.getMessageFormat(
+					"exception.unzip.fileNotFound") + locNewFile.getAbsolutePath(), e);
 		} catch (IOException e) {
-		    // TODO Auto-generated catch block
-		    // LogEventManager.fireLog(LogType.ERROR,
-		    // MessageManager.getMessage("FileProcessRefactorContext_BW_NotClosed"),
-		    // e);
+			throw new UnzipException(MessageManager.getMessageFormat(
+					"exception.fileProcessCollectContext.FileNotReachable" + locNewFile.getAbsolutePath()), e);
+		} finally {
+
+			if (locZipIS != null) {
+				try {
+					locZipIS.closeEntry();
+					locZipIS.close();
+				} catch (IOException e) {
+					LogEventManager.fireLog(LogType.ERROR,
+							MessageManager.getMessage("exception.zipInputStreamNotClosed"), e);
+				}
+			}
+
 		}
-	    }
 
 	}
-
-    }
 
 }

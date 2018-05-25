@@ -32,7 +32,7 @@ import abapspace.core.preset.entity.NamespaceOld;
 import abapspace.core.preset.entity.Preset;
 
 public class ContextManager {
-
+	
 	private Preset preset;
 	private List<InterfaceContext> contextList;
 	private ContextDirectory contextRoot;
