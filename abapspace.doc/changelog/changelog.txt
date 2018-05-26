@@ -2,9 +2,15 @@ ABAPSpace - Change Log
 
 + Added
 ! Changed
+* Fixed
 # Deprecated
 - Removed
-* Fixed
+
+[1.1.0] | 2018-
++ Core #6: ZIP support
++ GUI: Option manual editing of the object name
+* Core: several bugfixes
+- GUI: Manual editing no longer dependent on the maximum object name length check
 
 [1.0.0.RC2] | 2018-05-18
 + Core: ABAP keywords can be excluded
