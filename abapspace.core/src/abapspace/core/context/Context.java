@@ -220,11 +220,9 @@ public class Context implements Cloneable, InterfaceContext {
 
 	    // group1 = namespace + object ID
 	    // group2 = object name
-	    // remove '_' from the beginning
-	    Object locGroup2 = object[1].replaceAll("^_*", "");
+	    locReplacement = locGroup1 + this.supplement + object[1];
 
-	    locReplacement = locGroup1 + this.supplement + locGroup2;
-
+	    locReplacement = locReplacement.replaceAll("__", "_");
 	}
 
 	// check object name is upper case or lower case

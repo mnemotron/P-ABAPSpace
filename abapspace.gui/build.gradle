@@ -25,7 +25,7 @@ jar {
 
 // DEPENDENCIES
 dependencies {
-    compile fileTree(dir: 'lib/abapspace-core-1.0.0', include: ['*.jar'])
+    compile fileTree(dir: 'lib/abapspace-core-1.1.0', include: ['*.jar'])
 	compile fileTree(dir: 'lib/log4j-2.11', include: ['*.jar'])
 	compile fileTree(dir: 'lib/pgslookandfeel-1.1.2', include: ['*.jar'])
 	compile fileTree(dir: 'lib/jide-oss-3.3.7', include: ['*.jar'])
