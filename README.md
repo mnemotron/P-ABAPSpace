@@ -6,14 +6,15 @@ ABAP Namespace Refactoring
   + simple namespace refactoring
   + add a specific supplement to the new object name (i.e. project ID and/or package ID etc.)
 
-+ <b>CONFIGURATION</b><br>
-  + the refactoring is configurable via a XML preset file
++ <b>GUI/CONFIGURATION</b><br>
+  + the refactoring is configurable via XML preset files
+  + found object names can be manually changed before refactoring is performed
 
 + <b>CHECKS</b><br>
   + the maximum object name length can be checked (if the extended object naming policy is used)
   
 + <b>EXTENDED OBJECT POLICY</b><br>
-  + classes, interfaces
+  + classes, interfaces, exception classes, packages
   + more to come ....
   
 ## Get Started
