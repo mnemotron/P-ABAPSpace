@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.abapspace.com/Preset Preset.xsd">
 	<tns:description>Test</tns:description>
-	<tns:refactorSourceDir>s2/</tns:refactorSourceDir>
+	<tns:refactorSourceDir>source/</tns:refactorSourceDir>
 	<tns:refactorTargetDir>target/</tns:refactorTargetDir>
 	<tns:fileStructure>
 		<tns:update>true</tns:update>
@@ -14,18 +14,9 @@
 	<tns:namespaceNew>/xxx/</tns:namespaceNew>
 	<tns:supplement></tns:supplement>
 	<tns:namespaceOldList>
-		<tns:namespaceOld>
-			<tns:objectPolicy>false</tns:objectPolicy>
-			<tns:namespaceOld>/vdp/</tns:namespaceOld>
-		</tns:namespaceOld>
-		<tns:namespaceOld>
-			<tns:objectPolicy>false</tns:objectPolicy>
-			<tns:namespaceOld>z</tns:namespaceOld>
-		</tns:namespaceOld>
-		<tns:namespaceOld>
-			<tns:objectPolicy>false</tns:objectPolicy>
-			<tns:namespaceOld>y</tns:namespaceOld>
-		</tns:namespaceOld>
+		<tns:namespaceOld>/vdp/</tns:namespaceOld>
+		<tns:namespaceOld>z</tns:namespaceOld>
+		<tns:namespaceOld>y</tns:namespaceOld>
 	</tns:namespaceOldList>
 	<tns:objectPolicyGeneral>
 		<tns:preIdent>\W</tns:preIdent>

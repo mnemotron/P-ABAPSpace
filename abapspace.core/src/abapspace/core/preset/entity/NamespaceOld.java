@@ -23,32 +23,21 @@
  */
 package abapspace.core.preset.entity;
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlValue;
 
 public class NamespaceOld {
 
-	private boolean objectPolicy;
 	private String namespaceOld;
 
 	public NamespaceOld() {
-		this.objectPolicy = false;
 		this.namespaceOld = new String();
-	}
-
-	public boolean isObjectPolicy() {
-		return objectPolicy;
-	}
-
-	@XmlElement(namespace = "http://www.abapspace.com/Preset")
-	public void setObjectPolicy(boolean objectPolicy) {
-		this.objectPolicy = objectPolicy;
 	}
 
 	public String getNamespaceOld() {
 		return namespaceOld;
 	}
 
-	@XmlElement(namespace = "http://www.abapspace.com/Preset")
+	@XmlValue
 	public void setNamespaceOld(String namespaceOld) {
 		this.namespaceOld = namespaceOld;
 	}

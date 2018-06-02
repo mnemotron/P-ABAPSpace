@@ -25,235 +25,245 @@ package abapspace.core.context;
 
 public class Context implements Cloneable, InterfaceContext {
 
-    private String namespaceOld;
-    private String namespaceNew;
-    private String preIdent;
-    private String postIdent;
-    private String objectID;
-    private String objectNameIdent;
-    private String[] object;
-    private String supplement;
-    private Integer nameMaxLength;
-    private String replacement;
-    private boolean ignore;
+	private String namespaceOld;
+	private String namespaceNew;
+	private String preIdent;
+	private String postIdent;
+	private String objectID;
+	private String objectNameIdent;
+	private String[] object;
+	private String supplement;
+	private Integer nameMaxLength;
+	private String replacement;
+	private boolean ignore;
+	private boolean enhancedObject;
 
-    public Context() {
-	this.namespaceOld = new String();
-	this.namespaceNew = new String();
-	this.preIdent = new String();
-	this.postIdent = new String();
-	this.objectID = new String();
-	this.objectNameIdent = new String();
-	this.supplement = new String();
-	this.object = new String[] {};
-	this.nameMaxLength = new Integer(0);
-	this.replacement = new String();
-	this.ignore = false;
-    }
-
-    @Override
-    public String getObject() {
-
-	StringBuffer locSB = new StringBuffer();
-
-	for (String object : object) {
-	    locSB.append(object);
+	public Context() {
+		this.namespaceOld = new String();
+		this.namespaceNew = new String();
+		this.preIdent = new String();
+		this.postIdent = new String();
+		this.objectID = new String();
+		this.objectNameIdent = new String();
+		this.supplement = new String();
+		this.object = new String[] {};
+		this.nameMaxLength = new Integer(0);
+		this.replacement = new String();
+		this.ignore = false;
+		this.enhancedObject = false;
 	}
 
-	return locSB.toString();
-    }
+	@Override
+	public String getObject() {
 
-    @Override
-    public void setObject(String[] object) {
+		StringBuffer locSB = new StringBuffer();
 
-	for (String string : object) {
-	    string = string.trim();
+		for (String object : object) {
+			locSB.append(object);
+		}
+
+		return locSB.toString();
 	}
 
-	this.object = object;
-    }
+	@Override
+	public void setObject(String[] object) {
 
-    public String getObjectID() {
-	return objectID;
-    }
+		for (String string : object) {
+			string = string.trim();
+		}
 
-    public void setObjectID(String objectID) {
-	this.objectID = objectID;
-    }
-
-    public String getSupplement() {
-	return supplement;
-    }
-
-    public void setSupplement(String supplement) {
-
-	String locSupplement = supplement;
-
-	locSupplement = locSupplement.replaceAll(" *", "");
-
-	if (!locSupplement.isEmpty()) {
-	    this.supplement = supplement;
-	}
-    }
-
-    public String getNamespaceOld() {
-	return namespaceOld;
-    }
-
-    public void setNamespaceOld(String namespaceOld) {
-	this.namespaceOld = namespaceOld;
-    }
-
-    public String getNamespaceNew() {
-	return namespaceNew;
-    }
-
-    public void setNamespaceNew(String namespaceNew) {
-	this.namespaceNew = namespaceNew;
-    }
-
-    public String getObjectNameIdent() {
-	return objectNameIdent;
-    }
-
-    public void setObjectNameIdent(String objectNameIdent) {
-	this.objectNameIdent = objectNameIdent;
-    }
-
-    public Integer getNameMaxLength() {
-	return nameMaxLength;
-    }
-
-    public void setNameMaxLength(Integer nameMaxLength) {
-	this.nameMaxLength = nameMaxLength;
-    }
-
-    public void setReplacement(String replacement) {
-	this.replacement = replacement;
-    }
-
-    public String getPreIdent() {
-	return preIdent;
-    }
-
-    public void setPreIdent(String preIdent) {
-	this.preIdent = preIdent;
-    }
-
-    public String getPostIdent() {
-	return postIdent;
-    }
-
-    public void setPostIdent(String postIdent) {
-	this.postIdent = postIdent;
-    }
-
-    public boolean isIgnore() {
-	return ignore;
-    }
-
-    public void setIgnore(boolean ignore) {
-	this.ignore = ignore;
-    }
-
-    private boolean isStringUpperCase(String string) {
-	boolean locUpperCase = true;
-
-	char[] locChars = string.toCharArray();
-
-	for (int i = 0, l = locChars.length; i < l; ++i) {
-
-	    char locChar = locChars[i];
-
-	    if (Character.isLetter(locChar) && !Character.isUpperCase(locChar)) {
-		locUpperCase = false;
-		break;
-	    }
+		this.object = object;
 	}
 
-	return locUpperCase;
-    }
-
-    @Override
-    public InterfaceContext clone() throws CloneNotSupportedException {
-	return (InterfaceContext) super.clone();
-    }
-
-    @Override
-    public String getRegex() {
-	return this.getRegex(true, true);
-    }
-
-    @Override
-    public String getRegex(boolean preIdent, boolean postIdent) {
-
-	StringBuffer locRegex = new StringBuffer();
-
-	if (preIdent) {
-	    locRegex.append(this.preIdent);
+	public String getObjectID() {
+		return objectID;
 	}
 
-	// group 1, 2
-	locRegex.append("(" + this.namespaceOld + this.objectID + ")" + "(" + this.objectNameIdent + ")");
-
-	if (postIdent) {
-	    locRegex.append(this.postIdent);
+	public void setObjectID(String objectID) {
+		this.objectID = objectID;
 	}
 
-	return locRegex.toString();
-    }
-
-    @Override
-    public String getReplacement() {
-
-	String locReplacement = new String();
-
-	if (!this.replacement.isEmpty()) {
-
-	    locReplacement = this.replacement;
-
-	} else {
-
-	    // change namespace
-	    Object locGroup1 = this.object[0].toLowerCase().replaceAll("^" + this.namespaceOld.toLowerCase(),
-		    this.namespaceNew.toLowerCase());
-
-	    // group1 = namespace + object ID
-	    // group2 = object name
-	    locReplacement = locGroup1 + this.supplement + object[1];
-
-	    locReplacement = locReplacement.replaceAll("__", "_");
+	public String getSupplement() {
+		return supplement;
 	}
 
-	// check object name is upper case or lower case
-	if (this.isStringUpperCase(this.getObject())) {
-	    locReplacement = locReplacement.toUpperCase();
-	} else {
-	    locReplacement = locReplacement.toLowerCase();
+	public void setSupplement(String supplement) {
+
+		String locSupplement = supplement;
+
+		locSupplement = locSupplement.replaceAll(" *", "");
+
+		if (!locSupplement.isEmpty()) {
+			this.supplement = supplement;
+		}
 	}
 
-	return locReplacement;
-    }
-
-    @Override
-    public ContextCheckMaxNameLength checkMaxNameLengthForReplacement() {
-
-	ContextCheckMaxNameLength locCheck = new ContextCheckMaxNameLength();
-
-	Integer locActualLength = new Integer(this.getReplacement().length());
-	Integer locOffset = new Integer(locActualLength - this.nameMaxLength);
-
-	locCheck.setMaxNameLength(this.nameMaxLength);
-	locCheck.setActualNameLength(locActualLength);
-	locCheck.setOffset(locOffset);
-
-	if (locOffset > 0) {
-	    locCheck.setValid(false);
-	} else {
-	    locCheck.setValid(true);
+	public String getNamespaceOld() {
+		return namespaceOld;
 	}
 
-	return locCheck;
-    }
+	public void setNamespaceOld(String namespaceOld) {
+		this.namespaceOld = namespaceOld;
+	}
+
+	public String getNamespaceNew() {
+		return namespaceNew;
+	}
+
+	public void setNamespaceNew(String namespaceNew) {
+		this.namespaceNew = namespaceNew;
+	}
+
+	public String getObjectNameIdent() {
+		return objectNameIdent;
+	}
+
+	public void setObjectNameIdent(String objectNameIdent) {
+		this.objectNameIdent = objectNameIdent;
+	}
+
+	public Integer getNameMaxLength() {
+		return nameMaxLength;
+	}
+
+	public void setNameMaxLength(Integer nameMaxLength) {
+		this.nameMaxLength = nameMaxLength;
+	}
+
+	public void setReplacement(String replacement) {
+		this.replacement = replacement;
+	}
+
+	public String getPreIdent() {
+		return preIdent;
+	}
+
+	public void setPreIdent(String preIdent) {
+		this.preIdent = preIdent;
+	}
+
+	public String getPostIdent() {
+		return postIdent;
+	}
+
+	public void setPostIdent(String postIdent) {
+		this.postIdent = postIdent;
+	}
+
+	public boolean isIgnore() {
+		return ignore;
+	}
+
+	public void setIgnore(boolean ignore) {
+		this.ignore = ignore;
+	}
+
+	public boolean isEnhancedObject() {
+		return enhancedObject;
+	}
+
+	public void setEnhancedObject(boolean enhancedObject) {
+		this.enhancedObject = enhancedObject;
+	}
+
+	private boolean isStringUpperCase(String string) {
+		boolean locUpperCase = true;
+
+		char[] locChars = string.toCharArray();
+
+		for (int i = 0, l = locChars.length; i < l; ++i) {
+
+			char locChar = locChars[i];
+
+			if (Character.isLetter(locChar) && !Character.isUpperCase(locChar)) {
+				locUpperCase = false;
+				break;
+			}
+		}
+
+		return locUpperCase;
+	}
+
+	@Override
+	public InterfaceContext clone() throws CloneNotSupportedException {
+		return (InterfaceContext) super.clone();
+	}
+
+	@Override
+	public String getRegex() {
+		return this.getRegex(true, true);
+	}
+
+	@Override
+	public String getRegex(boolean preIdent, boolean postIdent) {
+
+		StringBuffer locRegex = new StringBuffer();
+
+		if (preIdent) {
+			locRegex.append(this.preIdent);
+		}
+
+		// group 1, 2
+		locRegex.append("(" + this.namespaceOld + this.objectID + ")" + "(" + this.objectNameIdent + ")");
+
+		if (postIdent) {
+			locRegex.append(this.postIdent);
+		}
+
+		return locRegex.toString();
+	}
+
+	@Override
+	public String getReplacement() {
+
+		String locReplacement = new String();
+
+		if (!this.replacement.isEmpty()) {
+
+			locReplacement = this.replacement;
+
+		} else {
+
+			// change namespace
+			Object locGroup1 = this.object[0].toLowerCase().replaceAll("^" + this.namespaceOld.toLowerCase(),
+					this.namespaceNew.toLowerCase());
+
+			// group1 = namespace + object ID
+			// group2 = object name
+			locReplacement = locGroup1 + this.supplement + object[1];
+
+			locReplacement = locReplacement.replaceAll("__", "_");
+		}
+
+		// check object name is upper case or lower case
+		if (this.isStringUpperCase(this.getObject())) {
+			locReplacement = locReplacement.toUpperCase();
+		} else {
+			locReplacement = locReplacement.toLowerCase();
+		}
+
+		return locReplacement;
+	}
+
+	@Override
+	public ContextCheckMaxNameLength checkMaxNameLengthForReplacement() {
+
+		ContextCheckMaxNameLength locCheck = new ContextCheckMaxNameLength();
+
+		Integer locActualLength = new Integer(this.getReplacement().length());
+		Integer locOffset = new Integer(locActualLength - this.nameMaxLength);
+
+		locCheck.setMaxNameLength(this.nameMaxLength);
+		locCheck.setActualNameLength(locActualLength);
+		locCheck.setOffset(locOffset);
+
+		if (locOffset > 0) {
+			locCheck.setValid(false);
+		} else {
+			locCheck.setValid(true);
+		}
+
+		return locCheck;
+	}
 
 }

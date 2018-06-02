@@ -24,6 +24,8 @@
 package abapspace.core.context;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ import abapspace.core.preset.entity.NamespaceOld;
 import abapspace.core.preset.entity.Preset;
 
 public class ContextManager {
-	
+
 	private Preset preset;
 	private List<InterfaceContext> contextList;
 	private ContextDirectory contextRoot;
@@ -52,15 +54,26 @@ public class ContextManager {
 
 		for (NamespaceOld namespaceOld : locNSOldList) {
 
-			// get policy objects
-			if (namespaceOld.isObjectPolicy()) {
-				locContextTmpList = this.getObjectPolicy(namespaceOld.getNamespaceOld());
-				locContextList.addAll(locContextTmpList);
-			} else {
-				locContextTmpList = this.getObjectDefault(namespaceOld.getNamespaceOld());
-				locContextList.addAll(locContextTmpList);
-			}
+			// get enhanced policy objects
+			locContextTmpList = this.getObjectPolicy(namespaceOld.getNamespaceOld());
+			locContextList.addAll(locContextTmpList);
+
+			// get default policy objects
+			locContextTmpList = this.getObjectDefault(namespaceOld.getNamespaceOld());
+			locContextList.addAll(locContextTmpList);
 		}
+
+		// first enhanced objects
+		Collections.sort(locContextList, new Comparator<InterfaceContext>() {
+			@Override
+			public int compare(InterfaceContext o1, InterfaceContext o2) {
+				if (o1.isEnhancedObject() == o2.isEnhancedObject()) {
+					return 0;
+				} else {
+					return o1.isEnhancedObject() ? -1 : 1;
+				}
+			}
+		});
 
 		return locContextList;
 	}
@@ -77,6 +90,7 @@ public class ContextManager {
 			locContext.setPostIdent(this.preset.getObjectPolicyGeneral().getPostIdent());
 			locContext.setNamespaceNew(this.preset.getNamespaceNew());
 			locContext.setNamespaceOld(namespaceOld);
+			locContext.setEnhancedObject(false);
 			locContextList.add(locContext);
 		}
 
@@ -98,6 +112,7 @@ public class ContextManager {
 			locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectPackage().getNameMaxLength());
 			locContext.setNamespaceNew(this.preset.getNamespaceNew());
 			locContext.setNamespaceOld(namespaceOld);
+			locContext.setEnhancedObject(true);
 			locContextList.add(locContext);
 		}
 
@@ -112,6 +127,7 @@ public class ContextManager {
 			locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectClass().getNameMaxLength());
 			locContext.setNamespaceNew(this.preset.getNamespaceNew());
 			locContext.setNamespaceOld(namespaceOld);
+			locContext.setEnhancedObject(true);
 			locContextList.add(locContext);
 		}
 
@@ -126,6 +142,7 @@ public class ContextManager {
 			locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectInterface().getNameMaxLength());
 			locContext.setNamespaceNew(this.preset.getNamespaceNew());
 			locContext.setNamespaceOld(namespaceOld);
+			locContext.setEnhancedObject(true);
 			locContextList.add(locContext);
 		}
 
@@ -140,6 +157,7 @@ public class ContextManager {
 			locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectExceptionClass().getNameMaxLength());
 			locContext.setNamespaceNew(this.preset.getNamespaceNew());
 			locContext.setNamespaceOld(namespaceOld);
+			locContext.setEnhancedObject(true);
 			locContextList.add(locContext);
 		}
 
@@ -154,6 +172,7 @@ public class ContextManager {
 			locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectDatabaseTable().getNameMaxLength());
 			locContext.setNamespaceNew(this.preset.getNamespaceNew());
 			locContext.setNamespaceOld(namespaceOld);
+			locContext.setEnhancedObject(true);
 			locContextList.add(locContext);
 		}
 

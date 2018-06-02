@@ -150,8 +150,13 @@ public class ContextFile extends File implements InterfaceFileProcess {
 
 				InterfaceContext locIContext = iContext.clone();
 
-				LogEventManager.fireLog(LogType.INFO, MessageManager.getMessageFormat("collect.context.object.fileName",
-						locObject, m.start(), m.end()));
+				if (iContext.isEnhancedObject()) {
+					LogEventManager.fireLog(LogType.INFO, MessageManager.getMessageFormat(
+							"collect.context.object.fileName.enhanced", locObject, m.start(), m.end()));
+				} else {
+					LogEventManager.fireLog(LogType.INFO, MessageManager
+							.getMessageFormat("collect.context.object.fileName", locObject, m.start(), m.end()));
+				}
 
 				locIContext.setObject(new String[] { locGroup1, locGroup2 });
 
@@ -181,12 +186,19 @@ public class ContextFile extends File implements InterfaceFileProcess {
 					continue;
 				}
 
-				LogEventManager.fireLog(LogType.INFO,
-						MessageManager.getMessageFormat("collect.context.object", locObject, m.start(), m.end()));
+				if (iContext.isEnhancedObject()) {
+					LogEventManager.fireLog(LogType.INFO, MessageManager
+							.getMessageFormat("collect.context.object.enhanced", locObject, m.start(), m.end()));
+				} else {
+					LogEventManager.fireLog(LogType.INFO,
+							MessageManager.getMessageFormat("collect.context.object", locObject, m.start(), m.end()));
+				}
 
 				InterfaceContext locIContext = iContext.clone();
 
 				if (iContextMap.containsKey(locObject)) {
+					LogEventManager.fireLog(LogType.INFO,
+							MessageManager.getMessageFormat("collect.context.object.alreadyFound", locObject));
 					continue;
 				}
 

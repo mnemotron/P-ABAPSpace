@@ -27,18 +27,18 @@ import javax.xml.bind.annotation.XmlValue;
 
 public class Keyword {
 
-    private String keyword;
+	private String keyword;
 
-    public Keyword() {
-	this.keyword = new String();
-    }
+	public Keyword() {
+		this.keyword = new String();
+	}
 
-    public String getKeyword() {
-	return keyword;
-    }
+	public String getKeyword() {
+		return keyword;
+	}
 
-    @XmlValue
-    public void setKeyword(String keyword) {
-	this.keyword = keyword;
-    }
+	@XmlValue
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 }

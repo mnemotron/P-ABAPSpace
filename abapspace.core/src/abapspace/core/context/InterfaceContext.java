@@ -24,25 +24,27 @@
 package abapspace.core.context;
 
 public interface InterfaceContext {
-	
-    	public String getRegex();
-    
+
+	public String getRegex();
+
 	public String getRegex(boolean preIdent, boolean postIdent);
-	
+
 	public void setObject(String[] object);
-	
+
 	public String getObject();
-	
+
 	public String getReplacement();
-	
+
 	public void setReplacement(String replacement);
-	
+
 	public ContextCheckMaxNameLength checkMaxNameLengthForReplacement();
-	
+
 	public InterfaceContext clone() throws CloneNotSupportedException;
-	
+
 	public void setIgnore(boolean ignore);
-	
+
 	public boolean isIgnore();
-	
+
+	public boolean isEnhancedObject();
+
 }
