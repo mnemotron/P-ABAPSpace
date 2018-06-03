@@ -8,8 +8,10 @@ ABAPSpace - Change Log
 
 [1.1.0] | 2018-
 + Core #6: ZIP support
++ Core #8: Function group/module object policy
 + GUI: Option manual editing of the object name
 * Core: several bugfixes
+- Core: The separate activation of the enhanced object policy for each namespace removed
 - GUI: Manual editing no longer dependent on the maximum object name length check
 
 [1.0.0.RC2] | 2018-05-18

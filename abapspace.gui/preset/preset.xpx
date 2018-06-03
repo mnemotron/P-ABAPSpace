@@ -74,7 +74,7 @@
 			<tns:nameMaxLength>26</tns:nameMaxLength>
 		</tns:objectFunctionGroup>
 		<tns:objectFunctionModule>
-			<tns:preIdent></tns:preIdent>
+			<tns:preIdent>SAPL</tns:preIdent>
 			<tns:objectIdent>fm</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:postIdent></tns:postIdent>
