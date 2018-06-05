@@ -23,28 +23,38 @@
  */
 package abapspace.core.context;
 
+import java.util.List;
+import java.util.Map;
+
+import abapspace.core.preset.entity.Keyword;
+
 public interface InterfaceContext {
 
-	public String getRegex();
+    public RegexManager getRegex();
 
-	public String getRegex(boolean preIdent, boolean postIdent);
+    public RegexManager getRegex(boolean preIdent, boolean postIdent);
 
-	public void setObject(String[] object);
+    // public void setObject(String[] object);
+    public void setObject(Map<GroupType, String> objectMap);
 
-	public String getObject();
+    public String getObject();
 
-	public String getReplacement();
+    public String getReplacement();
 
-	public void setReplacement(String replacement);
+    public void setReplacement(String replacement);
 
-	public ContextCheckMaxNameLength checkMaxNameLengthForReplacement();
+    public ContextCheckMaxNameLength checkMaxNameLengthForReplacement();
 
-	public InterfaceContext clone() throws CloneNotSupportedException;
+    public InterfaceContext clone() throws CloneNotSupportedException;
 
-	public void setIgnore(boolean ignore);
+    public void setIgnore(boolean ignore);
 
-	public boolean isIgnore();
+    public boolean isIgnore();
 
-	public boolean isEnhancedObject();
+    public boolean isEnhancedObject();
 
+    public Map<String, InterfaceContext> processContextSearch(String contextString, List<Keyword> keywordList,
+	    Map<String, InterfaceContext> iContextMap) throws CloneNotSupportedException;
+
+    public InterfaceContext processNameSearch(NameSearchType nameSearchType, boolean searchPreIdent, boolean searchPostIdent, String nameString) throws CloneNotSupportedException;
 }

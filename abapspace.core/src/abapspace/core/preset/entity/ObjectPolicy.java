@@ -31,6 +31,7 @@ public class ObjectPolicy {
     private ObjectClass objectClass;
     private ObjectInterface objectInterface;
     private ObjectExceptionClass objectExceptionClass;
+    private ObjectInclude objectInclude;
     private ObjectDatabaseTable objectDatabaseTable;
 
     public ObjectPolicy() {
@@ -38,6 +39,7 @@ public class ObjectPolicy {
 	this.objectClass = new ObjectClass();
 	this.objectInterface = new ObjectInterface();
 	this.objectExceptionClass = new ObjectExceptionClass();
+	this.objectInclude = new ObjectInclude();
 	this.objectDatabaseTable = new ObjectDatabaseTable();
     }
 
@@ -75,6 +77,15 @@ public class ObjectPolicy {
     @XmlElement(namespace = "http://www.abapspace.com/Preset")
     public void setObjectExceptionClass(ObjectExceptionClass objectExceptionClass) {
 	this.objectExceptionClass = objectExceptionClass;
+    }
+
+    public ObjectInclude getObjectInclude() {
+	return objectInclude;
+    }
+
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectInclude(ObjectInclude objectInclude) {
+	this.objectInclude = objectInclude;
     }
 
     public ObjectDatabaseTable getObjectDatabaseTable() {

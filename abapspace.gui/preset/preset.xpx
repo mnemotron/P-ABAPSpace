@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.abapspace.com/Preset Preset.xsd">
 	<tns:description>Test</tns:description>
-	<tns:refactorSourceDir>source/</tns:refactorSourceDir>
+	<tns:refactorSourceDir>s2/</tns:refactorSourceDir>
 	<tns:refactorTargetDir>target/</tns:refactorTargetDir>
 	<tns:fileStructure>
 		<tns:update>true</tns:update>
@@ -60,8 +60,8 @@
 			<tns:nameMaxLength>40</tns:nameMaxLength>
 		</tns:objectProgram>
 		<tns:objectInclude>
-			<tns:preIdent></tns:preIdent>
-			<tns:objectIdent>in</tns:objectIdent>
+			<tns:preIdent>l</tns:preIdent>
+			<tns:objectIdent></tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>40</tns:nameMaxLength>
@@ -74,7 +74,7 @@
 			<tns:nameMaxLength>26</tns:nameMaxLength>
 		</tns:objectFunctionGroup>
 		<tns:objectFunctionModule>
-			<tns:preIdent>SAPL</tns:preIdent>
+			<tns:preIdent></tns:preIdent>
 			<tns:objectIdent>fm</tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:postIdent></tns:postIdent>

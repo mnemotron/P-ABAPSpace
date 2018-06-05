@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import abapspace.core.exception.FileProcessException;
 import abapspace.core.exception.SourceDirectoryNotFoundException;
@@ -301,31 +299,46 @@ public class ContextDirectory extends File implements InterfaceFileProcess {
 			throws CloneNotSupportedException {
 
 		for (InterfaceContext iContext : contextList) {
+		    
+		    this.iContext = iContext.processNameSearch(NameSearchType.DIRECTORY_NAME, false, false, dirName);
+		    
+		    if(this.iContext != null)
+		    {
+			this.object = this.iContext.getObject();
+			return;
+		    }
 
-			for (Matcher m = Pattern.compile(iContext.getRegex(false, false), Pattern.CASE_INSENSITIVE)
-					.matcher(dirName); m.find();) {
 
-				String locGroup1 = m.group(1); // group 1: namespace + object ID
-				String locGroup2 = m.group(2); // group 2: object name
-				String locObject = locGroup1 + locGroup2;
-
-				InterfaceContext locIContext = iContext.clone();
-
-				if (iContext.isEnhancedObject()) {
-					LogEventManager.fireLog(LogType.INFO, MessageManager.getMessageFormat(
-							"collect.context.object.DirName.enhanced", locObject, m.start(), m.end()));
-				} else {
-					LogEventManager.fireLog(LogType.INFO, MessageManager
-							.getMessageFormat("collect.context.object.dirName", locObject, m.start(), m.end()));
-				}
-
-				locIContext.setObject(new String[] { locGroup1, locGroup2 });
-
-				this.object = locObject;
-				this.iContext = locIContext;
-
-				return;
-			}
+//			for (Matcher m = Pattern.compile(iContext.getRegex(false, false), Pattern.CASE_INSENSITIVE)
+//					.matcher(dirName); m.find();) {
+//
+//				// group 1: namespace + object ID
+//			    	// group 2: object name
+//			    	String locObject = new String();
+//			    	ArrayList<String> locObjectList = new ArrayList<String>();
+//				
+//				for (int i = 0, c = m.groupCount(); i < c; i++) {
+//				    locObject = locObject.concat(m.group(i+1));
+//				    locObjectList.add(m.group(i+1));
+//				}
+//				
+//				InterfaceContext locIContext = iContext.clone();
+//
+//				if (iContext.isEnhancedObject()) {
+//					LogEventManager.fireLog(LogType.INFO, MessageManager.getMessageFormat(
+//							"collect.context.object.DirName.enhanced", locObject, m.start(), m.end()));
+//				} else {
+//					LogEventManager.fireLog(LogType.INFO, MessageManager
+//							.getMessageFormat("collect.context.object.dirName", locObject, m.start(), m.end()));
+//				}
+//
+//				locIContext.setObject(locObjectList.toArray(new String[locObjectList.size()]));
+//				
+//				this.object = locObject;
+//				this.iContext = locIContext;
+//
+//				return;
+//			}
 
 		}
 	}
