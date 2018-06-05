@@ -1,5 +1,7 @@
 package abapspace.core.context;
 
+import java.util.Map;
+
 public class ContextInclude extends Context {
 
     @Override
@@ -21,7 +23,7 @@ public class ContextInclude extends Context {
 
 	return locSB.toString();
     }
-    
+
     @Override
     public String getReplacement() {
 	String locReplacement = new String();
@@ -33,10 +35,11 @@ public class ContextInclude extends Context {
 	} else {
 
 	    // change namespace
-	    Object locGroup1 = this.objectMap.get(GroupType.NAMESPACEOLD_OBJID).toLowerCase().replaceAll("^" + this.namespaceOld.toLowerCase(),
-		    this.namespaceNew.toLowerCase());
+	    Object locGroup1 = this.objectMap.get(GroupType.NAMESPACEOLD_OBJID).toLowerCase()
+		    .replaceAll("^" + this.namespaceOld.toLowerCase(), this.namespaceNew.toLowerCase());
 
-	    locReplacement = this.objectMap.get(GroupType.PREIDENT) + locGroup1 + this.supplement + this.objectMap.get(GroupType.OBJNAMEID);
+	    locReplacement = this.objectMap.get(GroupType.PREIDENT) + locGroup1 + this.supplement
+		    + this.objectMap.get(GroupType.OBJNAMEID);
 
 	    locReplacement = locReplacement.replaceAll("__", "_");
 	}
@@ -52,9 +55,9 @@ public class ContextInclude extends Context {
     }
 
     @Override
-    public InterfaceContext processNameSearch(NameSearchType nameSearchType, boolean searchPreIdent,
-	    boolean searchPostIdent, String nameString) throws CloneNotSupportedException {
-	return super.processNameSearch(nameSearchType, true, searchPostIdent, nameString);
+    public Map<String, InterfaceContext> processNameSearch(NameSearchType nameSearchType, boolean searchPreIdent,
+	    boolean searchPostIdent, String nameString, Map<String, InterfaceContext> fileNameContextMap) throws CloneNotSupportedException {
+	return super.processNameSearch(nameSearchType, true, searchPostIdent, nameString, fileNameContextMap);
     }
 
 }

@@ -342,25 +342,24 @@ public class Context implements Cloneable, InterfaceContext {
     }
 
     @Override
-    public InterfaceContext processNameSearch(NameSearchType nameSearchType, boolean searchPreIdent,
-	    boolean searchPostIdent, String nameString) throws CloneNotSupportedException {
+    public Map<String, InterfaceContext> processNameSearch(NameSearchType nameSearchType, boolean searchPreIdent,
+	    boolean searchPostIdent, String nameString, Map<String, InterfaceContext> fileNameContextMap)
+	    throws CloneNotSupportedException {
 
-	InterfaceContext locIContext = null;
 	RegexManager locRegexManager = this.getRegex(searchPreIdent, searchPostIdent);
 
-	for (Matcher m = Pattern
-		.compile(locRegexManager.getRegex(), Pattern.CASE_INSENSITIVE)
-		.matcher(nameString); m.find();) {
+	for (Matcher m = Pattern.compile(locRegexManager.getRegex(), Pattern.CASE_INSENSITIVE).matcher(nameString); m
+		.find();) {
 
 	    Map<GroupType, String> locObjectMap = new HashMap<GroupType, String>();
-	    
+
 	    ArrayList<Regex> locRegexList = (ArrayList<Regex>) locRegexManager.getRegexList();
 
 	    for (Regex regex : locRegexList) {
 		locObjectMap.put(regex.getGroupType(), m.group(regex.getGroup()));
 	    }
 
-	    locIContext = this.clone();
+	    InterfaceContext locIContext = this.clone();
 
 	    locIContext.setObject(locObjectMap);
 	    String locObject = locIContext.getObject();
@@ -393,10 +392,12 @@ public class Context implements Cloneable, InterfaceContext {
 
 	    }
 
-	    break;
+	    if (!fileNameContextMap.containsKey(locObject)) {
+		fileNameContextMap.put(locObject, locIContext);
+	    }
 	}
 
-	return locIContext;
+	return fileNameContextMap;
 
     }
 

@@ -30,15 +30,13 @@ public class ContextFile extends File implements InterfaceFileProcess {
 
     private ContextManager contextManager;
     private Map<String, InterfaceContext> contextMap;
-    private InterfaceContext iContext;
-    private String object;
+    private Map<String, InterfaceContext> fileNameContextMap;
 
     public ContextFile(String pathname, ContextManager contextManager) {
 	super(pathname);
 	this.contextManager = contextManager;
 	this.contextMap = new HashMap<String, InterfaceContext>();
-	this.iContext = null;
-	this.object = new String();
+	this.fileNameContextMap = new HashMap<String, InterfaceContext>();
     }
 
     @Override
@@ -139,12 +137,8 @@ public class ContextFile extends File implements InterfaceFileProcess {
 
 	for (InterfaceContext iContext : contextList) {
 
-	    this.iContext = iContext.processNameSearch(NameSearchType.FILE_NAME, false, false, fileNameString);
-
-	    if (this.iContext != null) {
-		this.object = this.iContext.getObject();
-		return;
-	    }
+	    this.fileNameContextMap = iContext.processNameSearch(NameSearchType.FILE_NAME, false, false, fileNameString,
+		    this.fileNameContextMap);
 	}
     }
 
@@ -230,24 +224,29 @@ public class ContextFile extends File implements InterfaceFileProcess {
 
     private String refactorFileName() {
 
-	String locResult = this.getName();
+	String[] locResult = new String[1];
+	locResult[0] = this.getName();
 
 	if (this.isFileNameObject()) {
-	    locResult = this.removeNamespacePlaceholder(locResult);
-	    locResult = locResult.replaceAll(this.iContext.getObject(), this.iContext.getReplacement());
-	    locResult = this.replaceNamespacePlaceholder(locResult);
+	    locResult[0] = this.removeNamespacePlaceholder(locResult[0]);
+
+	    this.fileNameContextMap.forEach((key, value) -> {
+		locResult[0] = locResult[0].replaceAll(value.getObject(), value.getReplacement());
+	    });
+
+	    locResult[0] = this.replaceNamespacePlaceholder(locResult[0]);
 	}
 
-	return locResult;
+	return locResult[0];
     }
 
     private boolean isFileNameObject() {
 	boolean locResult = false;
 
-	if (this.object != null && this.iContext != null) {
-	    locResult = true;
-	} else {
+	if (this.fileNameContextMap.isEmpty()) {
 	    locResult = false;
+	} else {
+	    locResult = true;
 	}
 
 	return locResult;
@@ -261,17 +260,40 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	// check file name
 	if (this.isFileNameObject()) {
 
-	    ContextCheckMaxNameLength locCheck = this.iContext.checkMaxNameLengthForReplacement();
+	    ContextCheckMaxNameLength locCheck = null;
 
-	    if (!locCheck.isValid()) {
+	    Iterator<Map.Entry<String, InterfaceContext>> locFNCMIterator = this.fileNameContextMap.entrySet()
+		    .iterator();
 
-		LogEventManager.fireLog(LogType.WARNING,
-			MessageManager.getMessageFormat("check.maxNameLength", iContext.getObject(),
-				iContext.getReplacement(), locCheck.getMaxNameLength(),
-				locCheck.getActualNameLength()));
+	    while (locFNCMIterator.hasNext()) {
+		Map.Entry<String, InterfaceContext> locPair = locFNCMIterator.next();
 
-		locValid[0] = false;
+		locCheck = locPair.getValue().checkMaxNameLengthForReplacement();
+
+		if (!locCheck.isValid()) {
+		    LogEventManager.fireLog(LogType.WARNING,
+			    MessageManager.getMessageFormat("check.maxNameLength", locPair.getValue().getObject(),
+				    locPair.getValue().getReplacement(), locCheck.getMaxNameLength(),
+				    locCheck.getActualNameLength()));
+
+		    locValid[0] = false;
+		    break;
+		}
 	    }
+
+	    // ContextCheckMaxNameLength locCheck =
+	    // this.iContext.checkMaxNameLengthForReplacement();
+	    //
+	    // if (!locCheck.isValid()) {
+	    //
+	    // LogEventManager.fireLog(LogType.WARNING,
+	    // MessageManager.getMessageFormat("check.maxNameLength",
+	    // iContext.getObject(),
+	    // iContext.getReplacement(), locCheck.getMaxNameLength(),
+	    // locCheck.getActualNameLength()));
+	    //
+	    // locValid[0] = false;
+	    // }
 	}
 
 	// check file objects
@@ -297,9 +319,11 @@ public class ContextFile extends File implements InterfaceFileProcess {
 
 	locCM.putAll(this.contextMap);
 
-	if (this.object != null && this.iContext != null && !locCM.containsKey(this.object)) {
-	    locCM.put(this.object, this.iContext);
-	}
+	this.fileNameContextMap.forEach((key, value) -> {
+	    if (!locCM.containsKey(key)) {
+		locCM.put(key, value);
+	    }
+	});
 
 	return locCM;
     }
@@ -345,8 +369,7 @@ public class ContextFile extends File implements InterfaceFileProcess {
     }
 
     private void removeFileNameObject() {
-	this.iContext = null;
-	this.object = new String();
+	this.fileNameContextMap.clear();
     }
 
 }

@@ -56,5 +56,5 @@ public interface InterfaceContext {
     public Map<String, InterfaceContext> processContextSearch(String contextString, List<Keyword> keywordList,
 	    Map<String, InterfaceContext> iContextMap) throws CloneNotSupportedException;
 
-    public InterfaceContext processNameSearch(NameSearchType nameSearchType, boolean searchPreIdent, boolean searchPostIdent, String nameString) throws CloneNotSupportedException;
+    public Map<String, InterfaceContext> processNameSearch(NameSearchType nameSearchType, boolean searchPreIdent, boolean searchPostIdent, String nameString,  Map<String, InterfaceContext> fileNameContextMap) throws CloneNotSupportedException;
 }
