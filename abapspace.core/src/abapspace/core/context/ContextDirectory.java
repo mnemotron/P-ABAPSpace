@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -43,360 +44,348 @@ import abapspace.core.zip.ZipManager;
 
 public class ContextDirectory extends File implements InterfaceFileProcess {
 
-	private static final long serialVersionUID = -3077572976733503870L;
-	private static final String FILE_SUFFIX_ZIP = ".zip";
-	private static final String DIR_PREFIX_ZIP = "[zip]";
+    private static final long serialVersionUID = -3077572976733503870L;
+    private static final String FILE_SUFFIX_ZIP = ".zip";
+    private static final String DIR_PREFIX_ZIP = "[zip]";
 
-	private boolean root;
-	private ContextManager contextManager;
-	private List<File> childList;
-	private InterfaceContext iContext;
-	private String object;
+    private boolean root;
+    private ContextManager contextManager;
+    private List<File> childList;
+    private Map<String, InterfaceContext> dirNameContextMap;
 
-	public ContextDirectory(boolean root, String pathname, ContextManager contextManager) {
-		super(pathname);
-		this.root = root;
-		this.contextManager = contextManager;
-		this.iContext = null;
-		this.object = new String();
-		this.childList = new ArrayList<File>();
+    public ContextDirectory(boolean root, String pathname, ContextManager contextManager) {
+	super(pathname);
+	this.root = root;
+	this.contextManager = contextManager;
+	this.dirNameContextMap = new HashMap<String, InterfaceContext>();
+	this.childList = new ArrayList<File>();
+    }
+
+    @Override
+    public void collectContext() throws FileProcessException {
+
+	// unpack archives
+	try {
+	    this.unpackArchives();
+	} catch (UnzipException ue) {
+	    throw new FileProcessException(ue.getMessage(), ue);
+	} catch (SourceDirectoryNotFoundException ue) {
+	    throw new FileProcessException(ue.getMessage(), ue);
 	}
 
-	@Override
-	public void collectContext() throws FileProcessException {
-
-		// unpack archives
-		try {
-			this.unpackArchives();
-		} catch (UnzipException ue) {
-			throw new FileProcessException(ue.getMessage(), ue);
-		} catch (SourceDirectoryNotFoundException ue) {
-			throw new FileProcessException(ue.getMessage(), ue);
-		}
-
-		// directory name
-		if (this.contextManager.getPreset().getFileStructure().isUpdate()
-				&& !this.getName().startsWith(DIR_PREFIX_ZIP)) {
-			try {
-				String locName = this.removeNamespacePlaceholder(this.getName());
-				this.processDirNameSearch(locName, this.contextManager.getContextList());
-			} catch (CloneNotSupportedException e) {
-				throw new FileProcessException(
-						MessageManager.getMessage("exception.fileProcessCollectContext.cloneNotSupported"), e);
-			}
-		}
-
-		// directory children
-		File[] locFileList = this.listFiles(new FileFilter() {
-
-			@Override
-			public boolean accept(File pathname) {
-				boolean locAccept = true;
-
-				if (pathname.isFile()) {
-					locAccept = !pathname.getName().toLowerCase().endsWith(FILE_SUFFIX_ZIP);
-				}
-
-				return locAccept;
-			}
-		});
-
-		for (File file : locFileList) {
-			if (file.isDirectory()) {
-				ContextDirectory locCD = new ContextDirectory(false, file.getAbsolutePath(), this.contextManager);
-				locCD.collectContext();
-				this.childList.add(locCD);
-			} else {
-				ContextFile locCF = new ContextFile(file.getAbsolutePath(), this.contextManager);
-				locCF.collectContext();
-				this.childList.add(locCF);
-			}
-		}
+	// directory name
+	if (this.contextManager.getPreset().getFileStructure().isUpdate()
+		&& !this.getName().startsWith(DIR_PREFIX_ZIP)) {
+	    try {
+		String locName = this.removeNamespacePlaceholder(this.getName());
+		this.processDirNameSearch(locName, this.contextManager.getContextList());
+	    } catch (CloneNotSupportedException e) {
+		throw new FileProcessException(
+			MessageManager.getMessage("exception.fileProcessCollectContext.cloneNotSupported"), e);
+	    }
 	}
 
-	public void refactorContext(String parentDirPath) throws FileProcessException {
+	// directory children
+	File[] locFileList = this.listFiles(new FileFilter() {
 
-		// directory name
-		String locDirName = new String();
-		if (!this.root) {
-			if (parentDirPath.isEmpty()) {
-				locDirName = this.refactorDirName();
-			} else {
-				locDirName = parentDirPath + File.separator + this.refactorDirName();
-			}
+	    @Override
+	    public boolean accept(File pathname) {
+		boolean locAccept = true;
+
+		if (pathname.isFile()) {
+		    locAccept = !pathname.getName().toLowerCase().endsWith(FILE_SUFFIX_ZIP);
 		}
 
-		// directory children
-		for (File child : childList) {
-			if (child.isDirectory() && child instanceof ContextDirectory) {
-				ContextDirectory locCD = (ContextDirectory) child;
-				locCD.refactorContext(locDirName);
-			} else if (child instanceof ContextFile) {
-				ContextFile locCF = (ContextFile) child;
-				locCF.refactorContext(locDirName);
-			}
-		}
+		return locAccept;
+	    }
+	});
 
-		// pack archives
-		try {
-			this.packArchives();
-		} catch (ZipException e) {
-			throw new FileProcessException(e.getMessage(), e);
-		} catch (TargetDirectoryNotFoundException e) {
-			throw new FileProcessException(e.getMessage(), e);
-		}
+	for (File file : locFileList) {
+	    if (file.isDirectory()) {
+		ContextDirectory locCD = new ContextDirectory(false, file.getAbsolutePath(), this.contextManager);
+		locCD.collectContext();
+		this.childList.add(locCD);
+	    } else {
+		ContextFile locCF = new ContextFile(file.getAbsolutePath(), this.contextManager);
+		locCF.collectContext();
+		this.childList.add(locCF);
+	    }
+	}
+    }
+
+    public void refactorContext(String parentDirPath) throws FileProcessException {
+
+	// directory name
+	String locDirName = new String();
+	if (!this.root) {
+	    if (parentDirPath.isEmpty()) {
+		locDirName = this.refactorDirName();
+	    } else {
+		locDirName = parentDirPath + File.separator + this.refactorDirName();
+	    }
 	}
 
-	@Override
-	public void refactorContext() throws FileProcessException {
-		this.refactorContext(new String());
+	// directory children
+	for (File child : childList) {
+	    if (child.isDirectory() && child instanceof ContextDirectory) {
+		ContextDirectory locCD = (ContextDirectory) child;
+		locCD.refactorContext(locDirName);
+	    } else if (child instanceof ContextFile) {
+		ContextFile locCF = (ContextFile) child;
+		locCF.refactorContext(locDirName);
+	    }
 	}
 
-	@Override
-	public boolean checkMaxNameLength() {
+	// pack archives
+	try {
+	    this.packArchives();
+	} catch (ZipException e) {
+	    throw new FileProcessException(e.getMessage(), e);
+	} catch (TargetDirectoryNotFoundException e) {
+	    throw new FileProcessException(e.getMessage(), e);
+	}
+    }
 
-		boolean locValid = true;
+    @Override
+    public void refactorContext() throws FileProcessException {
+	this.refactorContext(new String());
+    }
 
-		// directory name
-		if (this.isDirNameObject()) {
-			ContextCheckMaxNameLength locCheck = this.iContext.checkMaxNameLengthForReplacement();
+    @Override
+    public boolean checkMaxNameLength() {
 
-			if (!locCheck.isValid()) {
+	final boolean[] locValid = new boolean[] { true };
 
-				LogEventManager.fireLog(LogType.WARNING,
-						MessageManager.getMessageFormat("check.maxNameLength", iContext.getObject(),
-								iContext.getReplacement(), locCheck.getMaxNameLength(),
-								locCheck.getActualNameLength()));
+	// directory name
+	if (this.isDirNameObject()) {
 
-				locValid = false;
-			}
+	    ContextCheckMaxNameLength locCheck = null;
+
+	    Iterator<Map.Entry<String, InterfaceContext>> locDNCMIterator = this.dirNameContextMap.entrySet()
+		    .iterator();
+
+	    while (locDNCMIterator.hasNext()) {
+		Map.Entry<String, InterfaceContext> locPair = locDNCMIterator.next();
+
+		locCheck = locPair.getValue().checkMaxNameLengthForReplacement();
+
+		if (!locCheck.isValid()) {
+		    LogEventManager.fireLog(LogType.WARNING,
+			    MessageManager.getMessageFormat("check.maxNameLength", locPair.getValue().getObject(),
+				    locPair.getValue().getReplacement(), locCheck.getMaxNameLength(),
+				    locCheck.getActualNameLength()));
+
+		    locValid[0] = false;
+		    break;
 		}
+	    }
+	}
 
-		// directory children
-		for (File child : childList) {
-			if (child.isDirectory() && child instanceof ContextDirectory) {
-				ContextDirectory locCD = (ContextDirectory) child;
-				if (!locCD.checkMaxNameLength()) {
-					locValid = false;
-				}
-			} else if (child instanceof ContextFile) {
-				ContextFile locCF = (ContextFile) child;
-				if (!locCF.checkMaxNameLength()) {
-					locValid = false;
-				}
-			}
+	// directory children
+	for (File child : childList) {
+	    if (child.isDirectory() && child instanceof ContextDirectory) {
+		ContextDirectory locCD = (ContextDirectory) child;
+		if (!locCD.checkMaxNameLength()) {
+		    locValid[0] = false;
 		}
-
-		return locValid;
-	}
-
-	@Override
-	public Map<String, InterfaceContext> getContextMap() {
-
-		Map<String, InterfaceContext> locContextMap = new HashMap<String, InterfaceContext>();
-
-		// directory name
-		if (this.isDirNameObject()) {
-			locContextMap.put(this.object, this.iContext);
+	    } else if (child instanceof ContextFile) {
+		ContextFile locCF = (ContextFile) child;
+		if (!locCF.checkMaxNameLength()) {
+		    locValid[0] = false;
 		}
-
-		// directory children
-		for (File child : childList) {
-			if (child.isDirectory() && child instanceof ContextDirectory) {
-				ContextDirectory locCD = (ContextDirectory) child;
-				Map<String, InterfaceContext> locCM = locCD.getContextMap();
-
-				locContextMap.putAll(locCM);
-
-			} else if (child instanceof ContextFile) {
-				ContextFile locCF = (ContextFile) child;
-				Map<String, InterfaceContext> locCM = locCF.getContextMap();
-
-				locContextMap.putAll(locCM);
-			}
-		}
-
-		return locContextMap;
+	    }
 	}
 
-	@Override
-	public void setContextMap(Map<String, InterfaceContext> contextMap) {
+	return locValid[0];
+    }
 
-		// directory name
-		if (contextMap.containsKey(this.object)) {
-			InterfaceContext locIC = contextMap.get(this.object);
+    @Override
+    public Map<String, InterfaceContext> getContextMap() {
 
-			if (!locIC.isIgnore()) {
-				this.iContext.setReplacement(locIC.getReplacement());
-			} else {
-				LogEventManager.fireLog(LogType.INFO,
-						MessageManager.getMessageFormat("refactor.object.ignore", this.object));
-				this.removeDirNameObject();
-			}
-		}
+	Map<String, InterfaceContext> locContextMap = new HashMap<String, InterfaceContext>();
 
-		// directory children
-		for (File child : childList) {
-			if (child.isDirectory() && child instanceof ContextDirectory) {
-				ContextDirectory locCD = (ContextDirectory) child;
-				locCD.setContextMap(contextMap);
+	// directory name
+	this.dirNameContextMap.forEach((key, value) -> {
+	    if (!locContextMap.containsKey(key)) {
+		locContextMap.put(key, value);
+	    }
+	});
 
-			} else if (child instanceof ContextFile) {
-				ContextFile locCF = (ContextFile) child;
-				locCF.setContextMap(contextMap);
-			}
-		}
+	// directory children
+	for (File child : childList) {
+	    if (child.isDirectory() && child instanceof ContextDirectory) {
+		ContextDirectory locCD = (ContextDirectory) child;
+		Map<String, InterfaceContext> locCM = locCD.getContextMap();
+
+		locContextMap.putAll(locCM);
+
+	    } else if (child instanceof ContextFile) {
+		ContextFile locCF = (ContextFile) child;
+		Map<String, InterfaceContext> locCM = locCF.getContextMap();
+
+		locContextMap.putAll(locCM);
+	    }
 	}
 
-	private void removeDirNameObject() {
-		this.iContext = null;
-		this.object = new String();
-	}
+	return locContextMap;
+    }
 
-	private String refactorDirName() {
-		String locResult = this.getName();
+    @Override
+    public void setContextMap(Map<String, InterfaceContext> contextMap) {
 
-		if (this.isDirNameObject() && !this.getName().startsWith(DIR_PREFIX_ZIP)) {
-			locResult = this.removeNamespacePlaceholder(locResult);
-			locResult = locResult.replaceAll(this.iContext.getObject(), this.iContext.getReplacement());
-			locResult = this.replaceNamespacePlaceholder(locResult);
-		}
+	List<String> locDelDirObject = new ArrayList<String>();
 
-		return locResult;
-	}
+	// directory name
+	this.dirNameContextMap.forEach((key, value) -> {
+	    if (contextMap.containsKey(key)) {
 
-	private String replaceNamespacePlaceholder(String dirName) {
-		String locResult = dirName;
+		String locObject = value.getObject();
 
-		locResult = locResult.replace(this.contextManager.getPreset().getFileStructure().getNamespaceReplacement(),
-				this.contextManager.getPreset().getFileStructure().getNamespacePlaceholder());
+		InterfaceContext locIC = contextMap.get(key);
 
-		return locResult;
-	}
+		if (!locIC.isIgnore()) {
 
-	private String removeNamespacePlaceholder(String dirName) {
-		String locResult = dirName;
+		    value.setReplacement(locIC.getReplacement());
 
-		locResult = locResult.replace(this.contextManager.getPreset().getFileStructure().getNamespacePlaceholder(),
-				this.contextManager.getPreset().getFileStructure().getNamespaceReplacement());
-
-		return locResult;
-	}
-
-	private boolean isDirNameObject() {
-		boolean locResult = false;
-
-		if (this.object != null && this.iContext != null) {
-			locResult = true;
 		} else {
-			locResult = false;
+		    LogEventManager.fireLog(LogType.INFO,
+			    MessageManager.getMessageFormat("refactor.object.ignore", locObject));
+
+		    locDelDirObject.add(key);
 		}
 
-		return locResult;
+	    }
+	});
+
+	for (String object : locDelDirObject) {
+	    this.dirNameContextMap.remove(object);
 	}
 
-	private void processDirNameSearch(String dirName, List<InterfaceContext> contextList)
-			throws CloneNotSupportedException {
+	// directory children
+	for (File child : childList) {
+	    if (child.isDirectory() && child instanceof ContextDirectory) {
+		ContextDirectory locCD = (ContextDirectory) child;
+		locCD.setContextMap(contextMap);
 
-		for (InterfaceContext iContext : contextList) {
-		    
-		    this.iContext = iContext.processNameSearch(NameSearchType.DIRECTORY_NAME, false, false, dirName);
-		    
-		    if(this.iContext != null)
-		    {
-			this.object = this.iContext.getObject();
-			return;
-		    }
+	    } else if (child instanceof ContextFile) {
+		ContextFile locCF = (ContextFile) child;
+		locCF.setContextMap(contextMap);
+	    }
+	}
+    }
 
+    private String refactorDirName() {
 
-//			for (Matcher m = Pattern.compile(iContext.getRegex(false, false), Pattern.CASE_INSENSITIVE)
-//					.matcher(dirName); m.find();) {
-//
-//				// group 1: namespace + object ID
-//			    	// group 2: object name
-//			    	String locObject = new String();
-//			    	ArrayList<String> locObjectList = new ArrayList<String>();
-//				
-//				for (int i = 0, c = m.groupCount(); i < c; i++) {
-//				    locObject = locObject.concat(m.group(i+1));
-//				    locObjectList.add(m.group(i+1));
-//				}
-//				
-//				InterfaceContext locIContext = iContext.clone();
-//
-//				if (iContext.isEnhancedObject()) {
-//					LogEventManager.fireLog(LogType.INFO, MessageManager.getMessageFormat(
-//							"collect.context.object.DirName.enhanced", locObject, m.start(), m.end()));
-//				} else {
-//					LogEventManager.fireLog(LogType.INFO, MessageManager
-//							.getMessageFormat("collect.context.object.dirName", locObject, m.start(), m.end()));
-//				}
-//
-//				locIContext.setObject(locObjectList.toArray(new String[locObjectList.size()]));
-//				
-//				this.object = locObject;
-//				this.iContext = locIContext;
-//
-//				return;
-//			}
+	String[] locResult = new String[1];
+	locResult[0] = this.getName();
 
-		}
+	if (this.isDirNameObject() && !this.getName().startsWith(DIR_PREFIX_ZIP)) {
+	    locResult[0] = this.removeNamespacePlaceholder(locResult[0]);
+
+	    this.dirNameContextMap.forEach((key, value) -> {
+		locResult[0] = locResult[0].replaceAll(value.getObject(), value.getReplacement());
+	    });
+
+	    locResult[0] = this.replaceNamespacePlaceholder(locResult[0]);
 	}
 
-	private void packArchives() throws ZipException, TargetDirectoryNotFoundException {
+	return locResult[0];
+    }
 
-		File[] locZipDir = this.listFiles(new FileFilter() {
+    private String replaceNamespacePlaceholder(String dirName) {
+	String locResult = dirName;
 
-			@Override
-			public boolean accept(File pathname) {
-				boolean locAccept = false;
+	locResult = locResult.replace(this.contextManager.getPreset().getFileStructure().getNamespaceReplacement(),
+		this.contextManager.getPreset().getFileStructure().getNamespacePlaceholder());
 
-				if (pathname.isDirectory()) {
-					locAccept = pathname.getName().startsWith(DIR_PREFIX_ZIP);
-				}
+	return locResult;
+    }
 
-				return locAccept;
-			}
-		});
+    private String removeNamespacePlaceholder(String dirName) {
+	String locResult = dirName;
 
-		for (File file : locZipDir) {
+	locResult = locResult.replace(this.contextManager.getPreset().getFileStructure().getNamespacePlaceholder(),
+		this.contextManager.getPreset().getFileStructure().getNamespaceReplacement());
 
-			File locZipTargetFile = new File(this.contextManager.getPreset().getFileTargetDir().getAbsolutePath()
-					+ File.separator + (file.getName().replace(DIR_PREFIX_ZIP, "")));
+	return locResult;
+    }
 
-			File locTargetDir = new File(this.contextManager.getPreset().getFileTargetDir().getAbsolutePath()
-					+ File.separator + file.getName());
+    private boolean isDirNameObject() {
+	boolean locResult = false;
 
-			ZipManager.zipArchive(locZipTargetFile, locTargetDir);
-		}
-
+	if (this.dirNameContextMap.isEmpty()) {
+	    locResult = false;
+	} else {
+	    locResult = true;
 	}
 
-	private void unpackArchives() throws UnzipException, SourceDirectoryNotFoundException {
+	return locResult;
+    }
 
-		File[] locZipFiles = this.listFiles(new FileFilter() {
+    private void processDirNameSearch(String dirName, List<InterfaceContext> contextList)
+	    throws CloneNotSupportedException {
 
-			@Override
-			public boolean accept(File pathname) {
-				boolean locAccept = false;
+	for (InterfaceContext iContext : contextList) {
 
-				if (pathname.isFile()) {
-					locAccept = pathname.getName().toLowerCase().endsWith(FILE_SUFFIX_ZIP);
-				}
+	    this.dirNameContextMap = iContext.processNameSearch(NameSearchType.DIRECTORY_NAME, false, false, dirName,
+		    this.dirNameContextMap);
+	}
+    }
 
-				return locAccept;
-			}
-		});
+    private void packArchives() throws ZipException, TargetDirectoryNotFoundException {
 
-		for (File file : locZipFiles) {
+	File[] locZipDir = this.listFiles(new FileFilter() {
 
-			File locFileZipSourceDir = new File(this.contextManager.getPreset().getFileSourceDir().getAbsolutePath()
-					+ File.separator + DIR_PREFIX_ZIP + file.getName());
-			locFileZipSourceDir.mkdir();
+	    @Override
+	    public boolean accept(File pathname) {
+		boolean locAccept = false;
 
-			ZipManager.unZip(file, locFileZipSourceDir);
+		if (pathname.isDirectory()) {
+		    locAccept = pathname.getName().startsWith(DIR_PREFIX_ZIP);
 		}
 
+		return locAccept;
+	    }
+	});
+
+	for (File file : locZipDir) {
+
+	    File locZipTargetFile = new File(this.contextManager.getPreset().getFileTargetDir().getAbsolutePath()
+		    + File.separator + (file.getName().replace(DIR_PREFIX_ZIP, "")));
+
+	    File locTargetDir = new File(this.contextManager.getPreset().getFileTargetDir().getAbsolutePath()
+		    + File.separator + file.getName());
+
+	    ZipManager.zipArchive(locZipTargetFile, locTargetDir);
 	}
+
+    }
+
+    private void unpackArchives() throws UnzipException, SourceDirectoryNotFoundException {
+
+	File[] locZipFiles = this.listFiles(new FileFilter() {
+
+	    @Override
+	    public boolean accept(File pathname) {
+		boolean locAccept = false;
+
+		if (pathname.isFile()) {
+		    locAccept = pathname.getName().toLowerCase().endsWith(FILE_SUFFIX_ZIP);
+		}
+
+		return locAccept;
+	    }
+	});
+
+	for (File file : locZipFiles) {
+
+	    File locFileZipSourceDir = new File(this.contextManager.getPreset().getFileSourceDir().getAbsolutePath()
+		    + File.separator + DIR_PREFIX_ZIP + file.getName());
+	    locFileZipSourceDir.mkdir();
+
+	    ZipManager.unZip(file, locFileZipSourceDir);
+	}
+
+    }
 
 }

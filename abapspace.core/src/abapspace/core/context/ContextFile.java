@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2018 mnemotron
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package abapspace.core.context;
 
 import java.io.BufferedReader;
@@ -280,20 +303,6 @@ public class ContextFile extends File implements InterfaceFileProcess {
 		    break;
 		}
 	    }
-
-	    // ContextCheckMaxNameLength locCheck =
-	    // this.iContext.checkMaxNameLengthForReplacement();
-	    //
-	    // if (!locCheck.isValid()) {
-	    //
-	    // LogEventManager.fireLog(LogType.WARNING,
-	    // MessageManager.getMessageFormat("check.maxNameLength",
-	    // iContext.getObject(),
-	    // iContext.getReplacement(), locCheck.getMaxNameLength(),
-	    // locCheck.getActualNameLength()));
-	    //
-	    // locValid[0] = false;
-	    // }
 	}
 
 	// check file objects
@@ -332,18 +341,32 @@ public class ContextFile extends File implements InterfaceFileProcess {
     public void setContextMap(Map<String, InterfaceContext> contextMap) {
 
 	List<String> locDelObject = new ArrayList<String>();
+	List<String> locDelFileObject = new ArrayList<String>();
 
 	// file name
-	if (contextMap.containsKey(this.object)) {
-	    InterfaceContext locIC = contextMap.get(this.object);
+	this.fileNameContextMap.forEach((key, value) -> {
+	    if (contextMap.containsKey(key)) {
 
-	    if (!locIC.isIgnore()) {
-		this.iContext.setReplacement(locIC.getReplacement());
-	    } else {
-		LogEventManager.fireLog(LogType.INFO,
-			MessageManager.getMessageFormat("refactor.object.ignore", this.object));
-		this.removeFileNameObject();
+		String locObject = value.getObject();
+
+		InterfaceContext locIC = contextMap.get(key);
+
+		if (!locIC.isIgnore()) {
+
+		    value.setReplacement(locIC.getReplacement());
+
+		} else {
+		    LogEventManager.fireLog(LogType.INFO,
+			    MessageManager.getMessageFormat("refactor.object.ignore", locObject));
+
+		    locDelFileObject.add(key);
+		}
+
 	    }
+	});
+
+	for (String object : locDelFileObject) {
+	    this.fileNameContextMap.remove(object);
 	}
 
 	// file context
@@ -356,6 +379,7 @@ public class ContextFile extends File implements InterfaceFileProcess {
 		} else {
 		    LogEventManager.fireLog(LogType.INFO,
 			    MessageManager.getMessageFormat("refactor.object.ignore", objectIdent));
+
 		    locDelObject.add(objectIdent);
 		}
 	    }
@@ -367,9 +391,4 @@ public class ContextFile extends File implements InterfaceFileProcess {
 	}
 
     }
-
-    private void removeFileNameObject() {
-	this.fileNameContextMap.clear();
-    }
-
 }
