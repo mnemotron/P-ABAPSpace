@@ -79,7 +79,8 @@ public class ContextFunctionGroup extends Context {
 
     @Override
     public Map<String, InterfaceContext> processNameSearch(NameSearchType nameSearchType, boolean searchPreIdent,
-	    boolean searchPostIdent, String nameString, Map<String, InterfaceContext> fileNameContextMap) throws CloneNotSupportedException {
+	    boolean searchPostIdent, String nameString, Map<String, InterfaceContext> fileNameContextMap)
+	    throws CloneNotSupportedException {
 	return super.processNameSearch(nameSearchType, true, searchPostIdent, nameString, fileNameContextMap);
     }
 

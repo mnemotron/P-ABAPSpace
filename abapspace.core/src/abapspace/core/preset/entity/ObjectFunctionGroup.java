@@ -5,5 +5,4 @@ public class ObjectFunctionGroup extends ObjectGen {
     public ObjectFunctionGroup() {
 	super();
     }
-
 }
