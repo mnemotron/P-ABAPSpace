@@ -32,7 +32,14 @@ public class ObjectPolicy {
     private ObjectInterface objectInterface;
     private ObjectExceptionClass objectExceptionClass;
     private ObjectInclude objectInclude;
+    private ObjectFunctionGroup objectFunctionGroup;
+    private ObjectFunctionModule objectFunctionModule;
     private ObjectDatabaseTable objectDatabaseTable;
+    private ObjectTableType objectTableType;
+    private ObjectStructure objectStructure;
+    private ObjectDomain objectDomain;
+    private ObjectDataElement objectDataElement;
+    private ObjectMessageClass objectMessageClass;
 
     public ObjectPolicy() {
 	this.objectPackage = new ObjectPackage();
@@ -40,7 +47,14 @@ public class ObjectPolicy {
 	this.objectInterface = new ObjectInterface();
 	this.objectExceptionClass = new ObjectExceptionClass();
 	this.objectInclude = new ObjectInclude();
+	this.objectFunctionGroup = new ObjectFunctionGroup();
+	this.objectFunctionModule = new ObjectFunctionModule();
 	this.objectDatabaseTable = new ObjectDatabaseTable();
+	this.objectTableType = new ObjectTableType();
+	this.objectStructure = new ObjectStructure();
+	this.objectDomain = new ObjectDomain();
+	this.objectDataElement = new ObjectDataElement();
+	this.objectMessageClass = new ObjectMessageClass();
     }
 
     public ObjectPackage getObjectPackage() {
@@ -88,6 +102,24 @@ public class ObjectPolicy {
 	this.objectInclude = objectInclude;
     }
 
+    public ObjectFunctionGroup getObjectFunctionGroup() {
+	return objectFunctionGroup;
+    }
+
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectFunctionGroup(ObjectFunctionGroup objectFunctionGroup) {
+	this.objectFunctionGroup = objectFunctionGroup;
+    }
+
+    public ObjectFunctionModule getObjectFunctionModule() {
+	return objectFunctionModule;
+    }
+
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectFunctionModule(ObjectFunctionModule objectFunctionModule) {
+	this.objectFunctionModule = objectFunctionModule;
+    }
+
     public ObjectDatabaseTable getObjectDatabaseTable() {
 	return objectDatabaseTable;
     }
@@ -95,6 +127,51 @@ public class ObjectPolicy {
     @XmlElement(namespace = "http://www.abapspace.com/Preset")
     public void setObjectDatabaseTable(ObjectDatabaseTable objectDatabaseTable) {
 	this.objectDatabaseTable = objectDatabaseTable;
+    }
+
+    public ObjectTableType getObjectTableType() {
+	return objectTableType;
+    }
+
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectTableType(ObjectTableType objectTableType) {
+	this.objectTableType = objectTableType;
+    }
+
+    public ObjectStructure getObjectStructure() {
+	return objectStructure;
+    }
+
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectStructure(ObjectStructure objectStructure) {
+	this.objectStructure = objectStructure;
+    }
+
+    public ObjectDomain getObjectDomain() {
+	return objectDomain;
+    }
+
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectDomain(ObjectDomain objectDomain) {
+	this.objectDomain = objectDomain;
+    }
+
+    public ObjectDataElement getObjectDataElement() {
+	return objectDataElement;
+    }
+
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectDataElement(ObjectDataElement objectDataElement) {
+	this.objectDataElement = objectDataElement;
+    }
+
+    public ObjectMessageClass getObjectMessageClass() {
+	return objectMessageClass;
+    }
+
+    @XmlElement(namespace = "http://www.abapspace.com/Preset")
+    public void setObjectMessageClass(ObjectMessageClass objectMessageClass) {
+	this.objectMessageClass = objectMessageClass;
     }
 
 }

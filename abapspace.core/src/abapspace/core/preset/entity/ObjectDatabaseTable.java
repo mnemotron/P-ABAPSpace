@@ -25,9 +25,8 @@ package abapspace.core.preset.entity;
 
 public class ObjectDatabaseTable extends ObjectGen {
 
-	public ObjectDatabaseTable()
-	{
-		
-	}
+    public ObjectDatabaseTable() {
+	super();
+    }
 
 }

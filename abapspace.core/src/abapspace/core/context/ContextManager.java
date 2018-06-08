@@ -176,6 +176,36 @@ public class ContextManager {
 	    locContextList.add(locContext);
 	}
 
+	// object: function group
+	if (this.preset.getObjectPolicy().getObjectFunctionGroup() != null) {
+	    ContextFunctionGroup locContext = new ContextFunctionGroup();
+	    locContext.setPreIdent(this.preset.getObjectPolicy().getObjectFunctionGroup().getPreIdent());
+	    locContext.setObjectID(this.preset.getObjectPolicy().getObjectFunctionGroup().getObjectIdent());
+	    locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectFunctionGroup().getObjectNameIdent());
+	    locContext.setSupplement(this.preset.getSupplement());
+	    locContext.setPostIdent(this.preset.getObjectPolicy().getObjectFunctionGroup().getPostIdent());
+	    locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectFunctionGroup().getNameMaxLength());
+	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
+	    locContext.setNamespaceOld(namespaceOld);
+	    locContext.setEnhancedObject(true);
+	    locContextList.add(locContext);
+	}
+
+	// object: function module
+	if (this.preset.getObjectPolicy().getObjectFunctionModule() != null) {
+	    Context locContext = new Context();
+	    locContext.setPreIdent(this.preset.getObjectPolicy().getObjectFunctionModule().getPreIdent());
+	    locContext.setObjectID(this.preset.getObjectPolicy().getObjectFunctionModule().getObjectIdent());
+	    locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectFunctionModule().getObjectNameIdent());
+	    locContext.setSupplement(this.preset.getSupplement());
+	    locContext.setPostIdent(this.preset.getObjectPolicy().getObjectFunctionModule().getPostIdent());
+	    locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectFunctionModule().getNameMaxLength());
+	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
+	    locContext.setNamespaceOld(namespaceOld);
+	    locContext.setEnhancedObject(true);
+	    locContextList.add(locContext);
+	}
+
 	// object: database table
 	if (this.preset.getObjectPolicy().getObjectDatabaseTable() != null) {
 	    Context locContext = new Context();
@@ -185,6 +215,81 @@ public class ContextManager {
 	    locContext.setSupplement(this.preset.getSupplement());
 	    locContext.setPostIdent(this.preset.getObjectPolicy().getObjectDatabaseTable().getPostIdent());
 	    locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectDatabaseTable().getNameMaxLength());
+	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
+	    locContext.setNamespaceOld(namespaceOld);
+	    locContext.setEnhancedObject(true);
+	    locContextList.add(locContext);
+	}
+
+	// object: table type
+	if (this.preset.getObjectPolicy().getObjectTableType() != null) {
+	    Context locContext = new Context();
+	    locContext.setPreIdent(this.preset.getObjectPolicy().getObjectTableType().getPreIdent());
+	    locContext.setObjectID(this.preset.getObjectPolicy().getObjectTableType().getObjectIdent());
+	    locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectTableType().getObjectNameIdent());
+	    locContext.setSupplement(this.preset.getSupplement());
+	    locContext.setPostIdent(this.preset.getObjectPolicy().getObjectTableType().getPostIdent());
+	    locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectTableType().getNameMaxLength());
+	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
+	    locContext.setNamespaceOld(namespaceOld);
+	    locContext.setEnhancedObject(true);
+	    locContextList.add(locContext);
+	}
+
+	// object: structure
+	if (this.preset.getObjectPolicy().getObjectStructure() != null) {
+	    Context locContext = new Context();
+	    locContext.setPreIdent(this.preset.getObjectPolicy().getObjectStructure().getPreIdent());
+	    locContext.setObjectID(this.preset.getObjectPolicy().getObjectStructure().getObjectIdent());
+	    locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectStructure().getObjectNameIdent());
+	    locContext.setSupplement(this.preset.getSupplement());
+	    locContext.setPostIdent(this.preset.getObjectPolicy().getObjectStructure().getPostIdent());
+	    locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectStructure().getNameMaxLength());
+	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
+	    locContext.setNamespaceOld(namespaceOld);
+	    locContext.setEnhancedObject(true);
+	    locContextList.add(locContext);
+	}
+
+	// object: domain
+	if (this.preset.getObjectPolicy().getObjectDomain() != null) {
+	    Context locContext = new Context();
+	    locContext.setPreIdent(this.preset.getObjectPolicy().getObjectDomain().getPreIdent());
+	    locContext.setObjectID(this.preset.getObjectPolicy().getObjectDomain().getObjectIdent());
+	    locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectDomain().getObjectNameIdent());
+	    locContext.setSupplement(this.preset.getSupplement());
+	    locContext.setPostIdent(this.preset.getObjectPolicy().getObjectDomain().getPostIdent());
+	    locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectDomain().getNameMaxLength());
+	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
+	    locContext.setNamespaceOld(namespaceOld);
+	    locContext.setEnhancedObject(true);
+	    locContextList.add(locContext);
+	}
+
+	// object: data element
+	if (this.preset.getObjectPolicy().getObjectDataElement() != null) {
+	    Context locContext = new Context();
+	    locContext.setPreIdent(this.preset.getObjectPolicy().getObjectDataElement().getPreIdent());
+	    locContext.setObjectID(this.preset.getObjectPolicy().getObjectDataElement().getObjectIdent());
+	    locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectDataElement().getObjectNameIdent());
+	    locContext.setSupplement(this.preset.getSupplement());
+	    locContext.setPostIdent(this.preset.getObjectPolicy().getObjectDataElement().getPostIdent());
+	    locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectDataElement().getNameMaxLength());
+	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
+	    locContext.setNamespaceOld(namespaceOld);
+	    locContext.setEnhancedObject(true);
+	    locContextList.add(locContext);
+	}
+
+	// object: message class
+	if (this.preset.getObjectPolicy().getObjectMessageClass() != null) {
+	    Context locContext = new Context();
+	    locContext.setPreIdent(this.preset.getObjectPolicy().getObjectMessageClass().getPreIdent());
+	    locContext.setObjectID(this.preset.getObjectPolicy().getObjectMessageClass().getObjectIdent());
+	    locContext.setObjectNameIdent(this.preset.getObjectPolicy().getObjectMessageClass().getObjectNameIdent());
+	    locContext.setSupplement(this.preset.getSupplement());
+	    locContext.setPostIdent(this.preset.getObjectPolicy().getObjectMessageClass().getPostIdent());
+	    locContext.setNameMaxLength(this.preset.getObjectPolicy().getObjectMessageClass().getNameMaxLength());
 	    locContext.setNamespaceNew(this.preset.getNamespaceNew());
 	    locContext.setNamespaceOld(namespaceOld);
 	    locContext.setEnhancedObject(true);

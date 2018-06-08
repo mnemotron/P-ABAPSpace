@@ -25,9 +25,8 @@ package abapspace.core.preset.entity;
 
 public class ObjectExceptionClass extends ObjectGen {
 
-	public ObjectExceptionClass()
-	{
-		
-	}
+    public ObjectExceptionClass() {
+	super();
+    }
 
 }

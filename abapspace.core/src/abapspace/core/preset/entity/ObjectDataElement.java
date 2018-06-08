@@ -23,9 +23,9 @@
  */
 package abapspace.core.preset.entity;
 
-public class ObjectInterface extends ObjectGen {
+public class ObjectDataElement extends ObjectGen {
 
-    public ObjectInterface() {
+    public ObjectDataElement() {
 	super();
     }
 

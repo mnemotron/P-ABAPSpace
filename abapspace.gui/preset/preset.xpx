@@ -16,7 +16,6 @@
 	<tns:namespaceOldList>
 		<tns:namespaceOld>/vdp/</tns:namespaceOld>
 		<tns:namespaceOld>z</tns:namespaceOld>
-		<tns:namespaceOld>y</tns:namespaceOld>
 	</tns:namespaceOldList>
 	<tns:objectPolicyGeneral>
 		<tns:preIdent>\W</tns:preIdent>
@@ -67,8 +66,8 @@
 			<tns:nameMaxLength>40</tns:nameMaxLength>
 		</tns:objectInclude>
 		<tns:objectFunctionGroup>
-			<tns:preIdent></tns:preIdent>
-			<tns:objectIdent>fg</tns:objectIdent>
+			<tns:preIdent>sapl</tns:preIdent>
+			<tns:objectIdent></tns:objectIdent>
 			<tns:objectNameIdent>\w*</tns:objectNameIdent>
 			<tns:postIdent></tns:postIdent>
 			<tns:nameMaxLength>26</tns:nameMaxLength>
