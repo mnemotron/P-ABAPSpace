@@ -18,7 +18,7 @@ ABAP Namespace Refactoring
   + more to come ....
   
 ## Get Started
-[Read the manual](https://github.com/SAPAssets/ABAPSpace/blob/master/abapspace.doc/manual/abapspace_manual.pdf)
+[Read the manual](https://github.com/mnemotron/P-ABAPSpace/blob/master/abapspace.doc/manual/abapspace_manual.pdf)
 
 ## Build
 The following projects can be build with [Gradle](https://gradle.org):
