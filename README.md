@@ -21,7 +21,7 @@ ABAP Namespace Refactoring
 [Read the manual](https://github.com/mnemotron/P-ABAPSpace/blob/master/abapspace.doc/manual/abapspace_manual.pdf)
 
 ## Build
-The following projects can be build with [Gradle](https://gradle.org):
+The following projects can be build with [Gradle](https://gradle.org) (v4.6) and Java JDK (v8)
 
 + abapspace.core
 + abapspace.gui (uses the abapspace.core library)
